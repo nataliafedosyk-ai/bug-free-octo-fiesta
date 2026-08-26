@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Giver — Interactive Vocabulary</title>
+<style>
+  :root {
+    --ink:#243447; --muted:#667085; --paper:#f7f8fa; --card:#ffffff;
+    --accent:#5967d8; --accent-soft:#eef0ff; --border:#e2e5ea;
+  }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family: Inter, Arial, sans-serif; line-height:1.55;
+  }
+  .wrap { max-width:900px; margin:0 auto; padding:42px 22px 60px; }
+  header {
+    background:linear-gradient(135deg,#eef0ff,#ffffff);
+    border:1px solid var(--border); border-radius:20px;
+    padding:28px 30px; margin-bottom:24px;
+  }
+  h1 { margin:0 0 8px; font-size:30px; }
+  .subtitle { margin:0; color:var(--muted); }
+  .instructions {
+    margin-top:18px; padding:14px 16px; background:white;
+    border-left:4px solid var(--accent); border-radius:8px;
+    font-size:14px;
+  }
+  .search {
+    width:100%; padding:13px 15px; border:1px solid var(--border);
+    border-radius:12px; font-size:16px; margin:0 0 16px;
+    outline:none;
+  }
+  .search:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
+  .card {
+    background:var(--card); border:1px solid var(--border);
+    border-radius:14px; margin:10px 0; overflow:hidden;
+    box-shadow:0 2px 8px rgba(20,30,50,.04);
+  }
+  .word {
+    width:100%; border:0; background:white; cursor:pointer;
+    padding:16px 18px; display:flex; justify-content:space-between;
+    align-items:center; text-align:left; color:var(--ink); font-size:18px; font-weight:700;
+  }
+  .word:hover { background:#fafaff; }
+  .chevron { color:var(--accent); font-size:22px; font-weight:400; }
+  .details { display:none; padding:0 20px 19px; border-top:1px solid var(--border); }
+  .details.open { display:block; }
+  .pos {
+    display:inline-block; margin-top:14px; padding:3px 9px;
+    background:var(--accent-soft); color:var(--accent); border-radius:999px;
+    font-size:12px; font-weight:700; text-transform:uppercase;
+  }
+  .details p { margin:10px 0 0; }
+  .footer { color:var(--muted); font-size:13px; margin-top:24px; text-align:center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>The Giver — Interactive Vocabulary</h1>
+  <p class="subtitle">15 useful B1/B2 vocabulary items from the extracts you provided.</p>
+  <div class="instructions"><strong>How to use:</strong> Click a word to open its meaning, contextual meaning, example sentence, and synonyms. Use the search box to find a word quickly.</div>
+</header>
+
+<input id="search" class="search" type="search" placeholder="Search vocabulary..." aria-label="Search vocabulary">
+
+<main id="vocab">
+
+    <article class="card" data-word="chastise">
+      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
+        <span>chastise</span><span class="chevron">+</span>
+      </button>
+      <div class="details">
+        <div class="pos">verb</div>
+        <p><strong>Student-friendly definition:</strong> to tell someone strongly that they have done something wrong</p>
+        <p><strong>In the extract:</strong> In the extract, Jonas expects his father to tell Lily off for making a rude comment about the baby&#x27;s eyes.</p>
+        <p><strong>Example:</strong> The teacher chastised the students for being disrespectful.</p>
+        <p><strong>Synonyms:</strong> rebuke · scold</p>
+      </div>
+    </article>
+    
+    <article class="card" data-word="unsettling">
+      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
+        <span>unsettling</span><span class="chevron">+</span>
+      </button>
+      <div class="details">
+        <div class="pos">adjective</div>
+        <p><strong>Student-friendly definition:</strong> making you feel worried, uncomfortable, or unsure</p>
+        <p><strong>In the extract:</strong> Differences between people are described as unsettling in the community, so citizens avoid talking about them.</p>
+        <p><strong>Example:</strong> The sudden silence in the room was unsettling.</p>
+        <p><strong>Synonyms:</strong> disturbing · disconcerting</p>
+      </div>
+    </article>
+    
+    <article class="card" data-word="insensitive">
+      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
+        <span>insensitive</span><span class="chevron">+</span>
+      </button>
+      <div class="details">
+        <div class="pos">adjective</div>
+        <p><strong>Student-friendly definition:</strong> not thinking about other people&#x27;s feelings</p>
+        <p><strong>In the extract:</strong> Lily&#x27;s comment about Jonas&#x27;s eyes is considered insensitive because it draws attention to a difference.</p>
+        <p><strong>Example:</strong> It was insensitive to laugh when someone was upset.</p>
+        <p><strong>Synonyms:</strong> thoughtless · inconsiderate</p>
+      </div>
+    </article>
+    
+    <article class="card" data-word="self-conscious">
+      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
+        <span>self-conscious</span><span class="chevron">+</span>
+      </button>
+      <div class="details">
+        <div class="pos">adjective</div>
+        <p><strong>Student-friendly definition:</strong> worried or uncomfortable because you think other people are noticing you</p>
+        <p><strong>In the extract:</strong> After looking at the newchild&#x27;s eyes, Jonas becomes self-conscious because he realizes that his own eyes are different too.</p>
+        <p><strong>Example:</strong> She felt self-conscious about speaking in front of the class.</p>
+        <p><strong>Synonyms:</strong> embarrassed · self-aware</p>
+      </div>
+    </article>
+    
+    <article class="card" data-word="reluctantly">
+      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
+        <span>reluctantly</span><span class="chevron">+</span>
+      </button>
+      <div class="details">
+        <div class="pos">adverb</div>
+        <p><strong>Student-friendly definition:</strong> in a way that shows you do not really want to do something</p>
+        <p><strong>In the extract:</strong> Asher admits reluctantly that he has never known anyone who actually joined another community.</p>
+        <p><strong>Example:</strong> He reluctantly agreed to apologize.</p>
+        <p><strong>Synonyms:</strong> unwillingly · hesitantly</p>
+      </div>
+    </article>
+    
+    <article class="card" data-word="meticulously">
+      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
+        <span>meticulously</span><span class="chevron">+</span>
+      </button>
+      <div class="details">
+        <div class="pos">adverb</div>
+        <p><strong>Student-friendly definition:</strong> in a very careful and detailed way</p>
+        <p><strong>In the extract:</strong> Jonas describes the community as meticulously ordered, with choices carefully controlled.</p>
+        <p><strong>Example:</strong> She meticulously checked every detail of the project.</p>
+        <p><strong>Synonyms:</strong> carefully · thoroughly</p>
+      </div>
+    </article>
+    
+    <article class="card" data-word="congregated">
+      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
+        <span>congregated</span><span class="chevron">+</span>
+      </button>
+      <div class="details">
+        <div class="pos">verb</div>
+        <p><strong>Student-friendly definition:</strong> gathered together in one place</p>
+        <p><strong>In the extract:</strong> Jonas and his groupmates congregate by the tables for their midday meal.</p>
+        <p><strong>Example:</strong> The students congregated outside after the lesson.</p>
+        <p><strong>Synonyms:</strong> gathered · assembled</p>
+      </div>
+    </article>
+    
+    <article class="card" data-word="merriment">
+      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
+        <span>merriment</span><span class="chevron">+</span>
+      </button>
+      <div class="details">
+        <div class="pos">noun</div>
+        <p><strong>Student-friendly definition:</strong> laughter, fun, and happiness</p>
+        <p><strong>In the extract:</strong> The previous day&#x27;s lunch had been full of merriment, but the children are anxious today.</p>
+        <p><strong>Example:</strong> There was a lot of merriment at the celebration.</p>
+        <p><strong>Synonyms:</strong> cheerfulness · jollity</p>
+      </div>
+    </article>
+    
+    <article class="card" data-word="reprieve">
+      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
+        <span>reprieve</span><span class="chevron">+</span>
+      </button>
+      <div class="details">
+        <div class="pos">noun</div>
+        <p><strong>Student-friendly definition:</strong> a short period of relief or extra time before something difficult happens</p>
+        <p><strong>In the extract:</strong> Gabriel is given an additional year of nurturing instead of being immediately released.</p>
+        <p><strong>Example:</strong> The delay gave the family a temporary reprieve.</p>
+        <p><strong>Synonyms:</strong> respite · relief</p>
+      </div>
+    </article>
+    
+    <article class="card" data-word="inadequate">
+      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
+        <span>inadequate</span><span class="chevron">+</span>
+      </button>
+      <div class="details">
+        <div class="pos">adjective</div>
+        <p><strong>Student-friendly definition:</strong> not good enough or not meeting the required standard</p>
+        <p><strong>In the extract:</strong> A newchild who has not developed enough may be labelled Inadequate and released.</p>
+        <p><strong>Example:</strong> The equipment was inadequate for the task.</p>
+        <p><strong>Synonyms:</strong> insufficient · unsuitable</p>
+      </div>
+    </article>
+    
+    <article class="card" data-word="relinquish">
+      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
+        <span>relinquish</span><span class="chevron">+</span>
+      </button>
+      <div class="details">
+        <div class="pos">verb</div>
+        <p><strong>Student-friendly definition:</strong> to give up or let go of something, especially when you do not want to</p>
+        <p><strong>In the extract:</strong> Jonas&#x27;s family must promise to relinquish Gabriel without protest when he is assigned to another family.</p>
+        <p><strong>Example:</strong> She had to relinquish control of the project.</p>
+        <p><strong>Synonyms:</strong> surrender · give up</p>
+      </div>
+    </article>
+    
+    <article class="card" data-word="exuberant">
+      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
+        <span>exuberant</span><span class="chevron">+</span>
+      </button>
+      <div class="details">
+        <div class="pos">adjective</div>
+        <p><strong>Student-friendly definition:</strong> very energetic, enthusiastic, and joyful</p>
+        <p><strong>In the extract:</strong> The applause at the Naming of Caleb rises in an exuberant swell.</p>
+        <p><strong>Example:</strong> The children gave an exuberant welcome to their friend.</p>
+        <p><strong>Synonyms:</strong> enthusiastic · lively</p>
+      </div>
+    </article>
+    
+    <article class="card" data-word="somber">
+      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
+        <span>somber</span><span class="chevron">+</span>
+      </button>
+      <div class="details">
+        <div class="pos">adjective</div>
+        <p><strong>Student-friendly definition:</strong> serious, sad, and without much happiness</p>
+        <p><strong>In the extract:</strong> The Ceremony of Loss is described as a long and somber day as the community gradually stops saying Caleb&#x27;s name.</p>
+        <p><strong>Example:</strong> The mood at the meeting was somber.</p>
+        <p><strong>Synonyms:</strong> gloomy · serious</p>
+      </div>
+    </article>
+    
+    <article class="card" data-word="stunned">
+      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
+        <span>stunned</span><span class="chevron">+</span>
+      </button>
+      <div class="details">
+        <div class="pos">adjective</div>
+        <p><strong>Student-friendly definition:</strong> so shocked or surprised that you do not know how to react</p>
+        <p><strong>In the extract:</strong> Jonas is stunned when the Chief Elder skips his number at the Ceremony of Twelve.</p>
+        <p><strong>Example:</strong> I was stunned when I heard the news.</p>
+        <p><strong>Synonyms:</strong> shocked · astonished</p>
+      </div>
+    </article>
+    
+    <article class="card" data-word="dazed">
+      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
+        <span>dazed</span><span class="chevron">+</span>
+      </button>
+      <div class="details">
+        <div class="pos">adjective</div>
+        <p><strong>Student-friendly definition:</strong> confused and unable to think clearly, often because of shock</p>
+        <p><strong>In the extract:</strong> After being skipped, Jonas sits dazed and struggles to understand what has happened.</p>
+        <p><strong>Example:</strong> He was dazed after the unexpected announcement.</p>
+        <p><strong>Synonyms:</strong> confused · bewildered</p>
+      </div>
+    </article>
+    
+</main>
+
+<p class="footer">Vocabulary explanations are designed for B1/B2 EAL learners and are based on the supplied extracts.</p>
+</div>
+
+<script>
+function toggleCard(button) {
+  const details = button.nextElementSibling;
+  const isOpen = details.classList.toggle('open');
+  button.setAttribute('aria-expanded', isOpen);
+  button.querySelector('.chevron').textContent = isOpen ? '−' : '+';
+}
+document.getElementById('search').addEventListener('input', function() {
+  const q = this.value.toLowerCase().trim();
+  document.querySelectorAll('.card').forEach(card => {
+    card.style.display = card.dataset.word.includes(q) ? '' : 'none';
+  });
+});
+</script>
+</body>
+</html>
