@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unscramble Ukrainian Words</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,"Noto Sans",sans-serif;background:#f4f7fb;color:#1f2937}
+.container{max-width:1050px;margin:auto;padding:28px 18px 45px}
+h1{text-align:center;margin:5px 0 8px;font-size:32px}
+.subtitle{text-align:center;color:#64748b;margin-bottom:25px}
+.tabs{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:20px}
+.tab,button{border:0;border-radius:10px;padding:11px 16px;font-size:15px;cursor:pointer}
+.tab{background:#e2e8f0;color:#334155;font-weight:700}
+.tab.active{background:#2563eb;color:white}
+.card{background:white;border-radius:18px;padding:25px;box-shadow:0 6px 24px rgba(15,23,42,.08)}
+.topline{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.progress{color:#475569;font-weight:700}.score{font-size:17px;font-weight:700}
+.instruction{color:#475569;margin:8px 0 20px}
+.scrambled{min-height:100px;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;border-radius:14px;background:#eff6ff;border:2px dashed #93c5fd;font-size:clamp(25px,5vw,42px);font-weight:800;letter-spacing:1px;margin-bottom:20px;word-break:break-word}
+input{width:100%;padding:14px 15px;border:2px solid #cbd5e1;border-radius:10px;font-size:20px;outline:none}
+input:focus{border-color:#2563eb}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:13px}
+.check{background:#16a34a;color:white}.next{background:#2563eb;color:white}.reset{background:#64748b;color:white}
+button:disabled{opacity:.5;cursor:not-allowed}
+.feedback{min-height:28px;margin-top:14px;font-weight:700}.correct{color:#15803d}.incorrect{color:#b91c1c}.hint{color:#b45309}
+.complete{text-align:center;padding:25px;background:#f0fdf4;border-radius:14px;margin-top:15px}
+.hidden{display:none}.footer{text-align:center;color:#94a3b8;font-size:13px;margin-top:20px}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Unscramble Ukrainian Words</h1>
+<div class="subtitle">Put the letters in the correct order to make a Ukrainian word.</div>
+<div class="tabs" id="tabs"></div>
+<div class="card">
+<div class="topline"><div class="progress" id="progress"></div><div class="score" id="score">Score: 0</div></div>
+<div id="game">
+<div class="instruction">Unscramble the letters:</div>
+<div class="scrambled" id="scrambled"></div>
+<input id="answer" type="text" autocomplete="off" placeholder="Type the Ukrainian word here">
+<div class="actions">
+<button class="check" id="checkBtn">Check</button>
+<button class="next" id="nextBtn" disabled>Next word</button>
+<button class="reset" id="hintBtn">Show first letter</button>
+</div>
+<div class="feedback" id="feedback"></div>
+</div>
+<div class="complete hidden" id="complete">
+<h2>🎉 Set complete!</h2><p id="finalScore"></p>
+<button class="next" id="againBtn">Play this set again</button>
+</div>
+</div>
+<div class="footer">Works offline in your browser — no external libraries required.</div>
+</div>
+<script>
+const sets={
+"Family":["дядько","тітка","дідусь","двоюрідний брат","двоюрідна сестра","сестра","брат","бабуся","племінник","племінниця","прадідусь","прабабуся","мати","мама","батько","тато","дочка","син"],
+"Jobs":["журналіст","офіціант","інженер","актор","вчитель","школяр","пенсіонер","художник","водій","будівельник","юрист","медсестра","співак","лікар","продавець","кухар","письменник","фермер"],
+"Numbers":["один","два","три","чотири","п'ять","шість","сім","вісім","дев'ять","десять","одинадцять","дванадцять","тринадцять","чотирнадцять","п'ятнадцять","шістнадцять","сімнадцять","вісімнадцять","дев'ятнадцять","двадцять"]
+};
+let currentSet="Family",words=[],index=0,score=0,solved=false;
+const $=id=>document.getElementById(id);
+function shuffleLetters(word){
+ const letters=[...word].filter(c=>c!==" "&&c!=="'");
+ let s=[...letters];
+ for(let i=s.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[s[i],s[j]]=[s[j],s[i]]}
+ if(s.join("")===letters.join("")&&s.length>1)[s[0],s[1]]=[s[1],s[0]];
+ return s.join(" ")+(word.includes("'")?"   (apostrophe)":"");
+}
+function normalize(s){return s.toLowerCase().trim().replace(/\s+/g," ")}
+function renderTabs(){
+ $("tabs").innerHTML="";
+ Object.keys(sets).forEach(name=>{
+  const b=document.createElement("button");b.className="tab"+(name===currentSet?" active":"");b.textContent=name;
+  b.onclick=()=>startSet(name);$("tabs").appendChild(b);
+ });
+}
+function startSet(name){
+ currentSet=name;words=[...sets[name]];
+ for(let i=words.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[words[i],words[j]]=[words[j],words[i]]}
+ index=0;score=0;solved=false;$("game").classList.remove("hidden");$("complete").classList.add("hidden");renderTabs();showWord();
+}
+function showWord(){
+ solved=false;const word=words[index];
+ $("progress").textContent=`Word ${index+1} of ${words.length}`;$("score").textContent=`Score: ${score}`;
+ $("scrambled").textContent=shuffleLetters(word);$("answer").value="";$("answer").disabled=false;
+ $("feedback").textContent="";$("feedback").className="feedback";$("checkBtn").disabled=false;$("nextBtn").disabled=true;$("answer").focus();
+}
+function checkAnswer(){
+ if(solved)return;const answer=normalize($("answer").value),correct=normalize(words[index]);
+ if(answer===correct){
+  score++;solved=true;$("feedback").textContent="✓ Correct!";$("feedback").className="feedback correct";
+  $("score").textContent=`Score: ${score}`;$("answer").disabled=true;$("checkBtn").disabled=true;$("nextBtn").disabled=false;
+ }else{$("feedback").textContent="Not quite — try again.";$("feedback").className="feedback incorrect"}
+}
+function nextWord(){
+ if(!solved)return;index++;
+ if(index>=words.length){$("game").classList.add("hidden");$("complete").classList.remove("hidden");$("finalScore").textContent=`You scored ${score} out of ${words.length}.`}
+ else showWord();
+}
+$("checkBtn").onclick=checkAnswer;$("nextBtn").onclick=nextWord;$("againBtn").onclick=()=>startSet(currentSet);
+$("hintBtn").onclick=()=>{if(!solved){const first=[...words[index]].find(c=>c!==" "&&c!=="'");$("feedback").textContent=`Hint: the first letter is “${first}”.`;$("feedback").className="feedback hint"}};
+$("answer").addEventListener("keydown",e=>{if(e.key==="Enter")checkAnswer()});
+startSet("Family");
+</script>
+</body>
+</html>
