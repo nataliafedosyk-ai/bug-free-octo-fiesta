@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ukrainian Vocabulary – Sentence Matching</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#eef7ff,#f8f3ff);color:#26354d}
+.wrap{max-width:1100px;margin:auto;padding:25px 18px 45px}header,.activity{background:#fff;border-radius:20px;padding:24px;box-shadow:0 5px 20px #00000014}
+header{text-align:center;margin-bottom:18px}h1{margin:0 0 8px}.instructions{color:#65738a}
+.sets{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin:16px 0}.setbtn,.action{border:0;border-radius:11px;padding:11px 18px;font-weight:bold;cursor:pointer}.setbtn{background:#dce7f7;color:#29446d}.setbtn.active{background:#345fb4;color:white}
+.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:18px;flex-wrap:wrap}.score{background:#f0f4fa;padding:9px 14px;border-radius:10px;font-weight:bold}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:24px}.title{font-weight:bold;margin-bottom:10px}
+.card,.zone{min-height:76px;border-radius:13px;margin-bottom:12px;padding:14px 16px;line-height:1.45;font-size:16px}
+.zone{border:2px dashed #aabbd3;background:#fbfcff}.zone.over{border-color:#345fb4;background:#edf4ff}.zone.matched{border-style:solid}
+.zone.correct{border-color:#2e8b57;background:#dff5e5}.zone.incorrect{border-color:#c84b4b;background:#fff0f0}
+.uk{border:2px solid #dce5f1;background:#f5f8fc}.en{border:2px solid #efd99f;background:#fff8e8;cursor:grab;user-select:none}.en.used{opacity:.42}
+.placeholder{color:#8390a1;font-style:italic}.buttons{text-align:center;margin-top:20px}.action.check{background:#345fb4;color:#fff}.action.reset{background:#e7ebf2;color:#34445d;margin-left:8px}
+.feedback{text-align:center;min-height:28px;margin-top:14px;font-weight:bold}.tip{text-align:center;color:#7a8798;font-size:13px;margin-top:8px}
+@media(max-width:760px){.columns{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><h1>Match the Sentences</h1><p class="instructions">Перетягніть правильний англійський переклад до відповідного українського речення.</p></header>
+<div class="sets" id="sets"></div>
+<section class="activity">
+<div class="top"><h2 id="title"></h2><div class="score" id="score">Score: —</div></div>
+<div class="columns"><section><div class="title">🇺🇦 Українські речення</div><div id="uk"></div></section>
+<section><div class="title">🇬🇧 English translations</div><div id="en"></div></section></div>
+<div class="buttons"><button class="action check" onclick="check()">Check answers</button><button class="action reset" onclick="render()">Reset</button></div>
+<div class="feedback" id="feedback"></div><div class="tip">Drag each English sentence onto its matching Ukrainian sentence.</div>
+</section></div>
+<script>
+const sets=[
+{title:"Set 1 — My home",pairs:[
+["Моя́ кварти́ра невели́ка.","My apartment is not big."],
+["В моє́му до́мі є со́рок чоти́ри кварти́ри.","There are forty four apartments in my house."],
+["Та́то ста́вить на́шу маши́ну в гара́ж.","My dad keeps our car in the garage."],
+["Бі́ля мого́ буди́нку є гаражі́.","There are garages near my house."]]},
+{title:"Set 2 — Transport and furniture",pairs:[
+["Маши́на - чудо́вий вид тра́нспорту.","A car is a wonderful means of transportaation."],
+["Бага́то маши́н ї́дуть по ву́лицях.","There are many cars in the streets."],
+["В мої́й кварти́ри нові́ та зручні́ ме́блі.","There is new and comfortable furniture in my apartment."]]},
+{title:"Set 3 — My room",pairs:[
+["В мої́й кімна́ті є невели́ка ша́фа для о́дягу.","There is a small wardrobe in my room."],
+["В моє́му до́мі є вели́кі ша́фи для книжо́к.","There are big bookshelves in my house."],
+["Моє́ лі́жко стої́ть бі́ля вікна́.","My bed is near the window."],
+["Які́ лі́жка зручні́?","Which beds are comfortable?"]]},
+{title:"Set 4 — Furniture",pairs:[
+["Мій робо́чий стіл стої́ть бі́ля вікна́.","My desk is near the window."],
+["В моє́му кла́сі зручні́ столи́.","There are comfortable tables in my classroom."],
+["Я кладу́ свій о́дяг на стіле́ць.","I put my clothes on the chair."],
+["Я ба́чу стільці́ навко́ло стола́.","I see chairs around the table."]]},
+{title:"Set 5 — Animals and drawings",pairs:[
+["Дити́на намалюва́ла малю́нок.","A child has drawn a picture."],
+["Ма́ма зберіга́є мої́ дитя́чі малю́нки.","My mum keeps the drawings I made as a child."],
+["Соба́ка - це дома́шня твари́на.","A dog is a domestic animal."],
+["Дома́шні твари́ни - це коти́, соба́ки, сви́ні, ко́ні та бага́то і́нших.","Domestic animals are cats, dogs, pigs, horses and many others."]]}
+];
+let set=0,placed={};
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+function buttons(){document.getElementById("sets").innerHTML=sets.map((x,i)=>`<button class="setbtn ${i==set?"active":""}" onclick="set=${i};render()">Set ${i+1}</button>`).join("")}
+function render(){
+buttons();placed={};let s=sets[set];document.getElementById("title").textContent=s.title;document.getElementById("score").textContent="Score: —";document.getElementById("feedback").textContent="";
+document.getElementById("uk").innerHTML=s.pairs.map((p,i)=>`<div class="zone" data-i="${i}"><span class="placeholder">${p[0]}<br><small>← drop the translation here</small></span></div>`).join("");
+document.querySelectorAll(".zone").forEach(z=>{z.ondragover=e=>{e.preventDefault();z.classList.add("over")};z.ondragleave=()=>z.classList.remove("over");z.ondrop=e=>{e.preventDefault();z.classList.remove("over");place(+e.dataTransfer.getData("id"),+z.dataset.i)}});
+document.getElementById("en").innerHTML=shuffle(s.pairs.map((p,i)=>({p,i}))).map(x=>`<div class="card en" draggable="true" data-id="${x.i}">${x.p[1]}</div>`).join("");
+document.querySelectorAll(".en").forEach(c=>{c.ondragstart=e=>e.dataTransfer.setData("id",c.dataset.id)});
+}
+function place(id,target){
+if(placed[target]!==undefined)return;
+for(let k in placed)if(placed[k]==id){delete placed[k];let old=document.querySelector('.zone[data-i="'+k+'"]');old.className="zone";old.innerHTML='<span class="placeholder">'+sets[set].pairs[k][0]+'<br><small>← drop the translation here</small></span>'}
+placed[target]=id;let z=document.querySelector('.zone[data-i="'+target+'"]');z.classList.add("matched");z.innerHTML="<strong>"+sets[set].pairs[target][0]+"</strong><br>→ "+sets[set].pairs[id][1];
+document.querySelectorAll(".en").forEach(c=>c.classList.toggle("used",Object.values(placed).includes(+c.dataset.id)));
+}
+function check(){
+let total=sets[set].pairs.length,correct=0;document.querySelectorAll(".zone").forEach(z=>{z.classList.remove("correct","incorrect");let i=+z.dataset.i;if(placed[i]===i){correct++;z.classList.add("correct")}else if(placed[i]!==undefined)z.classList.add("incorrect")});
+document.getElementById("score").textContent=`Score: ${correct} / ${total}`;let f=document.getElementById("feedback");f.textContent=correct===total?"Excellent! All the matches are correct! 🎉":`${correct} correct. Check the red matches and try again.`;f.style.color=correct===total?"#2e8b57":"#c84b4b";
+}
+render();
+</script>
+</body>
+</html>
