@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Склади речення — українська</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#eef6ff;color:#263746}
+.wrap{max-width:900px;margin:auto;padding:25px 16px}
+.card{background:white;border-radius:18px;padding:24px;box-shadow:0 5px 20px #0002}
+h1{text-align:center;color:#174a7e}.intro{text-align:center}
+.area{border:2px dashed #91aac0;border-radius:12px;padding:14px;min-height:58px;display:flex;flex-wrap:wrap;gap:8px;background:#f8fbfd}
+.bank{border-style:solid;background:#f3f6f9}
+.word{border:1px solid #b8c8d8;background:white;border-radius:9px;padding:10px 13px;font-size:17px;cursor:grab;touch-action:none}
+.word.correct{background:#e5f6e9;border-color:#399253}
+.word.wrong{background:#fde8e7;border-color:#d9534f}
+button.action{margin-top:18px;margin-right:7px;border:0;border-radius:9px;padding:11px 17px;color:white;font-weight:bold;cursor:pointer}
+.check{background:#26734d}.next{background:#4b6fa8}.reset{background:#6c757d}
+button:disabled{opacity:.45;cursor:not-allowed}
+.label{font-weight:bold;margin:18px 0 8px}
+#result{min-height:24px;margin-top:15px;font-weight:bold}
+.progress{display:flex;justify-content:space-between;font-weight:bold;color:#174a7e}
+.bar{height:9px;background:#e3eaf1;border-radius:8px;margin:12px 0 22px;overflow:hidden}
+.fill{height:100%;background:#4b8ac6;width:6.25%}
+.empty{width:100%;text-align:center;color:#7b8994}
+@media(max-width:600px){.card{padding:17px}.word{font-size:16px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Склади речення</h1>
+<p class="intro">Перетягни слова у правильному порядку, щоб утворити речення.</p>
+<div class="card">
+<div class="progress"><span id="num"></span><span id="scoreTop"></span></div>
+<div class="bar"><div class="fill" id="fill"></div></div>
+<p><strong>Інструкція:</strong> перетягни слова з банку слів у поле відповіді. Потім натисни <strong>«Перевірити»</strong>.</p>
+<div class="label">Слова:</div>
+<div id="bank" class="area bank"></div>
+<div class="label">Твоє речення:</div>
+<div id="answer" class="area"><span id="empty" class="empty">Перетягни сюди слова</span></div>
+<button id="check" class="action check">Перевірити</button>
+<button id="next" class="action next" disabled>Наступне →</button>
+<button id="reset" class="action reset">Почати знову</button>
+<div id="result" aria-live="polite"></div>
+</div>
+</div>
+<script>
+const sentences = ["На стіні висить дзеркало.", "На стіні висить картина.", "На столі лежать зошити.", "На полицях лежать іграшки.", "На стіні висять дзеркала.", "На полиці лежить книга.", "Біля вікна стоїть комп’ютер, а біля ліжка — шафа.", "У кімнаті стоїть великий комп’ютер.", "На полиці лежать маленькі книжки.", "Біля ліжка стоїть коричнева шафа.", "Біля вікна лежить рожевий килим.", "Біля столу стоїть рюкзак.", "Біля вікна стоїть стол та стілець.", "На підлозі лежить мій одяг.", "Зліва біля ліжка лежить мій кіт.", "Справа біля вікна сидить папуга."];
+let current=0,score=0,checked=false,dragged=null;
+const bank=document.getElementById("bank"),answer=document.getElementById("answer");
+const empty=document.getElementById("empty"),result=document.getElementById("result");
+const check=document.getElementById("check"),next=document.getElementById("next");
+const reset=document.getElementById("reset"),num=document.getElementById("num");
+const scoreTop=document.getElementById("scoreTop"),fill=document.getElementById("fill");
+
+function shuffle(a){return [...a].sort(()=>Math.random()-0.5)}
+function words(s){return s.trim().split(/\s+/)}
+function makeWord(text){
+ const b=document.createElement("button"); b.type="button"; b.className="word";
+ b.textContent=text;b.draggable=true;b.dataset.word=text;
+ b.addEventListener("dragstart",()=>dragged=b);
+ b.addEventListener("dragend",()=>dragged=null);
+ b.addEventListener("click",()=>{if(checked)return;
+   if(b.parentElement===bank)answer.appendChild(b);else bank.appendChild(b);updateEmpty();});
+ return b;
+}
+function updateEmpty(){empty.style.display=answer.querySelector(".word")?"none":"block"}
+function setup(zone){
+ zone.addEventListener("dragover",e=>{e.preventDefault()});
+ zone.addEventListener("drop",e=>{
+   e.preventDefault(); if(!dragged||checked)return;
+   const target=e.target.closest(".word");
+   if(target && target.parentElement===zone && target!==dragged) zone.insertBefore(dragged,target);
+   else zone.appendChild(dragged);
+   updateEmpty();
+ });
+}
+function load(){
+ checked=false;result.textContent="";check.disabled=false;next.disabled=true;
+ bank.innerHTML="";answer.innerHTML="";answer.appendChild(empty);
+ const ws=shuffle(words(sentences[current]));
+ ws.forEach(w=>bank.appendChild(makeWord(w)));
+ num.textContent=`Речення ${current+1} з ${sentences.length}`;
+ scoreTop.textContent=`Рахунок: ${score}`;
+ fill.style.width=((current+1)/sentences.length*100)+"%";
+ updateEmpty();
+}
+check.addEventListener("click",()=>{
+ if(checked)return;
+ const got=[...answer.querySelectorAll(".word")].map(x=>x.dataset.word);
+ const right=words(sentences[current]);
+ if(got.length!==right.length){result.textContent="Будь ласка, використай усі слова.";return}
+ let n=0;
+ answer.querySelectorAll(".word").forEach((el,i)=>{
+   el.classList.remove("correct","wrong");
+   if(el.dataset.word===right[i]){el.classList.add("correct");n++}else el.classList.add("wrong");
+ });
+ checked=true;check.disabled=true;next.disabled=false;
+ if(n===right.length){score++;result.textContent="✓ Правильно!";result.style.color="#26734d"}
+ else{result.textContent=`Правильно розташовано ${n} з ${right.length} слів.`;result.style.color="#9a6500"}
+ scoreTop.textContent=`Рахунок: ${score}`;
+});
+next.addEventListener("click",()=>{
+ if(!checked)return;
+ if(current<sentences.length-1){current++;load()}
+ else{result.textContent=`🎉 Вправу завершено! Результат: ${score} з ${sentences.length}.`;next.disabled=true}
+});
+reset.addEventListener("click",()=>{current=0;score=0;load()});
+setup(bank);setup(answer);load();
+</script>
+</body>
+</html>
