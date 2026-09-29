@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Roman Tunnels Vocabulary</title>
+<style>
+:root{--ink:#243247;--muted:#607086;--paper:#fff;--bg:#eef3f7;--accent:#7057d9;--accent2:#149b94;--gold:#e8ae3d}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:linear-gradient(135deg,#eef3f7,#faf6ef);min-height:100vh}
+header{padding:34px 20px 27px;text-align:center;background:linear-gradient(135deg,#26364b,#52647d);color:white}
+header h1{margin:0 0 8px;font-size:34px}
+header p{margin:0;opacity:.92}
+.wrap{max-width:1080px;margin:25px auto;padding:0 18px}
+.top{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:18px}
+button{border:0;border-radius:12px;padding:11px 16px;font-weight:700;cursor:pointer;background:white;color:var(--ink);box-shadow:0 2px 8px #0001}
+button.primary{background:var(--accent);color:white}
+.progress{max-width:700px;margin:0 auto 12px;background:#dbe3eb;border-radius:99px;height:12px;overflow:hidden}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:.3s}
+.stats{text-align:center;color:var(--muted);margin-bottom:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+.card{background:var(--paper);border-radius:17px;box-shadow:0 4px 16px #24324718;overflow:hidden;border:1px solid #e5eaf0}
+.term{width:100%;background:none;box-shadow:none;border-radius:0;text-align:left;padding:18px;display:flex;align-items:center;gap:12px;font-size:17px}
+.num{min-width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#eeeaff;color:var(--accent);font-size:13px}
+.arrow{margin-left:auto;color:var(--muted);font-size:21px;transition:.2s}
+.details{display:none;border-top:1px solid #e7ebef;padding:16px 18px 20px}
+.card.open .details{display:block}.card.open .arrow{transform:rotate(180deg)}
+.label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:800;margin-top:13px}
+.label:first-child{margin-top:0}
+.box{margin-top:5px;line-height:1.5}.termline{font-weight:800;font-size:19px}
+.practice{margin-top:15px;padding:14px;background:#f6f8fb;border-radius:12px}
+.practice input{width:100%;padding:10px;border:1px solid #ccd5df;border-radius:9px;font-size:15px;margin-top:8px}
+.feedback{font-size:13px;margin-top:7px;min-height:18px}
+.flash{background:#fff7df;border-left:4px solid var(--gold);padding:13px;border-radius:8px;margin-top:20px;line-height:1.45}
+@media(max-width:600px){header h1{font-size:28px}}
+</style>
+</head>
+<body>
+<header>
+<h1>🏛️ Roman Tunnels Vocabulary</h1>
+<p>Click each word or phrase to open the study card.</p>
+</header>
+<div class="wrap">
+<div class="top">
+<button class="primary" onclick="openAll()">Open all</button>
+<button onclick="closeAll()">Close all</button>
+<button onclick="shuffleCards()">Shuffle</button>
+<button onclick="resetPractice()">Reset practice</button>
+</div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div class="stats">Cards opened: <b id="opened">0</b> / 16 &nbsp; | &nbsp; Practice score: <b id="score">0 / 0</b></div>
+<div class="grid" id="grid"></div>
+<div class="flash"><b>Study tip:</b> Read the definition, context, example and synonyms. Then explain the word or phrase in your own words.</div>
+</div>
+<script>
+const vocab = [{"term": "reliable supply", "definition": "A steady amount of something people can count on.", "context": "Persian tunnels brought a reliable supply of water to settlements in dry areas.", "example": "The village needs a reliable supply of clean water.", "synonyms": "steady source · dependable amount", "number": 1}, {"term": "tunnel construction", "definition": "The process of planning and building a tunnel.", "context": "The qanat method was one way of constructing tunnels using vertical shafts.", "example": "Tunnel construction can take many years.", "synonyms": "tunnel building · tunnel making", "number": 2}, {"term": "to keep to the route", "definition": "To stay on the planned path or direction.", "context": "Posts were placed in a straight line to help the tunnel keep to its route.", "example": "The hikers used a map to keep to the route.", "synonyms": "stay on course · follow the path", "number": 3}, {"term": "provide ventilation", "definition": "To let fresh air move into and through a space.", "context": "The vertical shafts provided ventilation while workers dug the tunnel.", "example": "An open window helps provide ventilation in a room.", "synonyms": "let in fresh air · air out", "number": 4}, {"term": "equipped with handholds and footholds", "definition": "Built with grips for hands and places to step with your feet.", "context": "Roman shafts had handholds and footholds to help people climb in and out.", "example": "The climbing wall is equipped with handholds and footholds.", "synonyms": "fitted with grips and steps · built for climbing", "number": 5}, {"term": "a plumb line", "definition": "A line with a weight that shows whether something is straight up and down.", "context": "Romans used a plumb line to check the shafts’ vertical position and help measure the tunnel’s slope.", "example": "The builder used a plumb line to check the wall.", "synonyms": "weighted line · vertical-checking line", "number": 6}, {"term": "to determine the slope", "definition": "To find out how steep or gently slanted something is.", "context": "Plumb lines helped Romans determine the slope of a tunnel.", "example": "We measured the hill to determine the slope of the path.", "synonyms": "measure the incline · find the slant", "number": 7}, {"term": "counter-excavation method", "definition": "A way to dig a tunnel by starting at both ends and meeting in the middle.", "context": "This method was used to cut through high mountains when the qanat method was not practical.", "example": "The workers used the counter-excavation method to dig toward each other from opposite sides.", "synonyms": "two-ended digging · excavation from both ends", "number": 8}, {"term": "to deviate from the set path", "definition": "To move away from the planned route.", "context": "Builders adjusted the tunnel’s direction if it deviated from its set path.", "example": "The trail began to deviate from the set path.", "synonyms": "stray from the route · go off course", "number": 9}, {"term": "penetrate", "definition": "To enter or pass through something.", "context": "Builders looked at the light that penetrated through the tunnel mouth to check the tunnel’s direction.", "example": "Sunlight penetrated the dark room through a small window.", "synonyms": "pass through · enter", "number": 10}, {"term": "a lateral link", "definition": "A side passage connecting two tunnels or corridors.", "context": "A lateral link was built between two corridors to correct the builders’ mistake.", "example": "A side corridor formed a lateral link between the passageways.", "synonyms": "connecting passage · side connection", "number": 11}, {"term": "initial error", "definition": "The first mistake in a process.", "context": "The lateral link corrected the initial error made when the two building teams missed each other.", "example": "The group fixed its initial error before finishing the project.", "synonyms": "first mistake · original error", "number": 12}, {"term": "to encounter obstacles", "definition": "To come across problems or things that block progress.", "context": "Romans dug road tunnels when they encountered obstacles such as hills or mountains.", "example": "The team encountered obstacles while building the bridge.", "synonyms": "face difficulties · come across barriers", "number": 13}, {"term": "a mineral vein", "definition": "A narrow area of rock containing a useful mineral.", "context": "Miners found a mineral vein and dug tunnels to follow it.", "example": "The miners found a mineral vein in the rock.", "synonyms": "mineral deposit · ore seam", "number": 14}, {"term": "fire quenching technique", "definition": "A method of cracking rock by heating it and then cooling it quickly with cold water.", "context": "Romans heated hard rock with fire and suddenly cooled it with cold water so it would crack.", "example": "Workers used the fire quenching technique to crack hard rock.", "synonyms": "heat-and-cool method · thermal rock-cracking", "number": 15}, {"term": "to divert the floodwater", "definition": "To change the direction of floodwater so it flows somewhere else.", "context": "The Cevlik tunnel was built to divert floodwater threatening a harbor.", "example": "The channel was built to divert the floodwater away from homes.", "synonyms": "redirect the floodwater · channel the water elsewhere", "number": 16}];
+let answered=0,correct=0;
+const grid=document.getElementById('grid');
+
+function esc(s){
+ return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+}
+function render(){
+ grid.innerHTML='';
+ vocab.forEach((v,i)=>{
+  const card=document.createElement('article');
+  card.className='card';
+  card.dataset.i=i;
+  card.innerHTML=`
+   <button class="term" onclick="toggleCard(this.parentElement)">
+    <span class="num">${v.number}</span><span>${esc(v.term)}</span><span class="arrow">⌄</span>
+   </button>
+   <div class="details">
+    <div class="label">Student-friendly definition</div>
+    <div class="box">${esc(v.definition)}</div>
+    <div class="label">In the extract</div>
+    <div class="box">${esc(v.context)}</div>
+    <div class="label">Example</div>
+    <div class="box"><i>${esc(v.example)}</i></div>
+    <div class="label">Synonyms</div>
+    <div class="box">${esc(v.synonyms)}</div>
+    <div class="practice">
+     <b>Quick practice</b>
+     <div style="margin-top:7px">Explain <b>${esc(v.term)}</b> in your own words.</div>
+     <input placeholder="Type your explanation and press Enter"
+       onkeydown="if(event.key==='Enter')checkAnswer(this,${i})">
+     <div class="feedback" id="fb${i}"></div>
+    </div>
+   </div>`;
+  grid.appendChild(card);
+ });
+}
+function toggleCard(card){
+ const was=card.classList.contains('open');
+ card.classList.toggle('open');
+ if(!was){card.dataset.opened='1';updateOpened();}
+}
+function updateOpened(){
+ const n=document.querySelectorAll('.card[data-opened="1"]').length;
+ document.getElementById('opened').textContent=n;
+ document.getElementById('bar').style.width=(n/16*100)+'%';
+}
+function openAll(){
+ document.querySelectorAll('.card').forEach(c=>{c.classList.add('open');c.dataset.opened='1'});
+ updateOpened();
+}
+function closeAll(){document.querySelectorAll('.card').forEach(c=>c.classList.remove('open'))}
+function shuffleCards(){[...grid.children].sort(()=>Math.random()-.5).forEach(c=>grid.appendChild(c))}
+function checkAnswer(input,i){
+ if(!input.value.trim() || input.dataset.done)return;
+ const key=vocab[i].definition.toLowerCase();
+ const answer=input.value.toLowerCase();
+ const important=key.split(/\W+/).filter(w=>w.length>4);
+ const hits=important.filter(w=>answer.includes(w)).length;
+ const fb=document.getElementById('fb'+i);
+ input.dataset.done='1';
+ answered++;
+ if(hits>=2 || (important.length<2 && hits>=1)){
+   correct++;
+   fb.textContent='✓ Good! Your explanation includes the key idea.';
+   fb.style.color='#16805f';
+ }else{
+   fb.textContent='→ Check the definition above. You can try the explanation again.';
+   fb.style.color='#a35a00';
+ }
+ document.getElementById('score').textContent=correct+' / '+answered;
+}
+function resetPractice(){
+ answered=0;correct=0;
+ document.getElementById('score').textContent='0 / 0';
+ document.querySelectorAll('input').forEach(x=>{x.value='';delete x.dataset.done});
+ document.querySelectorAll('.feedback').forEach(x=>x.textContent='');
+}
+render();
+</script>
+</body>
+</html>
