@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Події твору та літературознавчі терміни</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f1e8;color:#263238}
+header{background:#263b5a;color:white;padding:28px 20px;text-align:center}header h1{margin:0 0 8px;font-size:28px}header p{margin:0;opacity:.9}
+main{max-width:1050px;margin:28px auto;padding:0 18px 40px}.section{background:white;border-radius:16px;padding:24px;margin-bottom:24px;box-shadow:0 5px 18px #00000014}
+h2{color:#263b5a;margin-top:0}.instructions{background:#eef3f8;padding:12px 15px;border-radius:10px}
+#events,#terms{display:flex;flex-direction:column;gap:10px;margin-top:18px}.item{background:#faf8f2;border:2px solid #d8d2c4;border-radius:12px;padding:14px 16px;cursor:grab}.item:hover{border-color:#8197b3}.item.dragging{opacity:.45}
+.num{display:inline-flex;width:30px;height:30px;border-radius:50%;align-items:center;justify-content:center;background:#263b5a;color:white;font-weight:bold;margin-right:10px;vertical-align:middle}
+button{border:0;border-radius:9px;padding:10px 16px;margin:14px 7px 0 0;background:#263b5a;color:white;font-size:15px;cursor:pointer}button.secondary{background:#8197b3}
+.result{margin-top:15px;padding:12px 15px;border-radius:10px;font-weight:bold;display:none}.correct{background:#e4f3e6;color:#276738}.wrong{background:#f9e5e5;color:#9a2f2f}
+.match-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center;margin-bottom:10px}select{width:100%;padding:11px;border-radius:9px;border:2px solid #d8d2c4;background:white;font-size:15px}
+@media(max-width:700px){.match-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><h1>📚 Події твору та літературознавчі терміни</h1><p>Дві інтерактивні вправи</p></header>
+<main>
+<section class="section">
+<h2>Завдання 1. Встанови правильну послідовність подій</h2>
+<div class="instructions">Перетягни події мишкою, щоб розташувати їх у правильному порядку. Потім натисни <b>Перевірити</b>.</div>
+<div id="events"></div>
+<button onclick="checkOrder()">Перевірити</button><button class="secondary" onclick="shuffleEvents()">Перемішати ще раз</button><button class="secondary" onclick="resetEvents()">Скинути</button>
+<div id="orderResult" class="result"></div>
+</section>
+<section class="section">
+<h2>Завдання 2. Поєднай термін із визначенням</h2>
+<div class="instructions">Обери правильне визначення для кожного терміна. Визначення подані у випадковому порядку.</div>
+<div id="terms"></div>
+<button onclick="checkMatches()">Перевірити</button><button class="secondary" onclick="resetMatches()">Скинути</button>
+<div id="matchResult" class="result"></div>
+</section>
+</main>
+<script>
+const events=[
+["Замість моря Святослава поїхала на розкопки з татом."],
+["Святослава дізнається, що “Чорні археологи” пограбували курган та багато коштовностей вкрадено."],
+["Вона знайомиться з Сашком, сином місцевого вчителя історії."],
+["Разом із Сашком вони знаходять портал у минуле на городі старого Мироненка."],
+["Читачі дізнаються історію того, як загинув Рагнар, батько Торвальда. Торвальд з’являється у книжці у віці 12 років."],
+["Святослава та Сашко опиняються у минулому та зустрічають коваля Людоту, його сім’ю та інших."],
+["До коваля приїжджає Ейрік зі своїм племінником, Торвальдом, якому на цей момент вже вісімнадцять років."],
+["Святослава та Сашко вирушають до Києва разом з Ейріком та Торвальдом."]
+].map((x,i)=>({id:i+1,text:x[0]}));
+
+const terms=[
+["Епітет","образне означення, що підкреслює характерну ознаку предмета чи явища."],
+["Метафора","образне перенесення назви або ознаки з одного явища на інше через подібність, без слів «як», «ніби»."],
+["Персоніфікація","різновид метафори, у якому неживим предметам, явищам природи чи поняттям надаються людські риси або дії."],
+["Зоровий образ","опис або художня деталь, яку можна уявити зором."],
+["Слуховий образ","слова, що допомагають уявити звук."],
+["Хронотоп","поєднання часу й місця, у яких відбуваються події твору."],
+["Перспектива оповіді","те, з чийого погляду читач дізнається про події."],
+["Характеризація","спосіб, у який автор розкриває характер персонажа через його зовнішність, слова, думки, учинки та реакції інших персонажів."]
+];
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+
+function renderEvents(list=shuffle(events)){
+ const box=document.getElementById("events");box.innerHTML="";
+ list.forEach(e=>{const d=document.createElement("div");d.className="item";d.draggable=true;d.dataset.id=e.id;d.innerHTML='<span class="num"></span>'+e.text;
+ d.addEventListener("dragstart",()=>d.classList.add("dragging"));d.addEventListener("dragend",()=>{d.classList.remove("dragging");updateNumbers()});box.appendChild(d)});updateNumbers();
+}
+function updateNumbers(){[...document.querySelectorAll("#events .item")].forEach((x,i)=>x.querySelector(".num").textContent=i+1)}
+document.getElementById("events").addEventListener("dragover",e=>{
+ e.preventDefault();const box=document.getElementById("events"),drag=document.querySelector(".dragging");if(!drag)return;
+ const after=[...box.querySelectorAll(".item:not(.dragging)")].reduce((c,ch)=>{const r=ch.getBoundingClientRect(),o=e.clientY-r.top-r.height/2;return o<0&&o>c.o?{o,el:ch}:c},{o:-Infinity,el:null}).el;
+ after?box.insertBefore(drag,after):box.appendChild(drag);updateNumbers();
+});
+function checkOrder(){const ids=[...document.querySelectorAll("#events .item")].map(x=>+x.dataset.id),ok=ids.every((v,i)=>v===i+1),r=document.getElementById("orderResult");r.style.display="block";r.className="result "+(ok?"correct":"wrong");r.textContent=ok?"✅ Чудово! Усі події розташовано правильно.":"❌ Порядок ще не зовсім правильний. Спробуй ще раз."}
+function shuffleEvents(){renderEvents();document.getElementById("orderResult").style.display="none"}function resetEvents(){renderEvents(events);document.getElementById("orderResult").style.display="none"}
+
+function renderMatches(){
+ const box=document.getElementById("terms");box.innerHTML="";const defs=shuffle(terms);
+ terms.forEach((t,i)=>{const row=document.createElement("div");row.className="match-row";row.innerHTML="<b>"+t[0]+"</b>";
+ const s=document.createElement("select");s.dataset.correct=i;s.innerHTML='<option value="">— обери визначення —</option>';
+ defs.forEach(d=>{const o=document.createElement("option");o.value=terms.indexOf(d);o.textContent=d[1];s.appendChild(o)});row.appendChild(s);box.appendChild(row)});
+}
+function checkMatches(){let score=0;document.querySelectorAll("#terms select").forEach(s=>{if(s.value!==""&&+s.value===+s.dataset.correct)score++});const r=document.getElementById("matchResult");r.style.display="block";r.className="result "+(score===terms.length?"correct":"wrong");r.textContent="Результат: "+score+" / "+terms.length+(score===terms.length?" — 🎉 Усе правильно!":" — Перевір ще раз.")}
+function resetMatches(){renderMatches();document.getElementById("matchResult").style.display="none"}
+renderEvents();renderMatches();
+</script>
+</body></html>
