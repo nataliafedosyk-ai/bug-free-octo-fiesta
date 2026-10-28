@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Українські речення: типи та будова</title>
+<style>
+:root{--ink:#20304a;--muted:#5c6b80;--paper:#f7f8fc;--card:#fff;--line:#d5ddea;--accent:#315fbb;--good:#167647;--bad:#a52b35}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+header{padding:28px 18px 22px;text-align:center;color:#fff;background:linear-gradient(120deg,#234b88,#7352a3)}
+header h1{margin:0 0 8px;font-size:clamp(1.5rem,4vw,2.2rem)}header p{margin:0 auto;max-width:850px}
+main{max-width:1180px;margin:22px auto 42px;padding:0 14px}
+section{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,25px);margin:0 0 24px;box-shadow:0 5px 18px rgba(25,45,75,.06)}
+h2{margin:0 0 6px;font-size:1.35rem}.intro{margin:0 0 16px;color:var(--muted)}
+.categories{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.category{border:2px dashed var(--line);border-radius:14px;min-height:210px;padding:12px;transition:background .15s,border-color .15s}
+.category:nth-child(1){background:#f3f7ff}.category:nth-child(2){background:#f1fbf5}.category:nth-child(3){background:#faf5ff}.category h3{font-size:1rem;line-height:1.35;margin:0 0 5px}.category .explain{color:var(--muted);font-size:.88rem;margin:0 0 10px}.category.over{border-color:var(--accent);background:#edf3ff}
+.tray{border:1px solid var(--line);border-radius:14px;padding:12px;margin:16px 0;background:#f9fafc}.tray h3{margin:0 0 10px;font-size:1rem}
+.tiles{display:flex;flex-wrap:wrap;gap:9px;align-content:flex-start;min-height:56px}
+.tile{border:1px solid #c5d2e4;border-radius:10px;padding:10px 12px;background:#fff;cursor:grab;text-align:left;color:var(--ink);box-shadow:0 2px 5px rgba(25,45,75,.06);font:inherit;line-height:1.4;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.tile:hover{border-color:var(--accent)}.tile:focus-visible,button:focus-visible{outline:3px solid #f0b429;outline-offset:2px}.tile.selected{border:2px solid var(--accent);background:#eaf1ff}.tile.correct{border-color:var(--good);background:#e5f7ed}.tile.incorrect{border-color:var(--bad);background:#fff0f0}.category .tiles{min-height:90px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}button.action{border:0;border-radius:10px;padding:11px 16px;cursor:pointer;font:inherit;font-weight:650;background:var(--accent);color:#fff}button.secondary{background:#e8edf5;color:var(--ink)}
+.feedback{min-height:28px;margin-top:10px;font-weight:650}.task2-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.match-column{border-radius:14px;padding:12px;background:#f8f9fc;border:1px solid var(--line)}.match-column h3{margin:0 0 10px;font-size:1rem}.match-list{display:flex;flex-direction:column;gap:9px}
+.match-item{width:100%;text-align:left;border:1px solid #c5d2e4;border-radius:10px;padding:12px;background:#fff;color:var(--ink);cursor:pointer;font:inherit}.match-item.selected{outline:3px solid #8aabf5;background:#eaf1ff}.match-item.matched{border-color:var(--good);background:#e5f7ed}.match-item.wrong{border-color:var(--bad);background:#fff0f0}.match-item:disabled{cursor:default;opacity:1}
+footer{text-align:center;padding:10px 18px 30px;color:var(--muted);font-size:.88rem}
+@media(max-width:760px){.categories{grid-template-columns:1fr}.category{min-height:120px}.task2-columns{grid-template-columns:1fr}.tile{cursor:pointer}}
+</style>
+</head>
+<body>
+<header><h1>Українська мова: типи речень</h1><p>Перетягни речення до відповідної групи. На планшеті натисни речення, а потім потрібну групу.</p></header>
+<main>
+<section id="task1">
+<h2>Завдання 1. Розподіли речення за групами</h2>
+<p class="intro">Усі речення перемішані. Розподіли їх у три колонки. На планшеті: натисни речення, потім назву групи.</p>
+<div class="tray"><h3>Речення для сортування</h3><div class="tiles" id="sentence-bank" aria-label="Речення для сортування"></div></div>
+<div class="categories">
+<div class="category" data-category="simple" tabindex="0"><h3>1. Прості речення</h3><p class="explain">Одна граматична основа</p><div class="tiles"></div></div>
+<div class="category" data-category="compound" tabindex="0"><h3>2. Складносурядні речення</h3><p class="explain">Дві граматичні основи</p><div class="tiles"></div></div>
+<div class="category" data-category="complex" tabindex="0"><h3>3. Складнопідрядні речення</h3><p class="explain">Головна й підрядна частини</p><div class="tiles"></div></div>
+</div>
+<div class="actions"><button class="action" id="check1">Перевірити</button><button class="action secondary" id="reset1">Почати спочатку</button><button class="action secondary" id="shuffle1">Перемішати речення</button></div>
+<div class="feedback" id="feedback1" role="status" aria-live="polite"></div>
+</section>
+<section id="task2">
+<h2>Завдання 2. Поєднай частини складнопідрядних речень</h2>
+<p class="intro">Натисни на початок речення зліва, а потім на відповідне закінчення справа. Частини поділено за комою. Пари перемішані.</p>
+<div class="task2-columns"><div class="match-column"><h3>Початок речення</h3><div class="match-list" id="beginnings"></div></div><div class="match-column"><h3>Закінчення речення</h3><div class="match-list" id="endings"></div></div></div>
+<div class="actions"><button class="action" id="check2">Перевірити відповіді</button><button class="action secondary" id="reset2">Почати спочатку</button></div>
+<div class="feedback" id="feedback2" role="status" aria-live="polite"></div>
+</section>
+</main><footer>На планшеті можна натиснути на речення, а потім на групу або відповідну частину.</footer>
+<script>
+(()=>{
+const task1Data=[
+{id:'s1',text:'Ніч спускалася повільно.',cat:'simple'},
+{id:'s2',text:'Ніч пахла польовими травами, димом багаття і ще чимось солодкувато-терпким.',cat:'simple'},
+{id:'s3',text:'Сашко зупинився.',cat:'simple'},
+{id:'c1',text:'Ми наблизилися до дверей, і я тихенько постукала.',cat:'compound'},
+{id:'c2',text:'На столі блимав каганець, і в його непевному світлі чаклунова оселя справді виглядала як декорація для фільму жахів.',cat:'compound'},
+{id:'c3',text:'Місяць нарешті пробився крізь хмари, але ледь-ледь, вода майже не відблискувала.',cat:'compound'},
+{id:'p1',text:'Дочекавшись, поки задрімає Добрева, ми тихенько вибралися з хати.',cat:'complex'},
+{id:'p2',text:'Обережно ми спустилися схилом і рушили польовою стежкою, що вела до хатини Тойво.',cat:'complex'},
+{id:'p3',text:'Якщо вирушите просто зараз, до завтрашнього вечора дійдете.',cat:'complex'}];
+const task2Data=[
+{id:'m1',beginning:'Ми поспішили до річки,',ending:'тому що Тойво порадив іти її берегом.'},
+{id:'m2',beginning:'Сашко розпалив багаття так,',ending:'як навчився під час походів.'},
+{id:'m3',beginning:'Коли місяць визирнув з-за хмар,',ending:'мандрівники вже йшли берегом річки.'},
+{id:'m4',beginning:'Друзі зібрали сухе гілля,',ending:'щоб розпалити вогонь і зігрітися.'},
+{id:'m5',beginning:'Якщо мандрівники йтимуть уздовж річки,',ending:'то побачать одиноку тополю.'},
+{id:'m6',beginning:'Хоча від води тягнуло холодом,',ending:'друзі зупинилися біля річки на ніч.'}];
+const $=id=>document.getElementById(id);
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+let selectedTile=null;
+function makeTile(item){
+const b=document.createElement('button');b.type='button';b.className='tile';b.textContent=item.text;b.draggable=true;b.dataset.id=item.id;b.dataset.answer=item.cat;
+b.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain',item.id);e.dataTransfer.effectAllowed='move';selectedTile=b;});
+b.addEventListener('click',()=>{if(selectedTile===b){b.classList.remove('selected');selectedTile=null;return;}document.querySelectorAll('#task1 .tile.selected').forEach(x=>x.classList.remove('selected'));selectedTile=b;b.classList.add('selected');$('feedback1').textContent='Тепер натисни на потрібну групу або перетягни речення.';});
+return b;
+}
+function initTask1(){
+selectedTile=null;const bank=$('sentence-bank');bank.innerHTML='';document.querySelectorAll('#task1 .category .tiles').forEach(x=>x.innerHTML='');
+shuffle(task1Data).forEach(item=>bank.appendChild(makeTile(item)));$('feedback1').textContent='';
+document.querySelectorAll('#task1 .category').forEach(zone=>{
+zone.ondragover=e=>{e.preventDefault();zone.classList.add('over');};zone.ondragleave=()=>zone.classList.remove('over');
+zone.ondrop=e=>{e.preventDefault();zone.classList.remove('over');const id=e.dataTransfer.getData('text/plain');const tile=document.querySelector('#task1 .tile[data-id="'+id+'"]');if(tile)placeTile(tile,zone);};
+zone.onclick=e=>{if(e.target.closest('.tile'))return;if(selectedTile)placeTile(selectedTile,zone);};
+zone.onkeydown=e=>{if((e.key==='Enter'||e.key===' ')&&selectedTile){e.preventDefault();placeTile(selectedTile,zone);}};
+});
+bank.ondragover=e=>e.preventDefault();bank.ondrop=e=>{e.preventDefault();const id=e.dataTransfer.getData('text/plain');const tile=document.querySelector('#task1 .tile[data-id="'+id+'"]');if(tile)placeTile(tile,null);};
+}
+function placeTile(tile,zone){tile.classList.remove('selected','correct','incorrect');selectedTile=null;if(zone)zone.querySelector('.tiles').appendChild(tile);else $('sentence-bank').appendChild(tile);$('feedback1').textContent='';}
+$('check1').addEventListener('click',()=>{let placed=0,correct=0;task1Data.forEach(item=>{const tile=document.querySelector('#task1 .tile[data-id="'+item.id+'"]');const zone=tile.closest('.category');if(zone){placed++;if(zone.dataset.category===item.cat){correct++;tile.classList.add('correct');}else tile.classList.add('incorrect');}});$('feedback1').textContent=placed<9?`Розподілено: ${placed} із 9. Правильно: ${correct}. Розмісти решту речень.`:`Правильно: ${correct} із 9 речень. Зеленим позначено правильні відповіді.`;});
+$('reset1').addEventListener('click',initTask1);$('shuffle1').addEventListener('click',initTask1);
+let selectedBeginning=null,selectedEnding=null,matches={};
+function initTask2(){selectedBeginning=null;selectedEnding=null;matches={};$('beginnings').innerHTML='';$('endings').innerHTML='';$('feedback2').textContent='';
+shuffle(task2Data).forEach(item=>{const b=document.createElement('button');b.type='button';b.className='match-item';b.textContent=item.beginning;b.dataset.id=item.id;b.addEventListener('click',()=>selectBeginning(b));$('beginnings').appendChild(b);});
+shuffle(task2Data).forEach(item=>{const b=document.createElement('button');b.type='button';b.className='match-item';b.textContent=item.ending;b.dataset.id=item.id;b.addEventListener('click',()=>selectEnding(b));$('endings').appendChild(b);});}
+function selectBeginning(b){if(b.disabled)return;document.querySelectorAll('#beginnings .selected').forEach(x=>x.classList.remove('selected'));selectedBeginning=b;b.classList.add('selected');$('feedback2').textContent='Тепер вибери відповідне закінчення справа.';if(selectedEnding)tryMatch();}
+function selectEnding(b){if(b.disabled)return;document.querySelectorAll('#endings .selected').forEach(x=>x.classList.remove('selected'));selectedEnding=b;b.classList.add('selected');$('feedback2').textContent='Тепер вибери початок зліва, якщо ще не вибрав/вибрала.';if(selectedBeginning)tryMatch();}
+function tryMatch(){const bid=selectedBeginning.dataset.id,eid=selectedEnding.dataset.id;if(bid===eid){matches[bid]=true;selectedBeginning.classList.remove('selected');selectedEnding.classList.remove('selected');selectedBeginning.classList.add('matched');selectedEnding.classList.add('matched');selectedBeginning.disabled=true;selectedEnding.disabled=true;selectedBeginning=null;selectedEnding=null;$('feedback2').textContent='Правильно! Частини поєднано.';}else{const b=selectedEnding;b.classList.add('wrong');$('feedback2').textContent='Ці частини не утворюють потрібне речення. Спробуй ще раз.';setTimeout(()=>b.classList.remove('wrong'),500);selectedEnding.classList.remove('selected');selectedEnding=null;}}
+$('check2').addEventListener('click',()=>{const count=Object.keys(matches).length;$('feedback2').textContent=`Знайдено правильних пар: ${count} із 6.`+(count===6?' Усі речення складено правильно!':' Продовжуй поєднувати частини.');});
+$('reset2').addEventListener('click',initTask2);initTask1();initTask2();
+})();
+</script>
+</body>
+</html>
