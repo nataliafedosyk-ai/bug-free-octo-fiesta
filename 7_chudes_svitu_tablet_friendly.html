@@ -1,0 +1,54 @@
+<!doctype html><html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>7 чудес світу — впорядкуй речення</title>
+<style>
+:root{--ink:#253449;--muted:#596b7c;--paper:#fffdf8;--bg:#f2efe8;--blue:#315d70;--line:#d6dce0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{padding:25px 16px;text-align:center;background:linear-gradient(120deg,#dcebe7,#f6e8d3)}h1{font-size:clamp(1.6rem,4vw,2.3rem);margin:0 0 7px}header p{max-width:800px;margin:auto;color:#435468}
+main{max-width:1000px;margin:22px auto;padding:0 13px 40px}.card{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,3vw,23px);margin:0 0 22px;box-shadow:0 4px 16px #2233440c}
+.top{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:center;margin-bottom:14px}.top img{width:100%;height:220px;object-fit:cover;border-radius:12px;background:#e5e1d9}.top h2{font-size:clamp(1.25rem,3vw,1.7rem);margin:0 0 6px}.top p{margin:0;color:var(--muted)}
+.instruction{font-weight:700;margin:12px 0 8px}.list{display:flex;flex-direction:column;gap:9px}.item{display:flex;align-items:center;gap:9px;padding:10px 11px;background:white;border:2px solid #d8dfe2;border-radius:12px;touch-action:pan-y;user-select:none}.item.dragging{opacity:.35}.item.over{border-color:var(--blue);background:#eef6f6}.grip{color:#708090;font-size:22px}.words{flex:1}.moves{display:flex;gap:5px}.moves button,.actions button{border:0;border-radius:9px;min-height:44px;min-width:44px;padding:8px 12px;font:inherit;font-weight:700;cursor:pointer}.moves button{background:#e7eef0;color:var(--ink);font-size:20px}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:13px}.actions button{background:var(--blue);color:white}.actions .alt{background:#e7eef0;color:var(--ink)}.feedback{min-height:28px;margin:10px 0 0;font-weight:700}.good{color:#237343}.bad{color:#925514}
+button:focus-visible{outline:3px solid #e0a84d;outline-offset:2px}
+@media(max-width:650px){.top{grid-template-columns:1fr;gap:10px}.top img{height:190px}.item{align-items:flex-start;font-size:16px}.moves{flex-direction:column}.actions button{flex:1 1 130px;min-height:48px}}
+</style></head><body><header><h1>7 чудес світу</h1><p>Дивіться відео та розташовуйте речення в кожному блоці в тому порядку, у якому ви чуєте їх. Перетягуйте речення або користуйтеся стрілками — завдання можна виконувати на планшеті.</p></header><main id="app"></main>
+<script>
+const wonders=[["Колізе́й", "https://commons.wikimedia.org/wiki/Special:FilePath/Colosseum_in_Rome,_Italy_-_April_2007.jpg", "Колізей у Римі", ["Колізе́й – це ду́же вели́кий амфітеа́тр у Ри́мі.", "Рим розташо́ваний у це́нтрі Іта́лії.", "Колізе́й теж ду́же стари́й, йому́ вже 2000 ро́ків.", "Колізе́й - це си́мвол Старода́внього Ри́му.", "Ма́йже 50 000 люде́й могли́ диви́тися бої́ гладіа́торів тут.", "Ним користува́лися ма́йже 500 ро́ків.", "За́раз тут бага́то тури́стів з усього́ сві́ту."]], ["Вели́ка кита́йська стіна́", "https://commons.wikimedia.org/wiki/Special:FilePath/Great_Wall_of_China_July_2006.JPG", "Велика китайська стіна", ["Вели́ка кита́йська стіна́ – це стіна́ на пі́вночі Кита́ю.", "Це найбі́льша у сві́ті спору́да ство́рена люди́ною.", "Вона́ ма́є ма́йже 9 ти́сяч кіломе́трів.", "Стіна́ ду́же стара́.", "Їй 2 500 ро́ків.", "Тут ду́же бага́то тури́стів ці́лий рік.", "Це ду́же ціка́ве мі́сце."]], ["Пѐтра", "https://commons.wikimedia.org/wiki/Special:FilePath/Petra_Jordan_BW_21.JPG", "Стародавнє місто Петра", ["Пѐтра – це старе́ мі́сто в Йорда́нії.", "Його́ ву́лиці – у вели́кому каньйо́ні, а старі́ монастирі́, хра́ми та буди́нки – у ске́лі.", "Тут є амфітеа́тр яки́й вмі́щує 4000 люде́й.", "Тут та́кож є монасти́р та туне́лі для води́.", "Пе́тра - прекра́сне мі́сце, де за́вжди бага́то тури́стів."]], ["Тадж-Маха́л", "https://commons.wikimedia.org/wiki/Special:FilePath/Taj_Mahal_in_March_2004.jpg", "Тадж-Махал в Індії", ["Тадж-Маха́л – це відо́мий монуме́нт в І́ндії.", "Тут ду́же га́рний бі́лий мавзоле́й і чудо́вий сад.", "У саду - екзоти́чне о́зеро.", "У мавзоле́ї похо́вані імпера́тор Шах Джаха́н Муга́л та його́ дружи́на.", "Це прекра́сне, романти́чне, але сумне́ мі́сце.", "Цей чудо́вий пала́ц зро́блений з бі́лого ма́рмуру.", "Ко́жного ро́ку тисячі́ тури́стів відві́дують цей прекра́сний пала́ц."]], ["Христо́с-Спаси́тель", "https://commons.wikimedia.org/wiki/Special:FilePath/Cristo_Redentor_-_Rio_de_Janeiro,_Brasil.jpg", "Статуя Христа-Спасителя в Ріо-де-Жанейро", ["Христо́с-Спаси́тель – це ста́туя Ісу́са Христа́ в Рі́о-де-Жане́йро.", "Ця ста́туя ду́же вели́ка.", "Вона́ має 40 ме́трів і стої́ть на горі́.", "За́раз їй лише́ 80 ро́ків.", "Ця ста́туя – си́мвол Брази́лії.", "Вона́ була́ зро́блена у 1931 ро́ці.", "Для то́го, щоб її́ побудува́ти, ви́тратили 250 ти́сяч до́ларів.", "Тури́сти ду́же лю́блять бува́ти в цьо́му мі́сці."]], ["Ма́чу-Пі́кчу", "https://commons.wikimedia.org/wiki/Special:FilePath/Machu_Picchu,_Peru.jpg", "Мачу-Пікчу в Перу", ["Ма́чу-Пі́кчу – це старе́ мі́сто на горі́ в Перу́.", "Тут жили́ і́нки.", "Це мі́сто було́ побудо́вано у 15 столі́тті.", "По́тім лю́ди його́ поки́нули.", "І лише́ у 1911 ро́ці його́ зно́ву відкри́ли архео́логи.", "Це мі́сто – си́мвол ї́хньої імпе́рії.", "За́раз, на жаль, це руї́ни."]], ["Чі́чен-І́ца", "https://commons.wikimedia.org/wiki/Special:FilePath/Chichen_Itza_3.jpg", "Чичен-Іца в Мексиці", ["Чі́чен-І́ца – це старе́ мі́сто в Ме́ксиці.", "Йому́ вже 1300 ро́ків.", "Це – мі́сто ма́йя, яке́ було́ та́кож політи́чним та економі́чним це́нтром.", "Коли́сь тут були́ пірамі́ди, хра́ми, стадіо́ни.", "За́раз тут лише́ руї́ни.", "Це мі́сце ду́же популя́рне се́ред тури́стів з усього́ сві́ту."]]];
+const app=document.getElementById('app');
+function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+wonders.forEach((w,index)=>{
+ const card=document.createElement('section');card.className='card';
+ const top=document.createElement('div');top.className='top';
+ const img=document.createElement('img');img.src=w[1];img.alt=w[2];img.loading='lazy';img.onerror=()=>{img.alt=w[2]+' (зображення не завантажилося)';img.style.display='none'};
+ const info=document.createElement('div');const h=document.createElement('h2');h.textContent=(index+1)+'. '+w[0];const p=document.createElement('p');p.textContent='Прослухайте опис цього місця та складіть речення у правильній послідовності.';info.append(h,p);top.append(img,info);
+ const label=document.createElement('p');label.className='instruction';label.textContent='Розташуйте речення за порядком у відео:';
+ const list=document.createElement('div');list.className='list';
+ const actions=document.createElement('div');actions.className='actions';
+ const check=document.createElement('button');check.textContent='Перевірити';
+ const mix=document.createElement('button');mix.textContent='Перемішати';mix.className='alt';
+ const reset=document.createElement('button');reset.textContent='Скинути';reset.className='alt';
+ const feedback=document.createElement('p');feedback.className='feedback';feedback.setAttribute('aria-live','polite');
+ actions.append(check,mix,reset);card.append(top,label,list,actions,feedback);app.append(card);
+ const original=w[3].slice();
+ function item(text){
+  const el=document.createElement('div');el.className='item';el.draggable=true;
+  const grip=document.createElement('span');grip.className='grip';grip.textContent='⠿';grip.setAttribute('aria-hidden','true');
+  const words=document.createElement('span');words.className='words';words.textContent=text;
+  const moves=document.createElement('span');moves.className='moves';
+  const up=document.createElement('button');up.type='button';up.textContent='↑';up.setAttribute('aria-label','Перемістити вгору');
+  const down=document.createElement('button');down.type='button';down.textContent='↓';down.setAttribute('aria-label','Перемістити вниз');
+  up.onclick=()=>{if(el.previousElementSibling)list.insertBefore(el,el.previousElementSibling)};
+  down.onclick=()=>{if(el.nextElementSibling)list.insertBefore(el.nextElementSibling,el)};
+  moves.append(up,down);el.append(grip,words,moves);
+  el.addEventListener('dragstart',e=>{el.classList.add('dragging');e.dataTransfer.effectAllowed='move'});
+  el.addEventListener('dragend',()=>{el.classList.remove('dragging');list.querySelectorAll('.over').forEach(x=>x.classList.remove('over'))});
+  el.addEventListener('dragover',e=>{e.preventDefault();el.classList.add('over')});
+  el.addEventListener('dragleave',()=>el.classList.remove('over'));
+  el.addEventListener('drop',e=>{e.preventDefault();el.classList.remove('over');const moving=list.querySelector('.dragging');if(!moving||moving===el)return;const r=el.getBoundingClientRect();list.insertBefore(moving,e.clientY<r.top+r.height/2?el:el.nextSibling)});
+  return el
+ }
+ function populate(values){list.replaceChildren(...values.map(item));feedback.textContent='';feedback.className='feedback'}
+ function current(){return [...list.children].map(x=>x.querySelector('.words').textContent)}
+ function randomOrder(){populate(shuffle(original.slice()))}
+ randomOrder();
+ check.onclick=()=>{const ok=current().every((s,i)=>s===original[i]);feedback.textContent=ok?'Чудово! Усі речення розташовано правильно.':'Ще не зовсім правильно. Перевірте порядок і спробуйте знову.';feedback.className='feedback '+(ok?'good':'bad')};
+ mix.onclick=randomOrder;reset.onclick=randomOrder;
+});
+</script></main></body></html>
