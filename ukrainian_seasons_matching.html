@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Пори року та місяці — Ukrainian Lesson</title>
+<style>
+:root{--ink:#243047;--paper:#fffdf8;--line:#dce3ec;--accent:#4169a8}
+*{box-sizing:border-box}
+body{margin:0;font-family: "Trebuchet MS",Arial,sans-serif;color:var(--ink);background:linear-gradient(135deg,#eef6ff,#fff8ec);min-height:100vh}
+header{text-align:center;padding:30px 16px 20px}
+h1{margin:0 0 8px;font-size:clamp(1.8rem,5vw,2.7rem);color:#274b78}
+.subtitle{margin:0;color:#58677d;font-size:1.05rem}
+main{max-width:1120px;margin:auto;padding:12px 18px 38px}
+.instructions{background:#fff;border:1px solid var(--line);border-radius:16px;padding:15px 18px;margin:0 auto 22px;max-width:850px;box-shadow:0 5px 18px #3147660c;text-align:center}
+.instructions strong{color:#274b78}
+.wordbank{background:#fff;border:2px dashed #aabbd2;border-radius:18px;padding:18px;margin-bottom:22px}
+.section-title{text-align:center;margin:0 0 13px;font-size:1.2rem}
+.words{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;min-height:48px}
+.word{background:#edf3ff;border:1px solid #b8cbea;border-radius:999px;padding:10px 16px;font-size:1rem;font-weight:700;cursor:grab;user-select:none;touch-action:none;box-shadow:0 2px 0 #d7e2f3;transition:transform .15s,background .15s}
+.word:hover{transform:translateY(-2px);background:#e1ecff}
+.word:focus{outline:3px solid #6d95d1;outline-offset:2px}
+.word.dragging{opacity:.45}
+.word.correct{background:#e0f5e6;border-color:#79bd8a}
+.word.incorrect{background:#ffebea;border-color:#e69a94}
+.seasons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.season{border-radius:20px;overflow:hidden;background:white;border:1px solid var(--line);box-shadow:0 7px 20px #31476612;min-height:230px}
+.season-head{padding:14px 16px 12px;display:flex;align-items:center;gap:13px}
+.season-art{font-size:2.7rem;line-height:1;min-width:58px;text-align:center;filter:drop-shadow(0 2px 1px #0001)}
+.season h2{margin:0;font-size:1.35rem}
+.season small{display:block;margin-top:3px;opacity:.8}
+.dropzone{min-height:112px;padding:15px;display:flex;align-content:flex-start;align-items:flex-start;flex-wrap:wrap;gap:9px;border:2px dashed transparent;margin:0 12px 14px;border-radius:14px;transition:background .15s,border-color .15s}
+.dropzone:empty:before{content:"Перетягни місяці сюди";color:#8490a1;font-size:.93rem;padding:7px 4px}
+.dropzone.over{border-color:#688fca;background:#f5f8ff}
+.winter .season-head{background:linear-gradient(120deg,#dceeff,#f4f9ff)}
+.spring .season-head{background:linear-gradient(120deg,#e1f5df,#f6fff2)}
+.summer .season-head{background:linear-gradient(120deg,#fff0c9,#fff9e8)}
+.autumn .season-head{background:linear-gradient(120deg,#f9dfc9,#fff4e9)}
+.winter .dropzone{background:#f7fbff}.spring .dropzone{background:#f8fff6}
+.summer .dropzone{background:#fffdf4}.autumn .dropzone{background:#fff9f4}
+.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:24px 0 10px}
+button{border:0;border-radius:999px;padding:12px 22px;font-size:1rem;font-weight:700;cursor:pointer}
+#check{background:#315f9d;color:#fff;box-shadow:0 4px 0 #234675}
+#reset{background:#fff;border:1px solid #b8c5d6;color:#34445c}
+button:active{transform:translateY(2px);box-shadow:none}
+#feedback{min-height:30px;text-align:center;font-weight:700;font-size:1.05rem;margin:14px 0}
+.note{text-align:center;color:#758196;font-size:.88rem;margin-top:22px}
+@media(max-width:650px){.seasons{grid-template-columns:1fr}.season{min-height:190px}.season-art{font-size:2.3rem}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌍 Пори року та місяці</h1>
+  <p class="subtitle">Ukrainian lesson · Match the months to the seasons</p>
+</header>
+<main>
+  <section class="instructions">
+    <strong>Завдання:</strong> Перетягни назви місяців у правильні пори року.<br>
+    <span>Drag each month from the word box into the correct season.</span>
+  </section>
+
+  <section class="wordbank" aria-label="Word bank">
+    <h2 class="section-title">🧺 Слова — Word box</h2>
+    <div class="words" id="wordbank">
+      <span class="word" draggable="true" tabindex="0" role="button" data-month="грудень">грудень</span>
+      <span class="word" draggable="true" tabindex="0" role="button" data-month="січень">січень</span>
+      <span class="word" draggable="true" tabindex="0" role="button" data-month="лютий">лютий</span>
+      <span class="word" draggable="true" tabindex="0" role="button" data-month="березень">березень</span>
+      <span class="word" draggable="true" tabindex="0" role="button" data-month="квітень">квітень</span>
+      <span class="word" draggable="true" tabindex="0" role="button" data-month="травень">травень</span>
+      <span class="word" draggable="true" tabindex="0" role="button" data-month="червень">червень</span>
+      <span class="word" draggable="true" tabindex="0" role="button" data-month="липень">липень</span>
+      <span class="word" draggable="true" tabindex="0" role="button" data-month="серпень">серпень</span>
+      <span class="word" draggable="true" tabindex="0" role="button" data-month="вересень">вересень</span>
+      <span class="word" draggable="true" tabindex="0" role="button" data-month="жовтень">жовтень</span>
+      <span class="word" draggable="true" tabindex="0" role="button" data-month="листопад">листопад</span>
+    </div>
+  </section>
+
+  <section class="seasons" aria-label="Season drop zones">
+    <article class="season winter">
+      <div class="season-head"><div class="season-art" aria-hidden="true">⛄❄️</div><div><h2>Зима</h2><small>Winter · зимові місяці</small></div></div>
+      <div class="dropzone" data-season="winter" aria-label="Зима drop zone"></div>
+    </article>
+    <article class="season spring">
+      <div class="season-head"><div class="season-art" aria-hidden="true">🌷🦋</div><div><h2>Весна</h2><small>Spring · весняні місяці</small></div></div>
+      <div class="dropzone" data-season="spring" aria-label="Весна drop zone"></div>
+    </article>
+    <article class="season summer">
+      <div class="season-head"><div class="season-art" aria-hidden="true">☀️🌻</div><div><h2>Літо</h2><small>Summer · літні місяці</small></div></div>
+      <div class="dropzone" data-season="summer" aria-label="Літо drop zone"></div>
+    </article>
+    <article class="season autumn">
+      <div class="season-head"><div class="season-art" aria-hidden="true">🍁🍄</div><div><h2>Осінь</h2><small>Autumn · осінні місяці</small></div></div>
+      <div class="dropzone" data-season="autumn" aria-label="Осінь drop zone"></div>
+    </article>
+  </section>
+
+  <div class="actions">
+    <button id="check" type="button">✓ Перевірити відповіді · Check answers</button>
+    <button id="reset" type="button">↻ Почати спочатку · Reset</button>
+  </div>
+  <div id="feedback" aria-live="polite"></div>
+  <p class="note">Порада: на телефоні натисни на місяць, а потім на потрібну пору року.</p>
+</main>
+<script>
+const answers = {
+  winter: ['грудень','січень','лютий'],
+  spring: ['березень','квітень','травень'],
+  summer: ['червень','липень','серпень'],
+  autumn: ['вересень','жовтень','листопад']
+};
+const bank = document.getElementById('wordbank');
+const zones = [...document.querySelectorAll('.dropzone')];
+let dragged = null;
+let selected = null;
+
+function clearMarks(){
+  document.querySelectorAll('.word').forEach(w=>w.classList.remove('correct','incorrect'));
+  document.getElementById('feedback').textContent='';
+}
+function moveWord(word, target){
+  if(!word || !target) return;
+  target.appendChild(word);
+  word.classList.remove('correct','incorrect');
+  selected = null;
+  clearMarks();
+}
+document.addEventListener('dragstart', e=>{
+  const word=e.target.closest('.word');
+  if(!word)return;
+  dragged=word;
+  word.classList.add('dragging');
+  e.dataTransfer.setData('text/plain',word.dataset.month);
+});
+document.addEventListener('dragend', e=>{
+  if(e.target.classList && e.target.classList.contains('word')) e.target.classList.remove('dragging');
+  dragged=null;
+});
+[bank,...zones].forEach(zone=>{
+  zone.addEventListener('dragover',e=>{e.preventDefault(); if(zone.classList.contains('dropzone'))zone.classList.add('over');});
+  zone.addEventListener('dragleave',()=>zone.classList.remove('over'));
+  zone.addEventListener('drop',e=>{
+    e.preventDefault();zone.classList.remove('over');
+    const word=dragged || document.querySelector('.word[data-month="'+e.dataTransfer.getData('text/plain')+'"]');
+    if(word)moveWord(word,zone);
+  });
+});
+document.addEventListener('click',e=>{
+  const word=e.target.closest('.word');
+  if(word){selected=word;document.getElementById('feedback').textContent='Обери пору року / Choose a season.';return;}
+  const zone=e.target.closest('.dropzone');
+  if(zone && selected)moveWord(selected,zone);
+});
+document.addEventListener('keydown',e=>{
+  if((e.key==='Enter'||e.key===' ') && e.target.classList.contains('word')){
+    e.preventDefault();selected=e.target;
+    document.getElementById('feedback').textContent='Тепер натисни на потрібну пору року.';
+  }
+});
+document.getElementById('check').addEventListener('click',()=>{
+  let total=0,correct=0;
+  zones.forEach(zone=>{
+    zone.querySelectorAll('.word').forEach(word=>{
+      total++;
+      const ok=answers[zone.dataset.season].includes(word.dataset.month);
+      word.classList.toggle('correct',ok);
+      word.classList.toggle('incorrect',!ok);
+      if(ok)correct++;
+    });
+  });
+  const feedback=document.getElementById('feedback');
+  if(total===12 && correct===12) feedback.textContent='🎉 Чудово! Усі відповіді правильні! Excellent — all 12 are correct!';
+  else feedback.textContent=`Правильно: ${correct} із 12 розміщених місяців. Correct: ${correct} of 12 placed months. ${total<12?'Перетягни всі 12 місяців у пори року.':''}`;
+});
+document.getElementById('reset').addEventListener('click',()=>{
+  [...document.querySelectorAll('.word')].forEach(word=>bank.appendChild(word));
+  clearMarks();selected=null;
+});
+</script>
+</body>
+</html>
