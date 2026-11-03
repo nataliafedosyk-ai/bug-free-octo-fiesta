@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Варяги та Русь — завдання до відео</title>
+<style>
+:root{
+  --ink:#243044; --muted:#64748b; --paper:#fffdf8; --bg:#f2f5f8;
+  --blue:#dcecf7; --blue-deep:#2e6385; --gold:#f5e7bf; --gold-deep:#8b6418;
+  --green:#dff2e5; --red:#fae2df; --line:#d9e0e7;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:linear-gradient(120deg,#1f4058,#315f70);color:white;padding:28px 18px 24px}
+.hero{max-width:1100px;margin:auto;display:grid;grid-template-columns:1.25fr .75fr;gap:20px;align-items:center}
+h1{font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.12;margin:0 0 10px}
+header p{margin:0;color:#e5eef2;max-width:680px}
+.hero-art{width:100%;max-height:180px}
+main{max-width:1100px;margin:24px auto;padding:0 16px 44px}
+.instructions{background:white;border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:22px}
+.instructions strong{color:#234e68}
+.part{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px;margin:20px 0;box-shadow:0 5px 18px #2030400a}
+.part-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.part h2{font-size:1.25rem;margin:0}
+.part-tag{font-size:.82rem;color:var(--muted);background:#edf1f5;padding:5px 10px;border-radius:99px}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.dropzone{border:2px dashed #b9c9d5;border-radius:14px;padding:14px;min-height:205px;background:#f9fbfc;transition:.15s}
+.dropzone.over{border-color:var(--blue-deep);background:#edf7fc}
+.dropzone h3{margin:0 0 10px;font-size:1.05rem;color:#254e67}
+.dropzone .hint{font-size:.84rem;color:var(--muted);margin:0 0 10px}
+.cards{display:grid;gap:8px}
+.card{background:white;border:1px solid #d7e0e7;border-radius:10px;padding:10px 12px;cursor:grab;box-shadow:0 2px 5px #2030400a;touch-action:manipulation}
+.card:active{cursor:grabbing}
+.card.selected{outline:3px solid #e0b84f;background:#fff9e8}
+.card.correct{border-color:#55a878;background:#eff9f1}
+.card.incorrect{border-color:#d87970;background:#fff2f0}
+.card small{display:block;color:#8492a0;font-size:.72rem;margin-bottom:3px}
+.bank{margin-top:16px;padding:14px;border-radius:14px;background:#edf2f6;border:1px solid #dbe3e9}
+.bank-title{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}
+.bank-title h3{margin:0;font-size:1rem}
+.bank-title span{font-size:.82rem;color:var(--muted)}
+.bank .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+button{border:0;border-radius:10px;padding:10px 16px;font:inherit;font-weight:650;cursor:pointer}
+.primary{background:#285c78;color:white}
+.secondary{background:#e6edf2;color:#294052}
+button:hover{filter:brightness(.97)}
+.feedback{margin-top:10px;min-height:24px;font-weight:600}
+.note{font-size:.85rem;color:var(--muted);margin-top:8px}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:10px}
+@media(max-width:700px){
+ .hero{grid-template-columns:1fr}.hero-art{max-height:125px}
+ .columns{grid-template-columns:1fr}
+ .bank .cards{grid-template-columns:1fr}
+ .part{padding:15px}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="hero">
+  <div>
+   <h1>Варяги та Русь</h1>
+   <p>Завдання до відео: уважно слухай, визначай, про яку частину розповіді йдеться, та розподіляй речення за заголовками.</p>
+  </div>
+  <svg class="hero-art" viewBox="0 0 420 180" role="img" aria-label="Історична ілюстрація: давній човен, щит і князівський град">
+   <path d="M25 128 Q115 150 210 128 Q300 150 395 128" fill="none" stroke="#9bc4d2" stroke-width="4"/>
+   <path d="M65 90 L335 90 L300 126 Q200 150 100 126Z" fill="#b77b43" stroke="#f0d7a8" stroke-width="3"/>
+   <path d="M200 22 L200 91 M200 28 L285 75 L200 75Z" fill="#e9e2c9" stroke="#f7f2e5" stroke-width="3"/>
+   <path d="M200 22 L200 90" stroke="#f0d7a8" stroke-width="4"/>
+   <path d="M90 88 L90 56 L122 56 L122 88 M298 88 L298 51 L330 51 L330 88" fill="#d9b77d" stroke="#f0d7a8" stroke-width="3"/>
+   <path d="M84 56 L106 38 L128 56 M292 51 L314 31 L336 51" fill="#c58c55" stroke="#f0d7a8" stroke-width="3"/>
+   <circle cx="200" cy="110" r="13" fill="#d6a24c" stroke="#fff0cc" stroke-width="3"/>
+   <path d="M194 110h12 M200 104v12" stroke="#fff0cc" stroke-width="2"/>
+   <path d="M30 154 Q110 166 190 154 T390 154" fill="none" stroke="#6fa1b4" stroke-width="2"/>
+  </svg>
+ </div>
+</header>
+<main>
+ <section class="instructions">
+  <strong>Як виконувати:</strong> у кожній частині є два заголовки та шість речень у спільному банку. Перетягни кожне речення до відповідного заголовка. На телефоні можна просто натиснути на речення, а потім — на потрібний блок. Після розподілу натисни <em>«Перевірити»</em>.
+ </section>
+
+ <section class="part" id="part1" data-part="1">
+  <div class="part-head"><h2>Частина 1. Військо та влада</h2><span class="part-tag">6 речень · 2 заголовки</span></div>
+  <div class="columns">
+   <div class="dropzone" data-target="military" tabindex="0" aria-label="Поле для речень: Військова роль варягів">
+    <h3>1. Військова роль варягів</h3><p class="hint">Перетягни сюди відповідні речення</p><div class="cards"></div>
+   </div>
+   <div class="dropzone" data-target="two" tabindex="0" aria-label="Поле для речень: Історія із двома гривнями">
+    <h3>2. Історія із «двома гривнями»</h3><p class="hint">Перетягни сюди відповідні речення</p><div class="cards"></div>
+   </div>
+  </div>
+  <div class="bank"><div class="bank-title"><h3>Банк речень</h3><span>Обери або перетягни 6 карток</span></div><div class="cards" id="bank1"></div></div>
+  <div class="actions"><button class="primary" onclick="checkPart(1)">Перевірити</button><button class="secondary" onclick="resetPart(1)">Почати спочатку</button></div>
+  <div class="feedback" id="feedback1" aria-live="polite"></div>
+ </section>
+
+ <section class="part" id="part2" data-part="2">
+  <div class="part-head"><h2>Частина 2. Рішення князя та наслідки</h2><span class="part-tag">6 речень · 2 заголовки</span></div>
+  <div class="columns">
+   <div class="dropzone" data-target="strategy" tabindex="0" aria-label="Поле для речень: Політична стратегія">
+    <h3>3. Політична стратегія</h3><p class="hint">Перетягни сюди відповідні речення</p><div class="cards"></div>
+   </div>
+   <div class="dropzone" data-target="impact" tabindex="0" aria-label="Поле для речень: Довгостроковий вплив">
+    <h3>4. Довгостроковий вплив</h3><p class="hint">Перетягни сюди відповідні речення</p><div class="cards"></div>
+   </div>
+  </div>
+  <div class="bank"><div class="bank-title"><h3>Банк речень</h3><span>Обери або перетягни 6 карток</span></div><div class="cards" id="bank2"></div></div>
+  <div class="actions"><button class="primary" onclick="checkPart(2)">Перевірити</button><button class="secondary" onclick="resetPart(2)">Почати спочатку</button></div>
+  <div class="feedback" id="feedback2" aria-live="polite"></div>
+ </section>
+ <footer>Історія Русі · Завдання до перегляду відео</footer>
+</main>
+<script>
+const tasks = {
+  1: [
+   {id:"a",target:"military",text:"Варяги були професійними найманцями, які вміли тримати дисципліну в походах."},
+   {id:"b",target:"military",text:"Їхні торговельні та військові маршрути пролягали від Балтійського моря до Константинополя."},
+   {id:"c",target:"military",text:"Князі використовували варягів як ефективну силу, яку можна було найняти для досягнення військових цілей."},
+   {id:"d",target:"two",text:"Після захоплення Києва варяги відкрито заявили Володимиру, що вимагають плату за свої послуги."},
+   {id:"e",target:"two",text:"Вони аргументували свої вимоги тим, що саме завдяки їхній допомозі князь здобув владу над містом."},
+   {id:"f",target:"two",text:"Цей випадок став для Володимира сигналом про те, що озброєні найманці в столиці є потенційною загрозою для його контролю."}
+  ],
+  2: [
+   {id:"g",target:"strategy",text:"Володимир розподілив частину надійних варязьких воїнів по містах Русі, вбудовуючи їх у свою систему управління."},
+   {id:"h",target:"strategy",text:"Решту найманців, які могли становити небезпеку, він відправив на службу до Візантійської імперії."},
+   {id:"i",target:"strategy",text:"Саме ці русько-варязькі загони стали основою елітної охорони візантійського імператора, відомої як Варязька гвардія."},
+   {id:"j",target:"impact",text:"Ярослав Мудрий продовжував наймати варягів під час боротьби за київський престол."},
+   {id:"k",target:"impact",text:"З часом вплив варягів був обмежений виключно військовою сферою."},
+   {id:"l",target:"impact",text:"Розвиток внутрішніх інститутів держави, таких як церква та династична політика, поступово зменшив роль іноземних найманців у житті Русі."}
+  ]
+};
+const selected = {1:null,2:null};
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function makeCard(item,part){
+ const el=document.createElement("div"); el.className="card"; el.draggable=true; el.tabIndex=0;
+ el.dataset.id=item.id; el.dataset.target=item.target; el.dataset.part=part;
+ el.innerHTML=`<small>РЕЧЕННЯ</small><span>${item.text}</span>`;
+ el.addEventListener("dragstart",e=>{e.dataTransfer.setData("text/plain",item.id);e.dataTransfer.effectAllowed="move"});
+ el.addEventListener("click",()=>selectCard(el));
+ el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selectCard(el)}});
+ return el;
+}
+function selectCard(el){
+ const part=Number(el.dataset.part);
+ document.querySelectorAll(`#part${part} .card.selected`).forEach(x=>x.classList.remove("selected"));
+ el.classList.add("selected"); selected[part]=el;
+}
+function initPart(part){
+ const bank=document.getElementById("bank"+part); bank.innerHTML="";
+ const root=document.getElementById("part"+part);
+ root.querySelectorAll(".dropzone .cards").forEach(x=>x.innerHTML="");
+ shuffle(tasks[part]).forEach(item=>bank.appendChild(makeCard(item,part)));
+ root.querySelectorAll(".dropzone").forEach(zone=>{
+  zone.addEventListener("dragover",e=>{e.preventDefault();zone.classList.add("over")});
+  zone.addEventListener("dragleave",()=>zone.classList.remove("over"));
+  zone.addEventListener("drop",e=>{
+   e.preventDefault();zone.classList.remove("over");
+   const id=e.dataTransfer.getData("text/plain");
+   const card=root.querySelector(`.card[data-id="${id}"]`);
+   if(card) placeCard(card,zone);
+  });
+  zone.addEventListener("click",e=>{
+   if(selected[part] && !e.target.closest(".card")) placeCard(selected[part],zone);
+  });
+  zone.addEventListener("keydown",e=>{
+   if((e.key==="Enter"||e.key===" ")&&selected[part]){e.preventDefault();placeCard(selected[part],zone)}
+  });
+ });
+}
+function placeCard(card,zone){
+ zone.querySelector(".cards").appendChild(card);
+ card.classList.remove("selected","correct","incorrect");
+ const part=Number(card.dataset.part); selected[part]=null;
+}
+function checkPart(part){
+ const root=document.getElementById("part"+part); let correct=0,placed=0;
+ root.querySelectorAll(".dropzone").forEach(zone=>{
+  zone.querySelectorAll(".card").forEach(card=>{
+   placed++; const ok=card.dataset.target===zone.dataset.target;
+   card.classList.toggle("correct",ok);card.classList.toggle("incorrect",!ok);
+   if(ok)correct++;
+  });
+ });
+ const total=tasks[part].length;
+ const feedback=document.getElementById("feedback"+part);
+ if(placed<total) feedback.textContent=`Розміщено ${placed} із ${total}. Перевір усі речення та спробуй ще раз.`;
+ else if(correct===total) feedback.textContent="Чудово! Усі речення розподілено правильно.";
+ else feedback.textContent=`Правильно: ${correct} із ${total}. Зеленим позначено правильні відповіді, червоним — ті, які потрібно перемістити.`;
+}
+function resetPart(part){
+ initPart(part);selected[part]=null;document.getElementById("feedback"+part).textContent="";
+}
+initPart(1);initPart(2);
+</script>
+</body>
+</html>
