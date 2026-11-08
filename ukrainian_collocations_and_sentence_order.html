@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="uk"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Практика української мови</title>
+<style>
+:root{--navy:#263f60;--blue:#426f9f;--ink:#26364b;--muted:#68798d;--green:#287650;--red:#b84d4d}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(135deg,#f2f7fc,#fff8eb);font:17px/1.5 Arial,sans-serif;color:var(--ink)}
+main{max-width:1050px;margin:auto;padding:16px}header{text-align:center;padding:20px 10px}h1{margin:0;color:var(--navy);font-size:clamp(1.7rem,4vw,2.4rem)}header p{color:var(--muted);margin:6px}
+.task{background:white;border:1px solid #dce5ef;border-radius:18px;padding:clamp(15px,3vw,26px);margin:18px 0;box-shadow:0 8px 24px #243b5a12}
+h2{margin:0 0 5px;color:var(--navy)}.instructions{margin:0 0 16px;color:var(--muted)}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.col-title{font-weight:bold;margin:0 0 8px}.match-list{display:grid;gap:9px}
+.match-card{width:100%;min-height:56px;padding:12px;border:2px solid #dce5ef;border-radius:12px;background:#f8fbff;color:var(--ink);font-size:1rem;font-weight:600;cursor:pointer;touch-action:manipulation}
+.match-card.selected{border-color:var(--blue);background:#e8f1fc}.match-card.matched{border-color:#a8d5bb;background:#eff9f2;color:#246443}.match-card:disabled{opacity:1}
+.feedback{min-height:25px;margin:12px 0 0;font-weight:bold}.good{color:var(--green)}.bad{color:var(--red)}.progress{font-size:.94rem;color:var(--muted)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.action{border:0;border-radius:11px;padding:12px 17px;font-size:1rem;font-weight:bold;cursor:pointer;touch-action:manipulation}.primary{background:var(--blue);color:white}.secondary{background:#e9eef5;color:#30435e}
+.sentence-list{display:grid;gap:14px}.sentence-card{padding:14px;border:1px solid #e0e8f1;border-radius:14px;background:#fbfdff}.sentence-label{font-weight:bold;color:#45617f;margin-bottom:8px}
+.answer-zone{min-height:62px;padding:9px;border:2px dashed #b9c9dc;border-radius:11px;background:white;display:flex;flex-wrap:wrap;align-items:center;gap:7px}.answer-zone.over{background:#edf5ff}
+.placeholder{color:#8795a8;font-size:.94rem}.word-bank{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;min-height:42px}
+.word{border:1px solid #cbd9e9;border-radius:9px;background:#eaf1fa;color:#263f61;padding:10px 12px;font-size:.98rem;font-weight:600;cursor:pointer;touch-action:manipulation;user-select:none}
+.word.in-answer{background:#e9f5ee;border-color:#b5d9c2;color:#245b3f}.sentence-result{min-height:24px;margin-top:7px;font-weight:bold}
+button:focus-visible{outline:3px solid #e8bd62;outline-offset:2px}
+@media(max-width:650px){main{padding:9px}.match-grid{grid-template-columns:1fr;gap:15px}.task{border-radius:15px}.word{padding:11px 13px}.answer-zone{min-height:68px}}
+</style></head><body><main>
+<header><h1>Практика української мови</h1><p>Словосполучення та порядок слів у реченні</p></header>
+<section class="task"><h2>Завдання 1. Знайдіть відповідники</h2>
+<p class="instructions">Натисніть на українське словосполучення, а потім — на відповідний англійський переклад.</p>
+<div class="match-grid"><div><p class="col-title">Українською</p><div class="match-list" id="uk-list"></div></div>
+<div><p class="col-title">English</p><div class="match-list" id="en-list"></div></div></div>
+<div class="feedback" id="match-feedback" aria-live="polite"></div><div class="progress" id="match-progress">Знайдено: 0 із 7</div>
+<div class="actions"><button class="action secondary" id="match-reset">Почати знову</button></div></section>
+<section class="task"><h2>Завдання 2. Складіть речення</h2>
+<p class="instructions">Перетягніть слова в правильному порядку або натискайте на них. Щоб повернути слово до банку, натисніть на нього у складеному реченні.</p>
+<div class="sentence-list" id="sentence-list"></div>
+<div class="feedback" id="order-feedback" aria-live="polite"></div>
+<div class="actions"><button class="action primary" id="check-order">Перевірити відповіді</button><button class="action secondary" id="reset-order">Перемішати слова знову</button></div></section>
+</main>
+<script>
+const DATA={"pairs": [["говорити з другом", "talk to a friend"], ["розмовляти українською", "speak Ukrainian"], ["повторювати матеріал", "revise the material"], ["відповідати правильно", "reply/respond correctly"], ["жити в Україні", "live in Ukraine"], ["приходити додому", "come home"], ["ходити до школи", "go to school"]], "sentences": ["Мені подобається говорити з другом.", "Важливо розмовляти українською коли живеш в Україні.", "Я буду повторювати матеріал перед тестом.", "Важливо відповідати правильно на уроці.", "Мені потрібен паспорт щоб жити в Україні.", "Важливо приходити додому не дуже пізно.", "Наступного року моя маленька сестра буде ходити до школи."]};
+const $=id=>document.getElementById(id);
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+let selectedUK=null,selectedEN=null,matched=new Set();
+function renderMatching(){
+ selectedUK=selectedEN=null;matched=new Set();$('uk-list').innerHTML='';$('en-list').innerHTML='';
+ shuffle(DATA.pairs.map((_,i)=>i)).forEach(i=>{let b=document.createElement('button');b.className='match-card';b.textContent=DATA.pairs[i][0];b.dataset.i=i;b.onclick=()=>choose('uk',i,b);$('uk-list').append(b);});
+ shuffle(DATA.pairs.map((_,i)=>i)).forEach(i=>{let b=document.createElement('button');b.className='match-card';b.textContent=DATA.pairs[i][1];b.dataset.i=i;b.onclick=()=>choose('en',i,b);$('en-list').append(b);});
+ $('match-feedback').textContent='';$('match-progress').textContent='Знайдено: 0 із 7';
+}
+function choose(side,i,b){
+ if(matched.has(i))return;
+ $(side==='uk'?'uk-list':'en-list').querySelectorAll('button').forEach(x=>x.classList.remove('selected'));
+ b.classList.add('selected');if(side==='uk')selectedUK=i;else selectedEN=i;
+ if(selectedUK!==null&&selectedEN!==null){
+  if(selectedUK===selectedEN){matched.add(i);['uk-list','en-list'].forEach(id=>$(id).querySelectorAll('button').forEach(x=>{if(+x.dataset.i===i){x.classList.remove('selected');x.classList.add('matched');x.disabled=true;}}));$('match-feedback').textContent='Правильно!';$('match-feedback').className='feedback good';}
+  else{$('match-feedback').textContent='Спробуйте ще раз.';$('match-feedback').className='feedback bad';}
+  selectedUK=selectedEN=null;$('match-progress').textContent=`Знайдено: ${matched.size} із 7`;
+  if(matched.size===7)$('match-feedback').textContent='Усі 7 відповідників знайдено! Чудова робота.';
+  document.querySelectorAll('.match-card').forEach(x=>x.classList.remove('selected'));
+ }
+}
+$('match-reset').onclick=renderMatching;
+
+let states=[];
+function words(s){return s.match(/\\S+/g)||[];}
+function initSentences(){
+ states=DATA.sentences.map(s=>{let correct=words(s).map((word,id)=>({word,id}));return{correct,bank:shuffle(correct),answer:[]};});
+ renderSentences();$('order-feedback').textContent='';
+}
+function makeWord(t,i,inAnswer){
+ let b=document.createElement('button');b.className='word'+(inAnswer?' in-answer':'');b.textContent=t.word;b.draggable=true;
+ b.onclick=()=>move(i,t.id,inAnswer?'answer':'bank',inAnswer?'bank':'answer');
+ b.ondragstart=e=>{e.dataTransfer.setData('text/plain',JSON.stringify({i,id:t.id,from:inAnswer?'answer':'bank'}));};
+ return b;
+}
+function move(i,id,from,to){
+ let s=states[i],src=s[from],dst=s[to],p=src.findIndex(t=>t.id===id);if(p<0)return;dst.push(src.splice(p,1)[0]);renderSentences();
+}
+function renderSentences(){
+ let root=$('sentence-list');root.innerHTML='';
+ states.forEach((s,i)=>{
+  let card=document.createElement('div');card.className='sentence-card';
+  let label=document.createElement('div');label.className='sentence-label';label.textContent=`Речення ${i+1}`;card.append(label);
+  let zone=document.createElement('div');zone.className='answer-zone';zone.setAttribute('aria-label',`Поле відповіді ${i+1}`);
+  if(!s.answer.length){let p=document.createElement('span');p.className='placeholder';p.textContent='Перемістіть слова сюди…';zone.append(p);}
+  s.answer.forEach(t=>zone.append(makeWord(t,i,true)));
+  zone.ondragover=e=>{e.preventDefault();zone.classList.add('over');};zone.ondragleave=()=>zone.classList.remove('over');
+  zone.ondrop=e=>{e.preventDefault();zone.classList.remove('over');let d=JSON.parse(e.dataTransfer.getData('text/plain')||'{}');if(d.i===i)move(i,d.id,d.from,'answer');};
+  card.append(zone);
+  let bank=document.createElement('div');bank.className='word-bank';s.bank.forEach(t=>bank.append(makeWord(t,i,false)));
+  bank.ondragover=e=>e.preventDefault();bank.ondrop=e=>{e.preventDefault();let d=JSON.parse(e.dataTransfer.getData('text/plain')||'{}');if(d.i===i)move(i,d.id,d.from,'bank');};
+  card.append(bank);let result=document.createElement('div');result.className='sentence-result';result.id='result-'+i;card.append(result);root.append(card);
+ });
+}
+$('check-order').onclick=()=>{
+ let count=0;states.forEach((s,i)=>{let ok=s.answer.length===s.correct.length&&s.answer.every((t,j)=>t.id===j);let r=$('result-'+i);if(ok){count++;r.textContent='Правильно!';r.className='sentence-result good';}else{r.textContent='Перевірте порядок слів.';r.className='sentence-result bad';}});
+ $('order-feedback').textContent=`Правильно складено: ${count} із 7 речень.`;$('order-feedback').className='feedback '+(count===7?'good':'');
+};
+$('reset-order').onclick=initSentences;
+renderMatching();initSentences();
+</script></body></html>
