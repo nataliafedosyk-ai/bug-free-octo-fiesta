@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ukrainian Practice — Collocations & Sentences</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #f3f6fb;
+  color: #172033;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 18px;
+  line-height: 1.5;
+}
+.container { width: min(1100px, 95%); margin: auto; padding: 24px 0 50px; }
+header, .task {
+  background: #fff;
+  border-radius: 18px;
+  padding: 24px;
+  margin-bottom: 22px;
+  box-shadow: 0 4px 18px rgba(30,50,80,.08);
+}
+h1 { margin: 0 0 8px; font-size: clamp(27px, 5vw, 38px); }
+h2 { margin: 0 0 8px; font-size: clamp(23px, 4vw, 30px); }
+h3 { margin: 0 0 12px; font-size: 20px; }
+.instructions { color: #536176; margin-top: 0; }
+
+.matching {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+}
+.panel {
+  background: #f8fafc;
+  border: 2px solid #d8e0eb;
+  border-radius: 15px;
+  padding: 16px;
+}
+.translation {
+  background: #fff;
+  border: 2px solid #c9d4e3;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+}
+.translation:last-child { margin-bottom: 0; }
+
+.uk-list {
+  display: grid;
+  gap: 10px;
+}
+.uk-item {
+  background: #eaf0ff;
+  border: 2px solid #aebde5;
+  border-radius: 12px;
+  padding: 13px 15px;
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  font-weight: 700;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+.uk-item.dragging { opacity: .4; }
+.uk-item.selected {
+  outline: 4px solid #f2b84b;
+}
+.drop-zone {
+  border: 2px dashed #9eabc0;
+  border-radius: 12px;
+  padding: 8px;
+  margin-bottom: 10px;
+  background: #fff;
+  min-height: 60px;
+}
+.drop-zone:last-child { margin-bottom: 0; }
+.drop-zone.over {
+  border-color: #315bcf;
+  background: #eef3ff;
+}
+.drop-zone .placeholder {
+  color: #7b8798;
+  font-size: 15px;
+  padding: 7px;
+}
+.drop-zone.correct {
+  border-color: #2d9460;
+  background: #edf9f2;
+}
+.drop-zone.incorrect {
+  border-color: #d24f4f;
+  background: #fff1f1;
+}
+.drop-zone .uk-item {
+  margin: 0;
+}
+
+button {
+  min-height: 48px;
+  border: 0;
+  border-radius: 11px;
+  padding: 12px 19px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.check { background: #315bcf; color: white; }
+.reset { background: #e7ebf1; color: #172033; }
+.buttons { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+.feedback { min-height: 28px; margin-top: 12px; font-weight: 700; }
+.success { color: #197044; }
+.error { color: #b33d3d; }
+
+.sentence-card {
+  background: #f8fafc;
+  border: 2px solid #d8e0eb;
+  border-radius: 15px;
+  padding: 16px;
+  margin-bottom: 15px;
+}
+.sentence-card:last-child { margin-bottom: 0; }
+.sentence-title { font-weight: 800; margin-bottom: 10px; }
+.word-bank, .answer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 60px;
+  padding: 10px;
+  border-radius: 12px;
+}
+.word-bank {
+  background: #fff;
+  border: 2px dashed #aebbd0;
+  margin-bottom: 10px;
+}
+.answer {
+  background: #fff;
+  border: 2px solid #c8d2df;
+}
+.answer:empty::before {
+  content: "Drag the words here in the correct order";
+  color: #7b8798;
+  font-size: 15px;
+}
+.word {
+  background: #eaf0ff;
+  border: 2px solid #aebde5;
+  border-radius: 10px;
+  padding: 8px 12px;
+  min-height: 43px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+.answer .word {
+  background: #edf9f2;
+  border-color: #a8d5ba;
+}
+.word.dragging { opacity: .4; }
+
+@media (max-width: 760px) {
+  body { font-size: 17px; }
+  .container { width: 97%; padding-top: 14px; }
+  header, .task { padding: 17px; border-radius: 15px; }
+  .matching { grid-template-columns: 1fr; }
+  .uk-item { min-height: 62px; }
+  .translation { min-height: 62px; }
+  .word { min-height: 48px; padding: 9px 13px; }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+  <h1>Ukrainian Practice</h1>
+  <p class="instructions">Match the collocations and then rearrange the words to make complete sentences.</p>
+</header>
+
+<section class="task">
+  <h2>Task 1 — Match Ukrainian and English</h2>
+  <p class="instructions">
+    Drag each Ukrainian collocation onto its correct English translation.
+    On a tablet, you can also tap a Ukrainian phrase and then tap its translation.
+  </p>
+
+  <div class="matching">
+    <div class="panel">
+      <h3>🇺🇦 Ukrainian collocations</h3>
+      <div id="ukList" class="uk-list"></div>
+    </div>
+
+    <div class="panel">
+      <h3>🇬🇧 English translations</h3>
+      <div id="enList"></div>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button class="check" onclick="checkMatching()">Check Task 1</button>
+    <button class="reset" onclick="resetMatching()">Reset Task 1</button>
+  </div>
+  <div id="matchFeedback" class="feedback"></div>
+</section>
+
+<section class="task">
+  <h2>Task 2 — Rearrange the words</h2>
+  <p class="instructions">
+    The words are randomized. Drag them into the answer box and put them in the correct order.
+  </p>
+  <div id="sentences"></div>
+</section>
+
+</div>
+
+<script>
+const pairs = [
+  { uk: "говорити з другом", en: "talk to a friend" },
+  { uk: "розмовляти українською", en: "speak Ukrainian" },
+  { uk: "повторювати матеріал", en: "revise the material" },
+  { uk: "відповідати правильно", en: "reply/respond correctly" },
+  { uk: "жити в Україні", en: "live in Ukraine" },
+  { uk: "приходити додому", en: "come home" },
+  { uk: "ходити до школи", en: "go to school" }
+];
+
+const originalSentences = [
+  "Мені подобається говорити з другом.",
+  "Важливо розмовляти українською коли живеш в Україні.",
+  "Я буду повторювати матеріал перед тестом.",
+  "Важливо відповідати правильно на уроці.",
+  "Мені потрібен паспорт щоб жити в Україні.",
+  "Важливо приходити додому не дуже пізно.",
+  "Наступного року моя маленька сестра буде ходити до школи."
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/* ---------- TASK 1 ---------- */
+
+const ukList = document.getElementById("ukList");
+const enList = document.getElementById("enList");
+
+shuffle(pairs).forEach(pair => {
+  const item = document.createElement("div");
+  item.className = "uk-item";
+  item.textContent = pair.uk;
+  item.draggable = true;
+  item.dataset.uk = pair.uk;
+
+  item.addEventListener("dragstart", e => {
+    e.dataTransfer.setData("text/plain", pair.uk);
+    item.classList.add("dragging");
+  });
+  item.addEventListener("dragend", () => item.classList.remove("dragging"));
+
+  /* Tablet fallback: tap a phrase to select it */
+  item.addEventListener("click", () => {
+    document.querySelectorAll(".uk-item").forEach(x => x.classList.remove("selected"));
+    item.classList.add("selected");
+  });
+
+  ukList.appendChild(item);
+});
+
+shuffle(pairs).forEach(pair => {
+  const zone = document.createElement("div");
+  zone.className = "drop-zone";
+  zone.dataset.uk = pair.uk;
+
+  const translation = document.createElement("div");
+  translation.className = "translation";
+  translation.textContent = pair.en;
+
+  const placeholder = document.createElement("div");
+  placeholder.className = "placeholder";
+  placeholder.textContent = "Drop the Ukrainian phrase here";
+
+  zone.appendChild(translation);
+  zone.appendChild(placeholder);
+
+  zone.addEventListener("dragover", e => {
+    e.preventDefault();
+    zone.classList.add("over");
+  });
+
+  zone.addEventListener("dragleave", () => {
+    zone.classList.remove("over");
+  });
+
+  zone.addEventListener("drop", e => {
+    e.preventDefault();
+    zone.classList.remove("over");
+
+    const uk = e.dataTransfer.getData("text/plain");
+    placePhrase(uk, zone);
+  });
+
+  /* Tablet fallback: tap a translation after selecting a phrase */
+  zone.addEventListener("click", () => {
+    const selected = document.querySelector(".uk-item.selected");
+    if (selected) placePhrase(selected.dataset.uk, zone);
+  });
+
+  enList.appendChild(zone);
+});
+
+function placePhrase(uk, zone) {
+  const item = [...document.querySelectorAll(".uk-item")]
+    .find(x => x.dataset.uk === uk);
+
+  if (!item) return;
+
+  /* If this phrase is already somewhere else, return it first */
+  const currentZone = item.closest(".drop-zone");
+  if (currentZone && currentZone !== zone) {
+    currentZone.classList.remove("correct", "incorrect");
+    currentZone.querySelector(".placeholder").textContent =
+      "Drop the Ukrainian phrase here";
+    currentZone.appendChild(currentZone.querySelector(".placeholder"));
+  }
+
+  /* If destination already has a phrase, return it to the left */
+  const oldItem = zone.querySelector(".uk-item");
+  if (oldItem && oldItem !== item) {
+    ukList.appendChild(oldItem);
+  }
+
+  zone.appendChild(item);
+  zone.querySelector(".placeholder").textContent = "";
+  item.classList.remove("selected");
+}
+
+function checkMatching() {
+  let correct = 0;
+
+  document.querySelectorAll(".drop-zone").forEach(zone => {
+    const item = zone.querySelector(".uk-item");
+    zone.classList.remove("correct", "incorrect");
+
+    if (item && item.dataset.uk === zone.dataset.uk) {
+      zone.classList.add("correct");
+      correct++;
+    } else {
+      zone.classList.add("incorrect");
+    }
+  });
+
+  const feedback = document.getElementById("matchFeedback");
+
+  if (correct === pairs.length) {
+    feedback.className = "feedback success";
+    feedback.textContent = "Excellent! All 7 matches are correct. ✓";
+  } else {
+    feedback.className = "feedback error";
+    feedback.textContent = correct + " / 7 correct. Try again!";
+  }
+}
+
+function resetMatching() {
+  document.querySelectorAll(".drop-zone .uk-item").forEach(item => ukList.appendChild(item));
+
+  document.querySelectorAll(".drop-zone").forEach(zone => {
+    zone.classList.remove("correct", "incorrect");
+    zone.querySelector(".placeholder").textContent =
+      "Drop the Ukrainian phrase here";
+  });
+
+  document.getElementById("matchFeedback").textContent = "";
+}
+
+/* ---------- TASK 2 ---------- */
+
+const sentenceContainer = document.getElementById("sentences");
+
+originalSentences.forEach((sentence, index) => {
+  const card = document.createElement("div");
+  card.className = "sentence-card";
+
+  const title = document.createElement("div");
+  title.className = "sentence-title";
+  title.textContent = "Sentence " + (index + 1);
+
+  const bank = document.createElement("div");
+  bank.className = "word-bank";
+
+  const answer = document.createElement("div");
+  answer.className = "answer";
+
+  const buttons = document.createElement("div");
+  buttons.className = "buttons";
+
+  const check = document.createElement("button");
+  check.className = "check";
+  check.textContent = "Check sentence";
+  check.onclick = () => checkSentence(card, sentence);
+
+  const reset = document.createElement("button");
+  reset.className = "reset";
+  reset.textContent = "Reset";
+  reset.onclick = () => resetSentence(card, sentence);
+
+  const feedback = document.createElement("div");
+  feedback.className = "feedback";
+
+  buttons.appendChild(check);
+  buttons.appendChild(reset);
+
+  card.appendChild(title);
+  card.appendChild(bank);
+  card.appendChild(answer);
+  card.appendChild(buttons);
+  card.appendChild(feedback);
+  sentenceContainer.appendChild(card);
+
+  shuffle(sentence.split(" ")).forEach((word, i) => {
+    bank.appendChild(createWord(word, index + "-" + i));
+  });
+
+  setupWordDrop(bank, answer);
+  setupWordDrop(answer, bank);
+});
+
+function createWord(text, id) {
+  const word = document.createElement("span");
+  word.className = "word";
+  word.textContent = text;
+  word.draggable = true;
+  word.dataset.id = id;
+
+  word.addEventListener("dragstart", e => {
+    e.dataTransfer.setData("text/plain", id);
+    word.classList.add("dragging");
+  });
+
+  word.addEventListener("dragend", () => word.classList.remove("dragging"));
+
+  /* Tap a word to move it between bank and answer */
+  word.addEventListener("click", () => {
+    const parent = word.parentElement;
+    const target = parent.classList.contains("word-bank")
+      ? parent.nextElementSibling
+      : parent.previousElementSibling;
+
+    target.appendChild(word);
+  });
+
+  return word;
+}
+
+function setupWordDrop(area, otherArea) {
+  area.addEventListener("dragover", e => {
+    e.preventDefault();
+    area.style.borderColor = "#315bcf";
+  });
+
+  area.addEventListener("dragleave", () => {
+    area.style.borderColor = "";
+  });
+
+  area.addEventListener("drop", e => {
+    e.preventDefault();
+    area.style.borderColor = "";
+
+    const id = e.dataTransfer.getData("text/plain");
+    const word = document.querySelector('[data-id="' + id + '"]');
+
+    if (word) area.appendChild(word);
+  });
+}
+
+function checkSentence(card, targetSentence) {
+  const answer = [...card.querySelectorAll(".answer .word")]
+    .map(x => x.textContent)
+    .join(" ");
+
+  const feedback = card.querySelector(".feedback");
+
+  if (answer === targetSentence) {
+    feedback.className = "feedback success";
+    feedback.textContent = "Correct! ✓";
+  } else {
+    feedback.className = "feedback error";
+    feedback.textContent = "Not quite. Check the word order and try again.";
+  }
+}
+
+function resetSentence(card, sentence) {
+  const bank = card.querySelector(".word-bank");
+  const answer = card.querySelector(".answer");
+
+  [...answer.querySelectorAll(".word")].forEach(word => bank.appendChild(word));
+  [...bank.querySelectorAll(".word")]
+    .sort(() => Math.random() - 0.5)
+    .forEach(word => bank.appendChild(word));
+
+  card.querySelector(".feedback").textContent = "";
+}
+</script>
+</body>
+</html>
