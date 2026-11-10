@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Місяці року — інтерактивні вправи</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #f7f4ff 0%, #eef8ff 100%);
+    color: #243047;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 28px 18px 50px; }
+  header {
+    text-align: center;
+    background: white;
+    border-radius: 24px;
+    padding: 26px 20px;
+    box-shadow: 0 8px 30px rgba(40,55,90,.10);
+    margin-bottom: 26px;
+  }
+  h1 { margin: 0 0 8px; font-size: clamp(28px, 5vw, 44px); }
+  .subtitle { margin: 0; color: #65718a; font-size: 17px; }
+  .task {
+    background: rgba(255,255,255,.96);
+    border-radius: 24px;
+    padding: 24px;
+    margin: 22px 0;
+    box-shadow: 0 8px 30px rgba(40,55,90,.09);
+  }
+  .task h2 { margin-top: 0; font-size: 25px; }
+  .instructions {
+    background: #f4f7ff;
+    border-left: 5px solid #667eea;
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  /* Season illustrations */
+  .seasons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 18px 0 22px;
+  }
+  .season-card {
+    border-radius: 18px;
+    padding: 13px 8px;
+    text-align: center;
+    font-weight: 700;
+    min-height: 112px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+  }
+  .season-card .icon { font-size: 40px; line-height: 1; }
+  .spring { background: #fff3f7; }
+  .summer { background: #fff9df; }
+  .autumn { background: #fff1e5; }
+  .winter { background: #edf5ff; }
+
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 16px;
+    background: #f8f9fc;
+    border: 2px dashed #b8c0d4;
+    border-radius: 16px;
+    min-height: 70px;
+    margin-bottom: 22px;
+  }
+  .month {
+    background: white;
+    border: 2px solid #7886a8;
+    border-radius: 12px;
+    padding: 10px 15px;
+    font-weight: 700;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    box-shadow: 0 3px 8px rgba(40,55,90,.10);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .month:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(40,55,90,.15); }
+  .month.dragging { opacity: .45; transform: scale(.96); }
+  .month.correct { border-color: #35a66f; background: #eafff3; }
+  .month.wrong { border-color: #d95757; background: #fff0f0; }
+
+  .dropzones {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .dropzone {
+    min-height: 160px;
+    border: 3px dashed #aeb7ca;
+    border-radius: 18px;
+    padding: 14px;
+    background: #fafbfe;
+    transition: .15s;
+  }
+  .dropzone.over {
+    border-color: #667eea;
+    background: #f1f3ff;
+    transform: scale(1.01);
+  }
+  .dropzone h3 { margin: 0 0 10px; font-size: 19px; }
+  .dropzone .hint { color: #8a93a8; font-size: 13px; }
+  .dropzone-items { display: flex; flex-wrap: wrap; gap: 8px; }
+
+  .btn {
+    border: 0;
+    border-radius: 12px;
+    padding: 11px 18px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 18px;
+  }
+  .check { background: #667eea; color: white; }
+  .reset { background: #e9edf7; color: #35405b; margin-left: 8px; }
+  .result { margin-top: 14px; font-weight: 700; min-height: 24px; }
+
+  /* Task 2 */
+  .matching-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .column {
+    background: #f8f9fc;
+    border-radius: 16px;
+    padding: 15px;
+  }
+  .column h3 { margin-top: 0; }
+  .match-item {
+    background: white;
+    border: 2px solid #d1d7e5;
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin: 9px 0;
+    cursor: pointer;
+    transition: .15s;
+    min-height: 46px;
+  }
+  .match-item:hover { border-color: #667eea; transform: translateY(-1px); }
+  .match-item.selected { border-color: #667eea; background: #eef0ff; }
+  .match-item.matched { border-color: #35a66f; background: #eafff3; cursor: default; }
+  .match-item.error { animation: shake .25s; border-color: #d95757; }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    33% { transform: translateX(-5px); }
+    66% { transform: translateX(5px); }
+  }
+  .score {
+    margin-top: 16px;
+    padding: 12px;
+    background: #f4f7ff;
+    border-radius: 12px;
+    font-weight: 700;
+  }
+
+  @media (max-width: 760px) {
+    .seasons { grid-template-columns: repeat(2, 1fr); }
+    .dropzones, .matching-area { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 430px) {
+    .container { padding: 15px 10px 35px; }
+    .task { padding: 17px 13px; }
+    .seasons { gap: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🌸 Місяці року 🌞</h1>
+    <p class="subtitle">Інтерактивні вправи з української та англійської мов</p>
+  </header>
+
+  <section class="task">
+    <h2>Завдання 1. Розподіли місяці за порами року</h2>
+    <div class="instructions">
+      Перетягни кожен місяць у правильне поле: <b>осінні, зимові, весняні або літні місяці</b>.
+      Назви місяців перемішані.
+    </div>
+
+    <div class="seasons">
+      <div class="season-card spring"><div class="icon">🌷</div><div>Весна</div><small>березень • квітень • травень</small></div>
+      <div class="season-card summer"><div class="icon">☀️</div><div>Літо</div><small>червень • липень • серпень</small></div>
+      <div class="season-card autumn"><div class="icon">🍂</div><div>Осінь</div><small>вересень • жовтень • листопад</small></div>
+      <div class="season-card winter"><div class="icon">❄️</div><div>Зима</div><small>грудень • січень • лютий</small></div>
+    </div>
+
+    <div id="wordBank" class="word-bank" aria-label="Назви місяців"></div>
+
+    <div class="dropzones">
+      <div class="dropzone" data-season="autumn">
+        <h3>🍂 Осінні місяці</h3>
+        <div class="dropzone-items"></div>
+        <div class="hint">Перетягни сюди 3 місяці</div>
+      </div>
+      <div class="dropzone" data-season="winter">
+        <h3>❄️ Зимові місяці</h3>
+        <div class="dropzone-items"></div>
+        <div class="hint">Перетягни сюди 3 місяці</div>
+      </div>
+      <div class="dropzone" data-season="spring">
+        <h3>🌷 Весняні місяці</h3>
+        <div class="dropzone-items"></div>
+        <div class="hint">Перетягни сюди 3 місяці</div>
+      </div>
+      <div class="dropzone" data-season="summer">
+        <h3>☀️ Літні місяці</h3>
+        <div class="dropzone-items"></div>
+        <div class="hint">Перетягни сюди 3 місяці</div>
+      </div>
+    </div>
+
+    <button class="btn check" onclick="checkSeasons()">Перевірити</button>
+    <button class="btn reset" onclick="resetSeasons()">Почати знову</button>
+    <div id="seasonResult" class="result"></div>
+  </section>
+
+  <section class="task">
+    <h2>Завдання 2. З'єднай українську та англійську</h2>
+    <div class="instructions">
+      Натисни на слово англійською, а потім на його український відповідник.
+      Спробуй знайти всі 12 пар.
+    </div>
+
+    <div class="matching-area">
+      <div class="column">
+        <h3>🇬🇧 English</h3>
+        <div id="englishColumn"></div>
+      </div>
+      <div class="column">
+        <h3>🇺🇦 Українська</h3>
+        <div id="ukrainianColumn"></div>
+      </div>
+    </div>
+
+    <div id="matchScore" class="score">Знайдено пар: 0 / 12</div>
+    <button class="btn reset" onclick="resetMatching()">Перемішати й почати знову</button>
+  </section>
+</div>
+
+<script>
+const months = [
+  {uk:'вересень', season:'autumn'},
+  {uk:'липень', season:'summer'},
+  {uk:'квітень', season:'spring'},
+  {uk:'грудень', season:'winter'},
+  {uk:'січень', season:'winter'},
+  {uk:'листопад', season:'autumn'},
+  {uk:'травень', season:'spring'},
+  {uk:'жовтень', season:'autumn'},
+  {uk:'лютий', season:'winter'},
+  {uk:'серпень', season:'summer'},
+  {uk:'березень', season:'spring'},
+  {uk:'червень', season:'summer'}
+];
+
+const translations = [
+  ['September','вересень'], ['October','жовтень'], ['November','листопад'],
+  ['December','грудень'], ['January','січень'], ['February','лютий'],
+  ['March','березень'], ['April','квітень'], ['May','травень'],
+  ['June','червень'], ['July','липень'], ['August','серпень']
+];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function createMonth(text, season) {
+  const el = document.createElement('div');
+  el.className = 'month';
+  el.textContent = text;
+  el.draggable = true;
+  el.dataset.season = season;
+  el.dataset.month = text;
+  el.addEventListener('dragstart', e => {
+    el.classList.add('dragging');
+    e.dataTransfer.setData('text/plain', text);
+  });
+  el.addEventListener('dragend', () => el.classList.remove('dragging'));
+  return el;
+}
+
+function initSeasons() {
+  const bank = document.getElementById('wordBank');
+  bank.innerHTML = '';
+  shuffle(months).forEach(m => bank.appendChild(createMonth(m.uk, m.season)));
+
+  document.querySelectorAll('.dropzone').forEach(zone => {
+    zone.addEventListener('dragover', e => {
+      e.preventDefault();
+      zone.classList.add('over');
+    });
+    zone.addEventListener('dragleave', () => zone.classList.remove('over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('over');
+      const text = e.dataTransfer.getData('text/plain');
+      const item = [...document.querySelectorAll('.month')].find(x => x.dataset.month === text);
+      if (item) zone.querySelector('.dropzone-items').appendChild(item);
+    });
+  });
+
+  bank.addEventListener('dragover', e => e.preventDefault());
+  bank.addEventListener('drop', e => {
+    e.preventDefault();
+    const text = e.dataTransfer.getData('text/plain');
+    const item = [...document.querySelectorAll('.month')].find(x => x.dataset.month === text);
+    if (item) bank.appendChild(item);
+  });
+}
+function checkSeasons() {
+  let correct = 0, placed = 0;
+  document.querySelectorAll('.month').forEach(item => {
+    item.classList.remove('correct','wrong');
+    const zone = item.closest('.dropzone');
+    if (zone) {
+      placed++;
+      if (zone.dataset.season === item.dataset.season) {
+        correct++; item.classList.add('correct');
+      } else item.classList.add('wrong');
+    }
+  });
+  const result = document.getElementById('seasonResult');
+  if (correct === 12) {
+    result.textContent = '🎉 Чудово! Усі 12 місяців розподілено правильно!';
+    result.style.color = '#238451';
+  } else {
+    result.textContent = `Правильно: ${correct} / 12. Розміщено: ${placed} / 12. Спробуй ще раз!`;
+    result.style.color = '#5d6780';
+  }
+}
+function resetSeasons() {
+  document.getElementById('seasonResult').textContent = '';
+  document.querySelectorAll('.dropzone-items').forEach(x => x.innerHTML = '');
+  initSeasons();
+}
+
+let selectedEnglish = null;
+let matchedCount = 0;
+
+function initMatching() {
+  selectedEnglish = null;
+  matchedCount = 0;
+  const ec = document.getElementById('englishColumn');
+  const uc = document.getElementById('ukrainianColumn');
+  ec.innerHTML = ''; uc.innerHTML = '';
+
+  shuffle(translations).forEach(([en, uk]) => {
+    const el = document.createElement('div');
+    el.className = 'match-item';
+    el.textContent = en;
+    el.dataset.answer = uk;
+    el.addEventListener('click', () => selectEnglish(el));
+    ec.appendChild(el);
+  });
+
+  shuffle(translations.map(x => x[1])).forEach(uk => {
+    const el = document.createElement('div');
+    el.className = 'match-item';
+    el.textContent = uk;
+    el.dataset.value = uk;
+    el.addEventListener('click', () => selectUkrainian(el));
+    uc.appendChild(el);
+  });
+  updateScore();
+}
+
+function selectEnglish(el) {
+  if (el.classList.contains('matched')) return;
+  document.querySelectorAll('#englishColumn .match-item').forEach(x => x.classList.remove('selected'));
+  selectedEnglish = el;
+  el.classList.add('selected');
+}
+function selectUkrainian(el) {
+  if (!selectedEnglish || el.classList.contains('matched')) return;
+  if (selectedEnglish.dataset.answer === el.dataset.value) {
+    selectedEnglish.classList.remove('selected');
+    selectedEnglish.classList.add('matched');
+    el.classList.add('matched');
+    selectedEnglish = null;
+    matchedCount++;
+    updateScore();
+  } else {
+    el.classList.add('error');
+    selectedEnglish.classList.add('error');
+    setTimeout(() => {
+      el.classList.remove('error');
+      if (selectedEnglish) selectedEnglish.classList.remove('error');
+    }, 300);
+  }
+}
+function updateScore() {
+  const score = document.getElementById('matchScore');
+  score.textContent = matchedCount === 12
+    ? '🎉 Вітаємо! Усі 12 пар знайдено правильно!'
+    : `Знайдено пар: ${matchedCount} / 12`;
+}
+function resetMatching() { initMatching(); }
+
+initSeasons();
+initMatching();
+</script>
+</body>
+</html>
