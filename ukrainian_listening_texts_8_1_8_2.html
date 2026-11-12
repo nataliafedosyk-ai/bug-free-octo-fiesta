@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Українська мова — аудіювання: мій день</title>
+<style>
+:root {
+  --ink:#243247; --muted:#64748b; --blue:#315c9b; --blue2:#eaf2ff;
+  --paper:#ffffff; --bg:#f3f6fb; --line:#dce4ef; --green:#18794e;
+  --red:#b42318; --gold:#f4b942;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0; font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  color:var(--ink); background:linear-gradient(135deg,#eef4ff,#f8f6f0);
+  line-height:1.5;
+}
+header {
+  padding:30px 18px 24px; text-align:center; color:white;
+  background:linear-gradient(120deg,#234b83,#477bb8);
+}
+header h1 { margin:0 0 7px; font-size:clamp(1.5rem,4vw,2.25rem); }
+header p { margin:0; opacity:.92; }
+main { width:min(1050px,94%); margin:24px auto 50px; }
+.task {
+  background:var(--paper); border:1px solid var(--line); border-radius:22px;
+  padding:clamp(16px,3vw,28px); margin:0 0 24px;
+  box-shadow:0 8px 26px rgba(34,57,91,.08);
+}
+.task h2 { margin:0 0 5px; color:#244d83; font-size:1.45rem; }
+.instruction { color:var(--muted); margin:0 0 18px; }
+.video-box {
+  background:#17263b; border-radius:16px; padding:10px; margin:14px 0 22px;
+}
+video { display:block; width:100%; max-height:440px; border-radius:10px; background:#101827; }
+.video-caption { color:#e8eef8; font-size:.9rem; padding:7px 5px 1px; }
+.order-list { display:flex; flex-direction:column; gap:10px; min-height:70px; }
+.sentence {
+  display:flex; align-items:center; gap:12px; padding:13px 14px;
+  border:1px solid #d6e0ed; border-radius:13px; background:#fbfdff;
+  cursor:grab; touch-action:pan-y; user-select:none; -webkit-user-select:none;
+  font-size:clamp(1rem,2.3vw,1.08rem);
+}
+.sentence:active { cursor:grabbing; }
+.sentence.dragging { opacity:.42; border:2px dashed var(--blue); }
+.sentence.over { border:2px solid #75a3df; background:#eef5ff; }
+.handle {
+  flex:0 0 32px; height:32px; display:grid; place-items:center;
+  border-radius:9px; color:var(--blue); background:var(--blue2); font-weight:800;
+}
+.sentence-text { flex:1; }
+.controls { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+button {
+  border:0; border-radius:12px; padding:12px 18px; font-size:1rem;
+  font-weight:700; cursor:pointer; min-height:46px;
+}
+.check { background:var(--blue); color:white; }
+.reset { background:#edf1f6; color:#334155; }
+button:focus-visible, .sentence:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+.feedback { min-height:28px; margin:14px 0 0; font-weight:700; }
+.feedback.good { color:var(--green); }
+.feedback.bad { color:var(--red); }
+.hint { color:var(--muted); font-size:.9rem; margin:12px 0 0; }
+footer { text-align:center; color:var(--muted); padding:0 16px 28px; font-size:.9rem; }
+@media (max-width:600px) {
+  header { padding:24px 14px 20px; }
+  main { width:95%; margin-top:15px; }
+  .task { border-radius:17px; }
+  .sentence { padding:12px 10px; gap:9px; }
+  .handle { flex-basis:29px; height:29px; }
+  .controls button { flex:1 1 130px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Мій день — аудіювання</h1>
+  <p>Послухай відео та розташуй речення в правильному порядку</p>
+</header>
+<main>
+  <section class="task" id="task1">
+    <h2>Завдання 1. Текст 8.1</h2>
+    <p class="instruction">Переглянь відео та розташуй речення в тому порядку, у якому ти їх чуєш.</p>
+    <div class="video-box">
+      <video controls preload="metadata">
+        <source src="text%208.1.mp4" type="video/mp4">
+        Ваш браузер не підтримує відтворення відео.
+      </video>
+      <div class="video-caption">Відео 8.1 · Натисни ▶, щоб прослухати текст.</div>
+    </div>
+    <div class="order-list" aria-label="Речення для впорядкування"></div>
+    <div class="controls">
+      <button class="check" type="button">Перевірити</button>
+      <button class="reset" type="button">Перемішати знову</button>
+    </div>
+    <p class="feedback" aria-live="polite"></p>
+    <p class="hint">На планшеті: перетягни речення або торкнися одного речення, а потім іншого, щоб поміняти їх місцями.</p>
+  </section>
+
+  <section class="task" id="task2">
+    <h2>Завдання 2. Текст 8.2</h2>
+    <p class="instruction">Прослухай друге відео та розташуй речення в правильному порядку.</p>
+    <div class="video-box">
+      <video controls preload="metadata">
+        <source src="text%208.2.mp4" type="video/mp4">
+        Ваш браузер не підтримує відтворення відео.
+      </video>
+      <div class="video-caption">Відео 8.2 · Натисни ▶, щоб прослухати текст.</div>
+    </div>
+    <div class="order-list" aria-label="Речення для впорядкування"></div>
+    <div class="controls">
+      <button class="check" type="button">Перевірити</button>
+      <button class="reset" type="button">Перемішати знову</button>
+    </div>
+    <p class="feedback" aria-live="polite"></p>
+    <p class="hint">На планшеті: перетягни речення або торкнися одного речення, а потім іншого, щоб поміняти їх місцями.</p>
+  </section>
+</main>
+<footer>Порада: можна прослуховувати кожне відео кілька разів.</footer>
+
+<script>
+const tasks = [
+  {
+    id: "task1",
+    sentences: [
+      "Вра́нці я прокида́юся, встаю́ та роблю́ заря́дку.",
+      "По́тім я вмива́юся та прийма́ю душ.",
+      "Пі́сля цьо́го я готу́ю сніда́нок та сні́даю.",
+      "На сніда́нок у ме́не зазвича́й чай або ка́ва та бутербро́ди, йо́гурт та фру́кти.",
+      "Пі́сля сніда́нку я одяга́юся та йду́ на робо́ту.",
+      "Пі́сля робо́ти я вече́ряю в рестора́ні або́ вдо́ма.",
+      "Якщо́ я вече́ряю в рестора́ні, то поті́м я йду́ в кіно́ з дру́зями.",
+      "Якщо́ я вече́ряю вдо́ма, то я одра́зу ляга́ю спа́ти."
+    ]
+  },
+  {
+    id: "task2",
+    sentences: [
+      "Я завжди́ прокида́юся ду́же ра́но, о 6:00 ( шо́стій ) годи́ні.",
+      "Я встаю́, вмива́юся та чи́щу зу́би.",
+      "По́тім я займа́юся йо́гою та прийма́ю душ.",
+      "Пі́сля сніда́нку я їду́ на робо́ту.",
+      "Я прово́джу в о́фісі ці́лий день, тому́ в обі́д я намага́юся ви́йти погуля́ти по па́рку.",
+      "Вве́чері я поверта́юся додо́му.",
+      "Вдо́ма я вече́ряю та відпочива́ю - чита́ю кни́ги або дивлю́ся фі́льми.",
+      "О 10:00 ( деся́тій ) я вже ляга́ю спа́ти."
+    ]
+  }
+];
+
+function shuffle(items) {
+  const a = [...items];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+tasks.forEach(task => {
+  const root = document.getElementById(task.id);
+  const list = root.querySelector(".order-list");
+  const feedback = root.querySelector(".feedback");
+  let selected = null;
+  let dragged = null;
+
+  function makeItem(text, index) {
+    const item = document.createElement("div");
+    item.className = "sentence";
+    item.draggable = true;
+    item.tabIndex = 0;
+    item.setAttribute("role", "button");
+    item.setAttribute("aria-label", "Перемістити речення: " + text);
+    item.dataset.text = text;
+
+    const handle = document.createElement("span");
+    handle.className = "handle";
+    handle.textContent = "↕";
+    handle.setAttribute("aria-hidden", "true");
+    const content = document.createElement("span");
+    content.className = "sentence-text";
+    content.textContent = text;
+    item.append(handle, content);
+
+    item.addEventListener("dragstart", () => {
+      dragged = item;
+      item.classList.add("dragging");
+    });
+    item.addEventListener("dragend", () => {
+      item.classList.remove("dragging");
+      list.querySelectorAll(".over").forEach(el => el.classList.remove("over"));
+      dragged = null;
+    });
+    item.addEventListener("dragover", e => {
+      e.preventDefault();
+      if (dragged && dragged !== item) item.classList.add("over");
+    });
+    item.addEventListener("dragleave", () => item.classList.remove("over"));
+    item.addEventListener("drop", e => {
+      e.preventDefault();
+      item.classList.remove("over");
+      if (dragged && dragged !== item) swapItems(dragged, item);
+    });
+    item.addEventListener("click", () => tapSelect(item));
+    item.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        tapSelect(item);
+      }
+    });
+    return item;
+  }
+
+  function swapItems(a, b) {
+    const children = [...list.children];
+    const ai = children.indexOf(a), bi = children.indexOf(b);
+    if (ai < bi) list.insertBefore(b, a);
+    else list.insertBefore(a, b);
+    clearSelection();
+    feedback.textContent = "";
+    feedback.className = "feedback";
+  }
+
+  function clearSelection() {
+    list.querySelectorAll(".selected").forEach(el => {
+      el.classList.remove("selected");
+      el.style.outline = "";
+      el.setAttribute("aria-pressed", "false");
+    });
+    selected = null;
+  }
+
+  function tapSelect(item) {
+    if (!selected) {
+      selected = item;
+      item.classList.add("selected");
+      item.style.outline = "3px solid #e4a72e";
+      item.setAttribute("aria-pressed", "true");
+    } else if (selected === item) {
+      clearSelection();
+    } else {
+      swapItems(selected, item);
+    }
+  }
+
+  function render(shuffled = true) {
+    list.innerHTML = "";
+    selected = null;
+    const order = shuffled ? shuffle(task.sentences) : task.sentences;
+    order.forEach((sentence, i) => list.appendChild(makeItem(sentence, i)));
+    feedback.textContent = "";
+    feedback.className = "feedback";
+  }
+
+  root.querySelector(".check").addEventListener("click", () => {
+    const current = [...list.children].map(el => el.dataset.text);
+    const correct = current.every((text, i) => text === task.sentences[i]);
+    const count = current.reduce((n, text, i) => n + (text === task.sentences[i] ? 1 : 0), 0);
+    if (correct) {
+      feedback.textContent = "Чудово! Усі речення розташовано правильно!";
+      feedback.className = "feedback good";
+    } else {
+      feedback.textContent = `Правильно розташовано: ${count} із ${task.sentences.length}. Спробуй ще раз!`;
+      feedback.className = "feedback bad";
+    }
+  });
+
+  root.querySelector(".reset").addEventListener("click", () => render(true));
+  render(true);
+});
+</script>
+</body>
+</html>
