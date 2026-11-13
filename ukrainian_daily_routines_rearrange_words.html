@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rearrange the words – Ukrainian routines</title>
+<style>
+:root{--ink:#243047;--muted:#68758b;--blue:#315b91;--pale:#edf4fb;--line:#dce4ee;--green:#18794e;--red:#b93838}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f7fb;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:linear-gradient(120deg,#e5effb,#f8f2e8);padding:26px 18px 22px;text-align:center}
+h1{font-size:clamp(1.5rem,4vw,2.15rem);margin:0 0 8px}
+header p{margin:0;color:#52627a;font-size:1rem}
+main{max-width:980px;margin:22px auto;padding:0 14px 40px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.progress{font-weight:700;color:var(--blue)}
+button{font:inherit;cursor:pointer;border:0;border-radius:12px;padding:12px 17px;font-weight:700;touch-action:manipulation}
+.reset{background:#e4ebf4;color:#29415f}
+.card{background:white;border:1px solid var(--line);border-radius:17px;padding:17px;margin:14px 0;box-shadow:0 3px 12px #23344d0a}
+.cardtop{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.number{font-weight:800;color:var(--blue);font-size:1.05rem}
+.status{font-size:.9rem;font-weight:700;min-height:1.3em}
+.words{display:flex;flex-wrap:wrap;gap:9px;min-height:58px;align-items:center;padding:12px;background:#f7f9fc;border:1px dashed #cbd6e4;border-radius:13px}
+.word{background:#e7f0fb;color:#233f63;border:1px solid #c6d8ed;padding:10px 13px;border-radius:10px;font-size:1rem;font-weight:650;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.word.selected{background:#ffedc2;border-color:#e2ad36;outline:2px solid #e2ad36}
+.word:focus-visible{outline:3px solid #315b91}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:13px}
+.check{background:#315b91;color:white}
+.shuffle{background:#edf1f6;color:#40516a}
+.feedback{font-size:.94rem;font-weight:650;margin:10px 2px 0;min-height:1.3em}
+.feedback.good{color:var(--green)}.feedback.bad{color:var(--red)}
+.hint{color:var(--muted);font-size:.9rem;margin:0 0 15px}
+@media(max-width:560px){.card{padding:13px}.word{padding:11px 12px;font-size:.97rem}.actions button{flex:1}.toolbar button{width:100%}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🧩 Rearrange the words</h1>
+  <p>Put the Ukrainian words in the correct order to make sentences.</p>
+</header>
+<main>
+  <div class="toolbar">
+    <div class="progress" id="progress">Correct sentences: 0 / 14</div>
+    <button class="reset" id="resetAll">↻ Shuffle all sentences</button>
+  </div>
+  <p class="hint">Move the words by dragging them, or tap one word and then tap the position where you want to place it. Check each sentence separately.</p>
+  <div id="tasks"></div>
+</main>
+<script>
+const original = [{"id": 1, "words": ["У", "будні", "я", "завжди", "прокидаюсь", "о", "6.00", "ранку."], "answer": ["У", "будні", "я", "завжди", "прокидаюсь", "о", "6.00", "ранку."]}, {"id": 2, "words": ["У", "будні", "я", "зазвичай", "лягаю", "спати", "о", "10.00", "вечора."], "answer": ["У", "будні", "я", "зазвичай", "лягаю", "спати", "о", "10.00", "вечора."]}, {"id": 3, "words": ["У", "вихідні", "я", "часто", "читаю", "книги", "та", "дивлюсь", "фільми."], "answer": ["У", "вихідні", "я", "часто", "читаю", "книги", "та", "дивлюсь", "фільми."]}, {"id": 4, "words": ["У", "вихідні", "я", "ніколи", "не", "навчаюсь", "в", "школі."], "answer": ["У", "вихідні", "я", "ніколи", "не", "навчаюсь", "в", "школі."]}, {"id": 5, "words": ["Кожного", "ранку", "о", "7:00", "я", "готую", "сніданок", "та", "снідаю."], "answer": ["Кожного", "ранку", "о", "7:00", "я", "готую", "сніданок", "та", "снідаю."]}, {"id": 6, "words": ["Кожного", "вечора", "о", "8:00", "я", "розмовляю", "з", "другом", "по", "телефону."], "answer": ["Кожного", "вечора", "о", "8:00", "я", "розмовляю", "з", "другом", "по", "телефону."]}, {"id": 7, "words": ["Зранку", "я", "зазвичай", "роблю", "зарядку."], "answer": ["Зранку", "я", "зазвичай", "роблю", "зарядку."]}, {"id": 8, "words": ["Вдень", "я", "іноді", "займаюсь", "спортом."], "answer": ["Вдень", "я", "іноді", "займаюсь", "спортом."]}, {"id": 9, "words": ["Я", "рідко", "повертаюсь", "додому", "після", "11:00", "вечора."], "answer": ["Я", "рідко", "повертаюсь", "додому", "після", "11:00", "вечора."]}, {"id": 10, "words": ["У", "вихідні", "я", "ніколи", "не", "займаюсь", "спортом."], "answer": ["У", "вихідні", "я", "ніколи", "не", "займаюсь", "спортом."]}, {"id": 11, "words": ["Ввечері", "я", "зазвичай", "відпочиваю."], "answer": ["Ввечері", "я", "зазвичай", "відпочиваю."]}, {"id": 12, "words": ["Кожного", "ранку", "і", "кожного", "вечора", "я", "вмиваюсь", "і", "чищу", "зуби."], "answer": ["Кожного", "ранку", "і", "кожного", "вечора", "я", "вмиваюсь", "і", "чищу", "зуби."]}, {"id": 13, "words": ["Іноді", "я", "готую", "сніданок,", "але", "я", "ніколи", "не", "готую", "вечерю."], "answer": ["Іноді", "я", "готую", "сніданок,", "але", "я", "ніколи", "не", "готую", "вечерю."]}, {"id": 14, "words": ["Об", "11:00", "ранку", "в", "неділю", "я", "ходжу", "до", "церкви."], "answer": ["Об", "11:00", "ранку", "в", "неділю", "я", "ходжу", "до", "церкви."]}];
+const tasksEl = document.getElementById('tasks');
+const completed = new Set();
+
+function shuffled(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  if(a.join(' ')===arr.join(' ') && a.length>1) [a[0],a[1]]=[a[1],a[0]];
+  return a;
+}
+function makeCard(item){
+  const card=document.createElement('section'); card.className='card'; card.dataset.id=item.id;
+  card.innerHTML=`<div class="cardtop"><span class="number">Sentence ${item.id}</span><span class="status" aria-live="polite"></span></div>
+    <div class="words" aria-label="Words to arrange"></div>
+    <div class="actions"><button class="check">✓ Check sentence</button><button class="shuffle">↻ Shuffle words</button></div>
+    <div class="feedback" aria-live="polite"></div>`;
+  const zone=card.querySelector('.words');
+  let selected=null;
+  function addWord(word){
+    const el=document.createElement('button');el.type='button';el.className='word';el.textContent=word;el.draggable=true;
+    el.addEventListener('click',()=>{
+      if(!selected){selected=el;el.classList.add('selected');return;}
+      if(selected===el){selected.classList.remove('selected');selected=null;return;}
+      const nodes=[...zone.children], from=nodes.indexOf(selected), to=nodes.indexOf(el);
+      if(from<to) zone.insertBefore(selected,el.nextSibling); else zone.insertBefore(selected,el);
+      selected.classList.remove('selected');selected=null;
+    });
+    el.addEventListener('dragstart',e=>{e.dataTransfer.setData('text/plain','');dragged=el;});
+    el.addEventListener('dragover',e=>e.preventDefault());
+    el.addEventListener('drop',e=>{e.preventDefault();if(dragged&&dragged!==el){const nodes=[...zone.children],from=nodes.indexOf(dragged),to=nodes.indexOf(el);if(from<to)zone.insertBefore(dragged,el.nextSibling);else zone.insertBefore(dragged,el);}});
+    zone.appendChild(el);
+  }
+  let dragged=null;
+  function fill(words){zone.innerHTML='';selected=null;words.forEach(addWord);}
+  function mix(){fill(shuffled(item.words));card.querySelector('.feedback').textContent='';card.querySelector('.feedback').className='feedback';card.querySelector('.status').textContent='';completed.delete(item.id);updateProgress();}
+  fill(shuffled(item.words));
+  card.querySelector('.shuffle').addEventListener('click',mix);
+  card.querySelector('.check').addEventListener('click',()=>{
+    const attempt=[...zone.children].map(x=>x.textContent);
+    const correct=attempt.length===item.answer.length && attempt.every((w,i)=>w===item.answer[i]);
+    const fb=card.querySelector('.feedback'), status=card.querySelector('.status');
+    if(correct){fb.textContent='Excellent! The sentence is correct.';fb.className='feedback good';status.textContent='✓ Correct';completed.add(item.id);}
+    else{fb.textContent='Not quite. Try rearranging the words and check again.';fb.className='feedback bad';status.textContent='Try again';completed.delete(item.id);}
+    updateProgress();
+  });
+  return card;
+}
+function updateProgress(){document.getElementById('progress').textContent=`Correct sentences: ${completed.size} / ${original.length}`;}
+function render(){tasksEl.innerHTML='';completed.clear();original.forEach(item=>tasksEl.appendChild(makeCard(item)));updateProgress();}
+document.getElementById('resetAll').addEventListener('click',render);
+render();
+</script>
+</body>
+</html>
