@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Daily Routine – Ukrainian activities</title>
+<style>
+:root{--blue:#315f91;--ink:#243a55;--line:#d8e2ee;--green:#18794e;--red:#b93838}
+*{box-sizing:border-box}body{margin:0;background:#f3f7fb;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+header{text-align:center;padding:24px 15px;background:linear-gradient(120deg,#e4effb,#fff2df)}header .emoji{font-size:1.8rem;letter-spacing:.3rem}h1{font-size:clamp(1.5rem,4vw,2.1rem);margin:5px 0}header p{margin:0;color:#52647b}
+main{max-width:1000px;margin:22px auto;padding:0 13px 40px}.task{background:white;border:1px solid var(--line);border-radius:18px;padding:clamp(14px,3vw,22px);margin:18px 0;box-shadow:0 4px 14px #20354d0a}
+h2{font-size:1.25rem;margin:0 0 7px}.instruction{color:#66768a;line-height:1.5;margin:0 0 16px}
+button{font:inherit;font-weight:700;border:0;border-radius:11px;padding:11px 15px;cursor:pointer;touch-action:manipulation;min-height:44px}
+.primary{background:var(--blue);color:white}.secondary,.move{background:#eaf0f6;color:#334c69}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.feedback{font-weight:700;min-height:1.4em;margin:12px 0 0}.good{color:var(--green)}.bad{color:var(--red)}
+.orderlist{display:flex;flex-direction:column;gap:8px}.orderitem{display:flex;align-items:center;gap:9px;padding:9px;background:#f8fafc;border:1px solid var(--line);border-radius:12px;min-height:60px}.orderitem.dragging{opacity:.4}.orderitem.over{border:2px dashed var(--blue)}
+.ordertext{flex:1;line-height:1.45}.num{font-weight:800;color:var(--blue);min-width:22px}.grip{color:#8795a7;font-size:1.2rem}
+.moves{display:flex;gap:5px}.move{padding:7px 10px}.matchgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.coltitle{font-weight:800;color:var(--blue);margin:0 0 9px}
+.beginlist,.endlist{display:flex;flex-direction:column;gap:9px}.begin{padding:11px;border:1px solid var(--line);border-radius:12px;background:#f8fafc;display:flex;flex-direction:column;gap:8px;line-height:1.45}
+.slot{padding:9px;border:2px dashed #bdcbdc;border-radius:10px;background:white;color:#8290a2;min-height:44px;display:flex;align-items:center}.slot.filled{border-style:solid;border-color:#a9c2df;background:#eef5fc;color:var(--ink)}.slot.over{background:#e6f2ff;border-color:var(--blue)}
+.end{padding:12px;border:1px solid #ead6ac;border-radius:12px;background:#fff7e8;line-height:1.45;min-height:55px;cursor:grab;touch-action:pan-y;user-select:none;-webkit-user-select:none}
+.end.selected{outline:3px solid #f4c76b;background:#fff0c9}.end.used{opacity:.4}.pairstatus{font-size:.86rem;font-weight:750;min-height:1.1em}
+@media(max-width:680px){.matchgrid{grid-template-columns:1fr}.actions button{flex:1}.orderitem{align-items:flex-start}.moves{flex-direction:column}.move{padding:7px 9px}}
+</style></head><body>
+<header><div class="emoji">🌅 🥣 🎒 📚 🌙</div><h1>My Daily Routine</h1><p>Listening: put the sentences in order · Matching: join the sentence halves</p></header>
+<main>
+<section class="task"><h2>Task 1. Put the sentences in order</h2>
+<p class="instruction">Listen to the recording. Rearrange the sentences so that they follow the order in which you hear them. Drag the sentences, or use the arrow buttons to move them up and down.</p>
+<div class="orderlist" id="orderList"></div>
+<div class="actions"><button class="primary" id="checkOrder">✓ Check the order</button><button class="secondary" id="shuffleOrder">↻ Shuffle sentences</button><button class="secondary" id="resetOrder">Reset</button></div>
+<p class="feedback" id="orderFeedback" aria-live="polite"></p>
+</section>
+<section class="task"><h2>Task 2. Match the sentence beginnings and endings</h2>
+<p class="instruction">The beginnings are in the original order. Match each beginning with the correct ending. Drag an ending to a dotted space, or tap an ending and then tap the space where it belongs. You can change your answers at any time.</p>
+<div class="matchgrid"><div><p class="coltitle">Sentence beginnings</p><div class="beginlist" id="beginList"></div></div>
+<div><p class="coltitle">Sentence endings (mixed up)</p><div class="endlist" id="endList"></div></div></div>
+<div class="actions"><button class="primary" id="checkMatches">✓ Check matches</button><button class="secondary" id="shuffleEnds">↻ Shuffle endings</button><button class="secondary" id="resetMatches">Reset matches</button></div>
+<p class="feedback" id="matchFeedback" aria-live="polite"></p>
+<p style="color:#68778b;font-size:.9rem;margin-bottom:0">Tablet tip: tap an ending first, then tap the dotted space beside the sentence beginning.</p>
+</section></main>
+<script>
+const D={"order": ["Щоранку я прокидаюся о 6:00 та готую сніданок.", "Мої діти встають о 7:00, снідають, одягаються та збирають портфелі.", "О 8:00 я проводжаю їх до школи, а сама їду на роботу.", "Під час обідньої перерви я їм та слухаю аудіокнигу.", "Зі школи дітей забирає мій чоловік.", "Я повертаюся додому десь о 6:00 та ми всі вечеряємо.", "Перед сном я читаю дітям книгу.", "О 10:00 ми лягаємо спати."], "beginnings": ["Вона готує сніданок,", "Діти встають о 7:00 ранку,", "О 8:00 вони виходять із дому,", "Вдень вона слухає аудіокнигу", "Її чоловік забирає дітей зі школи,", "Вони всі разом вечеряють", "Перед сном вона не дивиться фільм,"], "endings": ["тому що прокидається рано.", "тому що йдуть до школи.", "тому що йдуть до школи і на роботу.", "під час обідньої перерви.", "тому що вона повертається додому десь о 6:00.", "коли повертаються додому ввечері.", "а читає дітям книгу."]};
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}if(a.length>1&&a.every((v,i)=>v===arguments[0][i]))[a[0],a[1]]=[a[1],a[0]];return a}
+let orderItems=shuffle(D.order),dragOrder=null;const orderList=document.getElementById('orderList');
+function renderOrder(){orderList.innerHTML='';orderItems.forEach((s,i)=>{let r=document.createElement('div');r.className='orderitem';r.draggable=true;
+let grip=document.createElement('span');grip.className='grip';grip.textContent='⠿';
+let n=document.createElement('span');n.className='num';n.textContent=(i+1)+'.';
+let t=document.createElement('span');t.className='ordertext';t.textContent=s;
+let controls=document.createElement('span');controls.className='moves';
+[['↑',i-1],['↓',i+1]].forEach(([label,to])=>{let b=document.createElement('button');b.className='move';b.textContent=label;b.disabled=to<0||to>=orderItems.length;b.addEventListener('click',()=>move(i,to));controls.append(b)});
+r.append(grip,n,t,controls);r.addEventListener('dragstart',()=>{dragOrder=i;r.classList.add('dragging')});r.addEventListener('dragend',()=>{dragOrder=null;r.classList.remove('dragging')});r.addEventListener('dragover',e=>{e.preventDefault();r.classList.add('over')});r.addEventListener('dragleave',()=>r.classList.remove('over'));r.addEventListener('drop',e=>{e.preventDefault();r.classList.remove('over');if(dragOrder!==null)move(dragOrder,i)});orderList.append(r)})}
+function move(a,b){if(b<0||b>=orderItems.length||a===b)return;let x=[...orderItems];let [v]=x.splice(a,1);x.splice(b,0,v);orderItems=x;renderOrder();document.getElementById('orderFeedback').textContent=''}
+function setOrderFeedback(ok){let f=document.getElementById('orderFeedback');f.textContent=ok?'Excellent! All 8 sentences are in the correct order.':'Not quite. Listen again and try changing the order.';f.className='feedback '+(ok?'good':'bad')}
+document.getElementById('checkOrder').onclick=()=>setOrderFeedback(orderItems.every((s,i)=>s===D.order[i]));
+document.getElementById('shuffleOrder').onclick=()=>{orderItems=shuffle(D.order);renderOrder();document.getElementById('orderFeedback').textContent=''};
+document.getElementById('resetOrder').onclick=()=>{orderItems=[...D.order];renderOrder();document.getElementById('orderFeedback').textContent='Original order restored.'};
+renderOrder();
+
+let matches=Array(7).fill(null),display=shuffle(D.endings.map((_,i)=>i)),selected=null,dragEnd=null;
+const beginList=document.getElementById('beginList'),endList=document.getElementById('endList');
+function place(endIdx,beginIdx){matches=matches.map(v=>v===endIdx?null:v);matches[beginIdx]=endIdx;selected=null;renderMatch();document.getElementById('matchFeedback').textContent=''}
+function renderMatch(){
+ beginList.innerHTML='';D.beginnings.forEach((b,i)=>{let card=document.createElement('div');card.className='begin';
+ let text=document.createElement('strong');text.textContent=(i+1)+'. '+b;
+ let slot=document.createElement('div');slot.className='slot'+(matches[i]!==null?' filled':'');slot.textContent=matches[i]===null?'Tap here or drop an ending':D.endings[matches[i]];
+ slot.addEventListener('click',()=>{if(selected!==null)place(selected,i)});
+ slot.addEventListener('dragover',e=>{e.preventDefault();slot.classList.add('over')});slot.addEventListener('dragleave',()=>slot.classList.remove('over'));slot.addEventListener('drop',e=>{e.preventDefault();slot.classList.remove('over');if(dragEnd!==null)place(dragEnd,i)});
+ let st=document.createElement('div');st.className='pairstatus';st.id='pair'+i;card.append(text,slot,st);beginList.append(card)});
+ endList.innerHTML='';let used=matches.filter(x=>x!==null);
+ display.forEach(idx=>{let el=document.createElement('div');el.className='end'+(selected===idx?' selected':'')+(used.includes(idx)?' used':'');el.textContent=D.endings[idx];el.draggable=true;
+ el.addEventListener('click',()=>{if(used.includes(idx))return;selected=selected===idx?null:idx;renderMatch()});
+ el.addEventListener('dragstart',()=>{dragEnd=idx;el.classList.add('dragging')});el.addEventListener('dragend',()=>{dragEnd=null;el.classList.remove('dragging')});endList.append(el)});
+ document.getElementById('matchProgress')?.remove();
+}
+document.getElementById('checkMatches').onclick=()=>{let n=0;matches.forEach((v,i)=>{let s=document.getElementById('pair'+i);if(v===i){s.textContent='✓ Correct';s.className='pairstatus good';n++}else{s.textContent=v===null?'Choose an ending':'Try again';s.className='pairstatus bad'}});let f=document.getElementById('matchFeedback');f.textContent=n===7?'Excellent! All 7 matches are correct.':`You have ${n} correct match${n===1?'':'es'} out of 7.`;f.className='feedback '+(n===7?'good':'bad')};
+function resetMatch(){matches=Array(7).fill(null);selected=null;display=shuffle(D.endings.map((_,i)=>i));renderMatch();document.getElementById('matchFeedback').textContent=''}
+document.getElementById('shuffleEnds').onclick=resetMatch;document.getElementById('resetMatches').onclick=resetMatch;
+renderMatch();
+</script></body></html>
