@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#315b73">
+<title>Ukrainian Listening & Reading — Texts 8.8 and 8.9</title>
+<style>
+:root{--ink:#20313b;--muted:#61717a;--blue:#315b73;--blue2:#e8f1f5;--gold:#f3c969;--paper:#fff;--bg:#f3f6f7;--green:#28734d;--red:#a33d3d;--line:#d9e2e6;--shadow:0 5px 18px rgba(28,55,68,.08)}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
+header{background:linear-gradient(125deg,#24485e,#477b91);color:white;padding:30px 20px 28px;text-align:center}header h1{font-size:clamp(1.5rem,4vw,2.25rem);margin:0 0 7px}header p{margin:0;color:#e6f0f4}
+main{max-width:920px;margin:24px auto;padding:0 15px 48px}.task{background:var(--paper);border-radius:18px;padding:clamp(17px,3vw,28px);margin:0 0 24px;box-shadow:var(--shadow);border:1px solid #e8edef}.task-heading{display:flex;align-items:center;gap:12px;margin-bottom:8px}.number{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:var(--gold);font-weight:800;font-size:1.15rem;flex:none}.task h2{font-size:clamp(1.25rem,3vw,1.65rem);margin:0}.intro{color:var(--muted);margin:5px 0 18px}
+.audio-box{background:var(--blue2);border-radius:14px;padding:15px;margin:16px 0 20px}.audio-box strong{display:block;margin-bottom:8px}.audio-box audio{width:100%;display:block;min-height:44px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.btn{border:0;border-radius:11px;padding:12px 17px;min-height:46px;font-size:1rem;font-weight:700;cursor:pointer;background:var(--blue);color:#fff;touch-action:manipulation}.btn.secondary{background:#e8eef1;color:var(--ink)}.btn:focus-visible,.word:focus-visible{outline:3px solid #e0a91e;outline-offset:3px}
+.hint{font-size:.92rem;color:var(--muted);margin:8px 0}.sentence-list{list-style:none;padding:0;margin:16px 0;display:grid;gap:10px}.sentence{display:flex;align-items:center;gap:10px;padding:11px 12px;border:1px solid var(--line);border-radius:13px;background:#fff;min-height:66px}.sentence .sentence-text{flex:1;font-size:1.02rem}.move-buttons{display:flex;gap:5px}.move{width:42px;height:42px;border:1px solid #cbd8de;border-radius:10px;background:#f3f7f8;color:var(--ink);font-size:1.15rem;font-weight:800;cursor:pointer;touch-action:manipulation}.move:disabled{opacity:.3;cursor:default}.result{margin-top:12px;padding:13px 15px;border-radius:12px;font-weight:650;display:none}.result.good{display:block;background:#e7f4ec;color:var(--green)}.result.try{display:block;background:#fff2e6;color:#87521c}
+.reading{font-size:clamp(1.15rem,2.8vw,1.42rem);line-height:2.25;background:#fbfcfc;border:1px solid var(--line);border-radius:15px;padding:17px 15px;margin:18px 0}.word{display:inline;border:0;background:#e9f2f6;color:#17445b;border-radius:7px;padding:3px 5px;margin:0 1px;font:inherit;line-height:2.1;cursor:pointer;touch-action:manipulation}.word:active,.word.selected{background:#ffe7a6;color:#49360a}.translation{border:1px solid #d6e3e9;background:#f2f7f9;border-radius:13px;padding:14px 16px;min-height:76px;margin-top:14px}.translation .uk{font-weight:800;color:var(--blue);font-size:1.12rem}.translation .en{font-size:1.05rem;margin-top:3px}.translation .tip{font-size:.86rem;color:var(--muted)}.small-note{font-size:.9rem;color:var(--muted)}footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 15px 25px}
+@media(max-width:540px){header{padding:24px 15px}.sentence{align-items:flex-start}.sentence .sentence-text{font-size:.96rem}.move{width:39px;height:39px}.task{border-radius:14px}.reading{padding:13px 10px}}
+</style>
+</head>
+<body>
+<header><h1>Ukrainian Listening & Reading</h1><p>Texts 8.8 and 8.9 · Listen, arrange, read and explore vocabulary</p></header>
+<main>
+<section class="task" aria-labelledby="task1-title">
+ <div class="task-heading"><div class="number">1</div><h2 id="task1-title">Listening: Put the sentences in order</h2></div>
+ <p class="intro">Listen to audio text 8.8. Arrange the sentences in the order in which you hear them.</p>
+ <div class="audio-box"><strong>Audio text 8.8</strong><audio controls preload="metadata"><source src="audio-text-8-8.mp4" type="audio/mp4">Your browser does not support the audio element.</audio></div>
+ <div class="controls"><button class="btn secondary" id="shuffle">Shuffle sentences</button><button class="btn secondary" id="reset">Start again</button><button class="btn" id="check">Check my order</button></div>
+ <p class="hint">Use the ↑ and ↓ buttons to move each sentence. You can also listen again as often as you need.</p>
+ <ol class="sentence-list" id="sentenceList" aria-label="Sentences to arrange"></ol>
+ <div class="result" id="orderResult" role="status" aria-live="polite"></div>
+</section>
+<section class="task" aria-labelledby="task2-title">
+ <div class="task-heading"><div class="number">2</div><h2 id="task2-title">Reading: Click the words</h2></div>
+ <p class="intro">First, listen to audio text 8.9. Then read the Ukrainian text. Tap or click any word to see its English translation.</p>
+ <div class="audio-box"><strong>Audio text 8.9</strong><audio controls preload="metadata"><source src="audio-text-8-9.mp4" type="audio/mp4">Your browser does not support the audio element.</audio></div>
+ <div class="reading" id="readingText" lang="uk" aria-label="Ukrainian reading text"></div>
+ <div class="translation" id="translationBox" aria-live="polite"><div class="tip">Word translation</div><div class="en">Tap any Ukrainian word in the text above.</div></div>
+ <p class="small-note">Tip: The stress marks (´) are kept in the Ukrainian text. Tap a word again whenever you want to review its meaning.</p>
+</section>
+</main>
+<footer>Ukrainian practice · Texts 8.8–8.9</footer>
+<script>
+const originalSentences = [
+ {id:1,text:'У нас вели́кий буди́нок, в яко́му бага́то робо́ти.'},
+ {id:2,text:'Тож ко́жен ма́є свої́ обо́в\'язки.'},
+ {id:3,text:'Моя́ ма́ма готу́є ї́жу.'},
+ {id:4,text:'Мій ба́тько пилосо́сить та ми́є підло́гу.'},
+ {id:5,text:'Моя́ сестра́ догляда́є за са́дом та газо́ном.'},
+ {id:6,text:'Мій брат купу́є проду́кти.'},
+ {id:7,text:'А я вигу́люю та году́ю на́шу соба́ку.'},
+ {id:8,text:'До́бре що в нас є суча́сна побуто́ва те́хніка, що зна́чно поле́гшує життя́.'},
+ {id:9,text:'По субо́тах ми всі разо́м ро́бимо генера́льне прибира́ння.'},
+ {id:10,text:'Відпочива́ємо ми тако́ж разо́м - йдемо́ на пікні́к або́ на прогу́лянку по мі́сту.'}
+];
+let current = [];
+const list = document.getElementById('sentenceList');
+const result = document.getElementById('orderResult');
+function shuffled(items){let a=[...items];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}if(a.every((x,i)=>x.id===i+1)){[a[0],a[1]]=[a[1],a[0]];}return a;}
+function renderSentences(){list.innerHTML='';current.forEach((item,index)=>{const li=document.createElement('li');li.className='sentence';const text=document.createElement('span');text.className='sentence-text';text.textContent=item.text;const controls=document.createElement('span');controls.className='move-buttons';const up=document.createElement('button');up.className='move';up.type='button';up.textContent='↑';up.setAttribute('aria-label','Move sentence up');up.disabled=index===0;up.addEventListener('click',()=>move(index,-1));const down=document.createElement('button');down.className='move';down.type='button';down.textContent='↓';down.setAttribute('aria-label','Move sentence down');down.disabled=index===current.length-1;down.addEventListener('click',()=>move(index,1));controls.append(up,down);li.append(text,controls);list.append(li);});}
+function move(index,delta){const target=index+delta;if(target<0||target>=current.length)return;[current[index],current[target]]=[current[target],current[index]];result.className='result';result.style.display='none';renderSentences();}
+function shuffleNow(){current=shuffled(originalSentences);result.className='result';result.style.display='none';renderSentences();}
+document.getElementById('shuffle').addEventListener('click',shuffleNow);
+document.getElementById('reset').addEventListener('click',()=>{current=originalSentences.map(x=>({...x}));result.className='result';result.style.display='none';renderSentences();});
+document.getElementById('check').addEventListener('click',()=>{const correct=current.every((x,i)=>x.id===i+1);result.textContent=correct?'Excellent! All 10 sentences are in the correct order.':'Not quite. Listen again and try changing the order. You can move the sentences up or down.';result.className='result '+(correct?'good':'try');result.style.display='block';});
+shuffleNow();
+
+const text = `Я фріла́нсер та працю́ю вдо́ма. Ці́лий день я сиджу́ за комп'ю́тером. Ко́жні дві годи́ни я роблю́ коро́ткі пере́рви, щоб відпочи́ти та відволікти́ся. Під час пере́рви я їм та роблю́ дома́шні спра́ви: запуска́ю пра́льну маши́ну, виві́шую біли́зну, пилосошу, витира́ю пил та полива́ю кві́ти. Вве́чері вся робо́та ви́конана і я мо́жу відпочи́ти. Оскі́льки я працю́ю вдо́ма, то відпочива́ти я намага́юся деі́нде.`;
+const translations = {
+'я':'I','фріла́нсер':'freelancer','та':'and','працю́ю':'I work','вдо́ма':'at home','ці́лий':'whole / entire','день':'day','сиджу́':'I sit','за':'at / in front of','комп\'ю́тером':'computer','ко́жні':'every','дві':'two','годи́ни':'hours','роблю́':'I do / I make','коро́ткі':'short','пере́рви':'breaks','щоб':'so that / in order to','відпочи́ти':'to rest','відволікти́ся':'to take a break / distract oneself','під':'during (in “під час”)','час':'time','їм':'I eat','дома́шні':'household','спра́ви':'chores / tasks','запуска́ю':'I start / switch on','пра́льну':'washing (machine)','маши́ну':'machine','виві́шую':'I hang out','біли́зну':'laundry','пилосошу':'I vacuum','витира́ю':'I wipe','пил':'dust','полива́ю':'I water','кві́ти':'flowers','вве́чері':'in the evening','вся':'all / the whole','робо́та':'work','ви́конана':'completed / done','і':'and','мо́жу':'I can','оскі́льки':'since / because','то':'then / so','відпочива́ти':'to rest','намага́юся':'I try','деі́нде':'somewhere else / elsewhere'
+};
+function stripPunctuation(word){return word.replace(/^[“”"'«»([{]+|[.,!?;:…»”"'\])}]+$/g,'');}
+const reading = document.getElementById('readingText');
+const words = text.split(/(\s+)/);
+words.forEach(part=>{if(/^\s+$/.test(part)){reading.append(document.createTextNode(part));return;}const clean=stripPunctuation(part);const key=clean.toLocaleLowerCase('uk-UA');const meaning=translations[key];if(!clean||!meaning){reading.append(document.createTextNode(part));return;}const leading=part.match(/^[“”"'«»([{]+/u)?.[0]||'';const trailing=part.match(/[.,!?;:…»”"'\])}]+$/u)?.[0]||'';const button=document.createElement('button');button.type='button';button.className='word';button.textContent=clean;button.setAttribute('aria-label',clean+', '+meaning);button.addEventListener('click',()=>{document.querySelectorAll('.word.selected').forEach(el=>el.classList.remove('selected'));button.classList.add('selected');document.getElementById('translationBox').innerHTML='';const uk=document.createElement('div');uk.className='uk';uk.textContent=clean;const en=document.createElement('div');en.className='en';en.textContent=meaning;document.getElementById('translationBox').append(uk,en);});reading.append(document.createTextNode(leading));reading.append(button);reading.append(document.createTextNode(trailing));});
+</script>
+</body>
+</html>
