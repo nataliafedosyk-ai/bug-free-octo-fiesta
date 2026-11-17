@@ -3,354 +3,75 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Giver — Interactive Vocabulary</title>
+<meta name="theme-color" content="#315b73">
+<title>Ukrainian Listening & Reading — Texts 8.8 and 8.9</title>
 <style>
-  :root {
-    --ink:#243447; --muted:#667085; --paper:#f7f8fa; --card:#ffffff;
-    --accent:#5967d8; --accent-soft:#eef0ff; --border:#e2e5ea;
-  }
-  * { box-sizing:border-box; }
-  body {
-    margin:0; background:var(--paper); color:var(--ink);
-    font-family: Inter, Arial, sans-serif; line-height:1.55;
-  }
-  .wrap { max-width:900px; margin:0 auto; padding:42px 22px 60px; }
-  header {
-    background:linear-gradient(135deg,#eef0ff,#ffffff);
-    border:1px solid var(--border); border-radius:20px;
-    padding:28px 30px; margin-bottom:24px;
-  }
-  h1 { margin:0 0 8px; font-size:30px; }
-  .subtitle { margin:0; color:var(--muted); }
-  .instructions {
-    margin-top:18px; padding:14px 16px; background:white;
-    border-left:4px solid var(--accent); border-radius:8px;
-    font-size:14px;
-  }
-  .search {
-    width:100%; padding:13px 15px; border:1px solid var(--border);
-    border-radius:12px; font-size:16px; margin:0 0 16px;
-    outline:none;
-  }
-  .search:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-soft); }
-  .card {
-    background:var(--card); border:1px solid var(--border);
-    border-radius:14px; margin:10px 0; overflow:hidden;
-    box-shadow:0 2px 8px rgba(20,30,50,.04);
-  }
-  .word {
-    width:100%; border:0; background:white; cursor:pointer;
-    padding:16px 18px; display:flex; justify-content:space-between;
-    align-items:center; text-align:left; color:var(--ink); font-size:18px; font-weight:700;
-  }
-  .word:hover { background:#fafaff; }
-  .chevron { color:var(--accent); font-size:22px; font-weight:400; }
-  .details { display:none; padding:0 20px 19px; border-top:1px solid var(--border); }
-  .details.open { display:block; }
-  .pos {
-    display:inline-block; margin-top:14px; padding:3px 9px;
-    background:var(--accent-soft); color:var(--accent); border-radius:999px;
-    font-size:12px; font-weight:700; text-transform:uppercase;
-  }
-  .details p { margin:10px 0 0; }
-  .footer { color:var(--muted); font-size:13px; margin-top:24px; text-align:center; }
+:root{--ink:#20313b;--muted:#61717a;--blue:#315b73;--blue2:#e8f1f5;--gold:#f3c969;--paper:#fff;--bg:#f3f6f7;--green:#28734d;--red:#a33d3d;--line:#d9e2e6;--shadow:0 5px 18px rgba(28,55,68,.08)}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}
+header{background:linear-gradient(125deg,#24485e,#477b91);color:white;padding:30px 20px 28px;text-align:center}header h1{font-size:clamp(1.5rem,4vw,2.25rem);margin:0 0 7px}header p{margin:0;color:#e6f0f4}
+main{max-width:920px;margin:24px auto;padding:0 15px 48px}.task{background:var(--paper);border-radius:18px;padding:clamp(17px,3vw,28px);margin:0 0 24px;box-shadow:var(--shadow);border:1px solid #e8edef}.task-heading{display:flex;align-items:center;gap:12px;margin-bottom:8px}.number{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:var(--gold);font-weight:800;font-size:1.15rem;flex:none}.task h2{font-size:clamp(1.25rem,3vw,1.65rem);margin:0}.intro{color:var(--muted);margin:5px 0 18px}
+.audio-box{background:var(--blue2);border-radius:14px;padding:15px;margin:16px 0 20px}.audio-box strong{display:block;margin-bottom:8px}.audio-box audio{width:100%;display:block;min-height:44px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.btn{border:0;border-radius:11px;padding:12px 17px;min-height:46px;font-size:1rem;font-weight:700;cursor:pointer;background:var(--blue);color:#fff;touch-action:manipulation}.btn.secondary{background:#e8eef1;color:var(--ink)}.btn:focus-visible,.word:focus-visible{outline:3px solid #e0a91e;outline-offset:3px}
+.hint{font-size:.92rem;color:var(--muted);margin:8px 0}.sentence-list{list-style:none;padding:0;margin:16px 0;display:grid;gap:10px}.sentence{display:flex;align-items:center;gap:10px;padding:11px 12px;border:1px solid var(--line);border-radius:13px;background:#fff;min-height:66px}.sentence .sentence-text{flex:1;font-size:1.02rem}.move-buttons{display:flex;gap:5px}.move{width:42px;height:42px;border:1px solid #cbd8de;border-radius:10px;background:#f3f7f8;color:var(--ink);font-size:1.15rem;font-weight:800;cursor:pointer;touch-action:manipulation}.move:disabled{opacity:.3;cursor:default}.result{margin-top:12px;padding:13px 15px;border-radius:12px;font-weight:650;display:none}.result.good{display:block;background:#e7f4ec;color:var(--green)}.result.try{display:block;background:#fff2e6;color:#87521c}
+.reading{font-size:clamp(1.15rem,2.8vw,1.42rem);line-height:2.25;background:#fbfcfc;border:1px solid var(--line);border-radius:15px;padding:17px 15px;margin:18px 0}.word{display:inline;border:0;background:#e9f2f6;color:#17445b;border-radius:7px;padding:3px 5px;margin:0 1px;font:inherit;line-height:2.1;cursor:pointer;touch-action:manipulation}.word:active,.word.selected{background:#ffe7a6;color:#49360a}.translation{border:1px solid #d6e3e9;background:#f2f7f9;border-radius:13px;padding:14px 16px;min-height:76px;margin-top:14px}.translation .uk{font-weight:800;color:var(--blue);font-size:1.12rem}.translation .en{font-size:1.05rem;margin-top:3px}.translation .tip{font-size:.86rem;color:var(--muted)}.small-note{font-size:.9rem;color:var(--muted)}footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 15px 25px}
+@media(max-width:540px){header{padding:24px 15px}.sentence{align-items:flex-start}.sentence .sentence-text{font-size:.96rem}.move{width:39px;height:39px}.task{border-radius:14px}.reading{padding:13px 10px}}
 </style>
 </head>
 <body>
-  <a href="listening-daily-routine/ukrainian_listening_texts_8_1_8_2.html">Listening Daily Routine</a>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="ukrainian_daily_routine_listening_matching.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">listening my day</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="ukrainian_days_months_interactive.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">days months</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="ukrainian_fruits_interactive.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">fruits</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="ukrainian_daily_routines_rearrange_words.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">daily routines</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="interactive_months_ukrainian.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">months</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="ukrainian_professions_matching_spelling.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">professions</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="ukrainian_collocations_sentence_order_fixed.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">collocations set 2</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="ukrainian_reading_click_translation.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">читання тексти</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="ukrainian_collocations_sentence_order.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">collocations set 1</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="ukrainian_vocabulary_study_and_gap_fill.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">ukrainian infinitves</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="variahy_video_matching.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">варягі</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="ukrainian_seasons_matching.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">пори року</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="media_consumption_reading_headings.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">instant satisfaction</a>
-</div>
-   <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="7_chudes_svitu_tablet_friendly.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">сім чудес світу</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="ukrainian_sentence_sorting_and_clause_matching.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">типи речень</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="ukrainian_location_phrases_and_sentence_order_tablet_fixed.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">Де я?tablet</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="ukrainian_location_phrases_and_sentence_order (1).html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">Де я?</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="Podii_ta_literaturoznavchi_terminy.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">Amulet</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="roman_tunnels_vocabulary.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">The Roman tunnels</a>
-</div>
-   <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="ukrainian_sentence_matching.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">Sentence drag and drop</a>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="ukrainian_sentence_matching.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">Sentence drag and drop</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="ukrainian_sentence_order_drag_drop.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">Sentence matching</a>
-</div>
-  <div style="text-align: center; margin: 20px; padding: 15px; background: #e0e7ff; border-radius: 8px;">
-    <a href="vocabulary.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">Main Game</a>
-    <a href="words.html" style="margin: 0 15px; font-weight: bold; color: #4f46e5; text-decoration: none; font-family: sans-serif;">Word List</a>
-</div>
-<div class="wrap">
-<header>
-  <h1>The Giver — Interactive Vocabulary</h1>
-  <p class="subtitle">15 useful B1/B2 vocabulary items from the extracts you provided.</p>
-  <div class="instructions"><strong>How to use:</strong> Click a word to open its meaning, contextual meaning, example sentence, and synonyms. Use the search box to find a word quickly.</div>
-</header>
-
-<input id="search" class="search" type="search" placeholder="Search vocabulary..." aria-label="Search vocabulary">
-
-<main id="vocab">
-
-    <article class="card" data-word="chastise">
-      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
-        <span>chastise</span><span class="chevron">+</span>
-      </button>
-      <div class="details">
-        <div class="pos">verb</div>
-        <p><strong>Student-friendly definition:</strong> to tell someone strongly that they have done something wrong</p>
-        <p><strong>In the extract:</strong> In the extract, Jonas expects his father to tell Lily off for making a rude comment about the baby&#x27;s eyes.</p>
-        <p><strong>Example:</strong> The teacher chastised the students for being disrespectful.</p>
-        <p><strong>Synonyms:</strong> rebuke · scold</p>
-      </div>
-    </article>
-    
-    <article class="card" data-word="unsettling">
-      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
-        <span>unsettling</span><span class="chevron">+</span>
-      </button>
-      <div class="details">
-        <div class="pos">adjective</div>
-        <p><strong>Student-friendly definition:</strong> making you feel worried, uncomfortable, or unsure</p>
-        <p><strong>In the extract:</strong> Differences between people are described as unsettling in the community, so citizens avoid talking about them.</p>
-        <p><strong>Example:</strong> The sudden silence in the room was unsettling.</p>
-        <p><strong>Synonyms:</strong> disturbing · disconcerting</p>
-      </div>
-    </article>
-    
-    <article class="card" data-word="insensitive">
-      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
-        <span>insensitive</span><span class="chevron">+</span>
-      </button>
-      <div class="details">
-        <div class="pos">adjective</div>
-        <p><strong>Student-friendly definition:</strong> not thinking about other people&#x27;s feelings</p>
-        <p><strong>In the extract:</strong> Lily&#x27;s comment about Jonas&#x27;s eyes is considered insensitive because it draws attention to a difference.</p>
-        <p><strong>Example:</strong> It was insensitive to laugh when someone was upset.</p>
-        <p><strong>Synonyms:</strong> thoughtless · inconsiderate</p>
-      </div>
-    </article>
-    
-    <article class="card" data-word="self-conscious">
-      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
-        <span>self-conscious</span><span class="chevron">+</span>
-      </button>
-      <div class="details">
-        <div class="pos">adjective</div>
-        <p><strong>Student-friendly definition:</strong> worried or uncomfortable because you think other people are noticing you</p>
-        <p><strong>In the extract:</strong> After looking at the newchild&#x27;s eyes, Jonas becomes self-conscious because he realizes that his own eyes are different too.</p>
-        <p><strong>Example:</strong> She felt self-conscious about speaking in front of the class.</p>
-        <p><strong>Synonyms:</strong> embarrassed · self-aware</p>
-      </div>
-    </article>
-    
-    <article class="card" data-word="reluctantly">
-      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
-        <span>reluctantly</span><span class="chevron">+</span>
-      </button>
-      <div class="details">
-        <div class="pos">adverb</div>
-        <p><strong>Student-friendly definition:</strong> in a way that shows you do not really want to do something</p>
-        <p><strong>In the extract:</strong> Asher admits reluctantly that he has never known anyone who actually joined another community.</p>
-        <p><strong>Example:</strong> He reluctantly agreed to apologize.</p>
-        <p><strong>Synonyms:</strong> unwillingly · hesitantly</p>
-      </div>
-    </article>
-    
-    <article class="card" data-word="meticulously">
-      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
-        <span>meticulously</span><span class="chevron">+</span>
-      </button>
-      <div class="details">
-        <div class="pos">adverb</div>
-        <p><strong>Student-friendly definition:</strong> in a very careful and detailed way</p>
-        <p><strong>In the extract:</strong> Jonas describes the community as meticulously ordered, with choices carefully controlled.</p>
-        <p><strong>Example:</strong> She meticulously checked every detail of the project.</p>
-        <p><strong>Synonyms:</strong> carefully · thoroughly</p>
-      </div>
-    </article>
-    
-    <article class="card" data-word="congregated">
-      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
-        <span>congregated</span><span class="chevron">+</span>
-      </button>
-      <div class="details">
-        <div class="pos">verb</div>
-        <p><strong>Student-friendly definition:</strong> gathered together in one place</p>
-        <p><strong>In the extract:</strong> Jonas and his groupmates congregate by the tables for their midday meal.</p>
-        <p><strong>Example:</strong> The students congregated outside after the lesson.</p>
-        <p><strong>Synonyms:</strong> gathered · assembled</p>
-      </div>
-    </article>
-    
-    <article class="card" data-word="merriment">
-      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
-        <span>merriment</span><span class="chevron">+</span>
-      </button>
-      <div class="details">
-        <div class="pos">noun</div>
-        <p><strong>Student-friendly definition:</strong> laughter, fun, and happiness</p>
-        <p><strong>In the extract:</strong> The previous day&#x27;s lunch had been full of merriment, but the children are anxious today.</p>
-        <p><strong>Example:</strong> There was a lot of merriment at the celebration.</p>
-        <p><strong>Synonyms:</strong> cheerfulness · jollity</p>
-      </div>
-    </article>
-    
-    <article class="card" data-word="reprieve">
-      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
-        <span>reprieve</span><span class="chevron">+</span>
-      </button>
-      <div class="details">
-        <div class="pos">noun</div>
-        <p><strong>Student-friendly definition:</strong> a short period of relief or extra time before something difficult happens</p>
-        <p><strong>In the extract:</strong> Gabriel is given an additional year of nurturing instead of being immediately released.</p>
-        <p><strong>Example:</strong> The delay gave the family a temporary reprieve.</p>
-        <p><strong>Synonyms:</strong> respite · relief</p>
-      </div>
-    </article>
-    
-    <article class="card" data-word="inadequate">
-      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
-        <span>inadequate</span><span class="chevron">+</span>
-      </button>
-      <div class="details">
-        <div class="pos">adjective</div>
-        <p><strong>Student-friendly definition:</strong> not good enough or not meeting the required standard</p>
-        <p><strong>In the extract:</strong> A newchild who has not developed enough may be labelled Inadequate and released.</p>
-        <p><strong>Example:</strong> The equipment was inadequate for the task.</p>
-        <p><strong>Synonyms:</strong> insufficient · unsuitable</p>
-      </div>
-    </article>
-    
-    <article class="card" data-word="relinquish">
-      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
-        <span>relinquish</span><span class="chevron">+</span>
-      </button>
-      <div class="details">
-        <div class="pos">verb</div>
-        <p><strong>Student-friendly definition:</strong> to give up or let go of something, especially when you do not want to</p>
-        <p><strong>In the extract:</strong> Jonas&#x27;s family must promise to relinquish Gabriel without protest when he is assigned to another family.</p>
-        <p><strong>Example:</strong> She had to relinquish control of the project.</p>
-        <p><strong>Synonyms:</strong> surrender · give up</p>
-      </div>
-    </article>
-    
-    <article class="card" data-word="exuberant">
-      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
-        <span>exuberant</span><span class="chevron">+</span>
-      </button>
-      <div class="details">
-        <div class="pos">adjective</div>
-        <p><strong>Student-friendly definition:</strong> very energetic, enthusiastic, and joyful</p>
-        <p><strong>In the extract:</strong> The applause at the Naming of Caleb rises in an exuberant swell.</p>
-        <p><strong>Example:</strong> The children gave an exuberant welcome to their friend.</p>
-        <p><strong>Synonyms:</strong> enthusiastic · lively</p>
-      </div>
-    </article>
-    
-    <article class="card" data-word="somber">
-      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
-        <span>somber</span><span class="chevron">+</span>
-      </button>
-      <div class="details">
-        <div class="pos">adjective</div>
-        <p><strong>Student-friendly definition:</strong> serious, sad, and without much happiness</p>
-        <p><strong>In the extract:</strong> The Ceremony of Loss is described as a long and somber day as the community gradually stops saying Caleb&#x27;s name.</p>
-        <p><strong>Example:</strong> The mood at the meeting was somber.</p>
-        <p><strong>Synonyms:</strong> gloomy · serious</p>
-      </div>
-    </article>
-    
-    <article class="card" data-word="stunned">
-      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
-        <span>stunned</span><span class="chevron">+</span>
-      </button>
-      <div class="details">
-        <div class="pos">adjective</div>
-        <p><strong>Student-friendly definition:</strong> so shocked or surprised that you do not know how to react</p>
-        <p><strong>In the extract:</strong> Jonas is stunned when the Chief Elder skips his number at the Ceremony of Twelve.</p>
-        <p><strong>Example:</strong> I was stunned when I heard the news.</p>
-        <p><strong>Synonyms:</strong> shocked · astonished</p>
-      </div>
-    </article>
-    
-    <article class="card" data-word="dazed">
-      <button class="word" aria-expanded="false" onclick="toggleCard(this)">
-        <span>dazed</span><span class="chevron">+</span>
-      </button>
-      <div class="details">
-        <div class="pos">adjective</div>
-        <p><strong>Student-friendly definition:</strong> confused and unable to think clearly, often because of shock</p>
-        <p><strong>In the extract:</strong> After being skipped, Jonas sits dazed and struggles to understand what has happened.</p>
-        <p><strong>Example:</strong> He was dazed after the unexpected announcement.</p>
-        <p><strong>Synonyms:</strong> confused · bewildered</p>
-      </div>
-    </article>
-    
+<header><h1>Ukrainian Listening & Reading</h1><p>Texts 8.8 and 8.9 · Listen, arrange, read and explore vocabulary</p></header>
+<main>
+<section class="task" aria-labelledby="task1-title">
+ <div class="task-heading"><div class="number">1</div><h2 id="task1-title">Listening: Put the sentences in order</h2></div>
+ <p class="intro">Listen to audio text 8.8. Arrange the sentences in the order in which you hear them.</p>
+ <div class="audio-box"><strong>Audio text 8.8</strong><audio controls preload="metadata"><source src="audio-text-8-8.mp4" type="audio/mp4">Your browser does not support the audio element.</audio></div>
+ <div class="controls"><button class="btn secondary" id="shuffle">Shuffle sentences</button><button class="btn secondary" id="reset">Start again</button><button class="btn" id="check">Check my order</button></div>
+ <p class="hint">Use the ↑ and ↓ buttons to move each sentence. You can also listen again as often as you need.</p>
+ <ol class="sentence-list" id="sentenceList" aria-label="Sentences to arrange"></ol>
+ <div class="result" id="orderResult" role="status" aria-live="polite"></div>
+</section>
+<section class="task" aria-labelledby="task2-title">
+ <div class="task-heading"><div class="number">2</div><h2 id="task2-title">Reading: Click the words</h2></div>
+ <p class="intro">First, listen to audio text 8.9. Then read the Ukrainian text. Tap or click any word to see its English translation.</p>
+ <div class="audio-box"><strong>Audio text 8.9</strong><audio controls preload="metadata"><source src="audio-text-8-9.mp4" type="audio/mp4">Your browser does not support the audio element.</audio></div>
+ <div class="reading" id="readingText" lang="uk" aria-label="Ukrainian reading text"></div>
+ <div class="translation" id="translationBox" aria-live="polite"><div class="tip">Word translation</div><div class="en">Tap any Ukrainian word in the text above.</div></div>
+ <p class="small-note">Tip: The stress marks (´) are kept in the Ukrainian text. Tap a word again whenever you want to review its meaning.</p>
+</section>
 </main>
-
-<p class="footer">Vocabulary explanations are designed for B1/B2 EAL learners and are based on the supplied extracts.</p>
-</div>
-
+<footer>Ukrainian practice · Texts 8.8–8.9</footer>
 <script>
-function toggleCard(button) {
-  const details = button.nextElementSibling;
-  const isOpen = details.classList.toggle('open');
-  button.setAttribute('aria-expanded', isOpen);
-  button.querySelector('.chevron').textContent = isOpen ? '−' : '+';
-}
-document.getElementById('search').addEventListener('input', function() {
-  const q = this.value.toLowerCase().trim();
-  document.querySelectorAll('.card').forEach(card => {
-    card.style.display = card.dataset.word.includes(q) ? '' : 'none';
-  });
-});
+const originalSentences = [
+ {id:1,text:'У нас вели́кий буди́нок, в яко́му бага́то робо́ти.'},
+ {id:2,text:'Тож ко́жен ма́є свої́ обо́в\'язки.'},
+ {id:3,text:'Моя́ ма́ма готу́є ї́жу.'},
+ {id:4,text:'Мій ба́тько пилосо́сить та ми́є підло́гу.'},
+ {id:5,text:'Моя́ сестра́ догляда́є за са́дом та газо́ном.'},
+ {id:6,text:'Мій брат купу́є проду́кти.'},
+ {id:7,text:'А я вигу́люю та году́ю на́шу соба́ку.'},
+ {id:8,text:'До́бре що в нас є суча́сна побуто́ва те́хніка, що зна́чно поле́гшує життя́.'},
+ {id:9,text:'По субо́тах ми всі разо́м ро́бимо генера́льне прибира́ння.'},
+ {id:10,text:'Відпочива́ємо ми тако́ж разо́м - йдемо́ на пікні́к або́ на прогу́лянку по мі́сту.'}
+];
+let current = [];
+const list = document.getElementById('sentenceList');
+const result = document.getElementById('orderResult');
+function shuffled(items){let a=[...items];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}if(a.every((x,i)=>x.id===i+1)){[a[0],a[1]]=[a[1],a[0]];}return a;}
+function renderSentences(){list.innerHTML='';current.forEach((item,index)=>{const li=document.createElement('li');li.className='sentence';const text=document.createElement('span');text.className='sentence-text';text.textContent=item.text;const controls=document.createElement('span');controls.className='move-buttons';const up=document.createElement('button');up.className='move';up.type='button';up.textContent='↑';up.setAttribute('aria-label','Move sentence up');up.disabled=index===0;up.addEventListener('click',()=>move(index,-1));const down=document.createElement('button');down.className='move';down.type='button';down.textContent='↓';down.setAttribute('aria-label','Move sentence down');down.disabled=index===current.length-1;down.addEventListener('click',()=>move(index,1));controls.append(up,down);li.append(text,controls);list.append(li);});}
+function move(index,delta){const target=index+delta;if(target<0||target>=current.length)return;[current[index],current[target]]=[current[target],current[index]];result.className='result';result.style.display='none';renderSentences();}
+function shuffleNow(){current=shuffled(originalSentences);result.className='result';result.style.display='none';renderSentences();}
+document.getElementById('shuffle').addEventListener('click',shuffleNow);
+document.getElementById('reset').addEventListener('click',()=>{current=originalSentences.map(x=>({...x}));result.className='result';result.style.display='none';renderSentences();});
+document.getElementById('check').addEventListener('click',()=>{const correct=current.every((x,i)=>x.id===i+1);result.textContent=correct?'Excellent! All 10 sentences are in the correct order.':'Not quite. Listen again and try changing the order. You can move the sentences up or down.';result.className='result '+(correct?'good':'try');result.style.display='block';});
+shuffleNow();
+
+const text = `Я фріла́нсер та працю́ю вдо́ма. Ці́лий день я сиджу́ за комп'ю́тером. Ко́жні дві годи́ни я роблю́ коро́ткі пере́рви, щоб відпочи́ти та відволікти́ся. Під час пере́рви я їм та роблю́ дома́шні спра́ви: запуска́ю пра́льну маши́ну, виві́шую біли́зну, пилосошу, витира́ю пил та полива́ю кві́ти. Вве́чері вся робо́та ви́конана і я мо́жу відпочи́ти. Оскі́льки я працю́ю вдо́ма, то відпочива́ти я намага́юся деі́нде.`;
+const translations = {
+'я':'I','фріла́нсер':'freelancer','та':'and','працю́ю':'I work','вдо́ма':'at home','ці́лий':'whole / entire','день':'day','сиджу́':'I sit','за':'at / in front of','комп\'ю́тером':'computer','ко́жні':'every','дві':'two','годи́ни':'hours','роблю́':'I do / I make','коро́ткі':'short','пере́рви':'breaks','щоб':'so that / in order to','відпочи́ти':'to rest','відволікти́ся':'to take a break / distract oneself','під':'during (in “під час”)','час':'time','їм':'I eat','дома́шні':'household','спра́ви':'chores / tasks','запуска́ю':'I start / switch on','пра́льну':'washing (machine)','маши́ну':'machine','виві́шую':'I hang out','біли́зну':'laundry','пилосошу':'I vacuum','витира́ю':'I wipe','пил':'dust','полива́ю':'I water','кві́ти':'flowers','вве́чері':'in the evening','вся':'all / the whole','робо́та':'work','ви́конана':'completed / done','і':'and','мо́жу':'I can','оскі́льки':'since / because','то':'then / so','відпочива́ти':'to rest','намага́юся':'I try','деі́нде':'somewhere else / elsewhere'
+};
+function stripPunctuation(word){return word.replace(/^[“”"'«»([{]+|[.,!?;:…»”"'\])}]+$/g,'');}
+const reading = document.getElementById('readingText');
+const words = text.split(/(\s+)/);
+words.forEach(part=>{if(/^\s+$/.test(part)){reading.append(document.createTextNode(part));return;}const clean=stripPunctuation(part);const key=clean.toLocaleLowerCase('uk-UA');const meaning=translations[key];if(!clean||!meaning){reading.append(document.createTextNode(part));return;}const leading=part.match(/^[“”"'«»([{]+/u)?.[0]||'';const trailing=part.match(/[.,!?;:…»”"'\])}]+$/u)?.[0]||'';const button=document.createElement('button');button.type='button';button.className='word';button.textContent=clean;button.setAttribute('aria-label',clean+', '+meaning);button.addEventListener('click',()=>{document.querySelectorAll('.word.selected').forEach(el=>el.classList.remove('selected'));button.classList.add('selected');document.getElementById('translationBox').innerHTML='';const uk=document.createElement('div');uk.className='uk';uk.textContent=clean;const en=document.createElement('div');en.className='en';en.textContent=meaning;document.getElementById('translationBox').append(uk,en);});reading.append(document.createTextNode(leading));reading.append(button);reading.append(document.createTextNode(trailing));});
 </script>
 </body>
 </html>
