@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ukrainian Fruits and Berries – Interactive Activities</title>
+<style>
+:root { --ink:#243247; --muted:#607086; --blue:#2864a8; --pale:#edf5ff; --line:#d8e2ee; --green:#dff4e5; --red:#ffe5e3; }
+* { box-sizing:border-box; }
+body { margin:0; font-family: system-ui,-apple-system,"Segoe UI",sans-serif; color:var(--ink); background:#f5f8fc; line-height:1.5; }
+header { background:linear-gradient(120deg,#e7f2ff,#f4edff); padding:26px 18px; text-align:center; }
+h1 { margin:0 0 8px; font-size:clamp(1.55rem,4vw,2.35rem); }
+header p { margin:0; color:var(--muted); }
+main { width:min(1100px, calc(100% - 24px)); margin:22px auto 50px; }
+.task { background:white; border:1px solid var(--line); border-radius:18px; padding:clamp(16px,3vw,26px); margin:18px 0; box-shadow:0 5px 18px #2432470b; }
+.task h2 { margin:0 0 6px; font-size:1.35rem; }
+.instructions { color:var(--muted); margin:0 0 18px; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); gap:12px; }
+.fruit-card { border:1px solid var(--line); border-radius:14px; padding:12px; text-align:center; background:#fff; min-width:0; }
+.picture { font-size:clamp(2.7rem,7vw,4rem); line-height:1.25; min-height:76px; display:flex; align-items:center; justify-content:center; }
+select, input[type=text] { width:100%; min-height:48px; border:2px solid #cbd7e5; border-radius:10px; padding:9px 10px; font:inherit; font-size:1rem; background:white; color:var(--ink); }
+select:focus, input:focus, button:focus { outline:3px solid #9cc7ff; outline-offset:2px; }
+.word-bank { display:flex; flex-wrap:wrap; gap:9px; padding:13px; background:#f2f7fd; border:1px dashed #aebfd3; border-radius:14px; margin:12px 0 18px; }
+.word { border:1px solid #9fb8d3; border-radius:10px; padding:10px 14px; background:white; font-weight:650; cursor:grab; touch-action:manipulation; min-height:44px; }
+.word.selected { background:#dcecff; border:2px solid var(--blue); }
+.sentences { display:grid; gap:12px; }
+.sentence { padding:13px; border:1px solid var(--line); border-radius:12px; font-size:1.06rem; background:#fff; }
+.gap { display:inline-flex; min-width:115px; min-height:42px; vertical-align:middle; align-items:center; justify-content:center; border:2px dashed #8da9c7; border-radius:9px; padding:4px 9px; margin:2px 3px; background:#f8fbff; cursor:pointer; font-weight:650; }
+.gap.filled { border-style:solid; background:#eef6ff; }
+.type-card .picture { min-height:90px; }
+.type-card input { text-align:center; }
+.feedback { margin-top:14px; font-weight:650; min-height:28px; }
+button { border:0; border-radius:11px; background:var(--blue); color:white; font:inherit; font-weight:700; padding:12px 18px; min-height:48px; cursor:pointer; margin:8px 7px 0 0; }
+button.secondary { background:#e8eef6; color:var(--ink); }
+.correct { background:var(--green)!important; border-color:#58a875!important; }
+.incorrect { background:var(--red)!important; border-color:#d97770!important; }
+.small-note { color:var(--muted); font-size:.92rem; }
+@media (max-width:600px) {
+  main { width:calc(100% - 16px); margin-top:12px; }
+  .grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+  .fruit-card { padding:9px; }
+  .gap { min-width:105px; }
+  button { width:100%; margin-right:0; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>🍎 Ukrainian Fruits and Berries 🍇</h1>
+  <p>Learn the Ukrainian names. Look, match, complete and spell!</p>
+</header>
+<main>
+<section class="task" id="task1">
+  <h2>Task 1. Match the words and pictures</h2>
+  <p class="instructions">Choose the correct Ukrainian word for each picture.</p>
+  <div class="grid" id="matching"></div>
+  <button onclick="checkMatching()">Check answers</button>
+  <button class="secondary" onclick="resetMatching()">Reset</button>
+  <div class="feedback" id="matchFeedback" aria-live="polite"></div>
+</section>
+
+<section class="task" id="task2">
+  <h2>Task 2. Complete the sentences</h2>
+  <p class="instructions">Drag a word into a gap, or tap a word and then tap a gap. Use each word once.</p>
+  <div class="word-bank" id="wordBank"></div>
+  <div class="sentences" id="sentences"></div>
+  <button onclick="checkGaps()">Check answers</button>
+  <button class="secondary" onclick="resetGaps()">Reset</button>
+  <div class="feedback" id="gapFeedback" aria-live="polite"></div>
+</section>
+
+<section class="task" id="task3">
+  <h2>Task 3. Look and type</h2>
+  <p class="instructions">Write the Ukrainian name of each fruit or berry under its picture. Remember to use Ukrainian letters.</p>
+  <div class="grid" id="typing"></div>
+  <button onclick="checkTyping()">Check answers</button>
+  <button class="secondary" onclick="resetTyping()">Reset</button>
+  <div class="feedback" id="typeFeedback" aria-live="polite"></div>
+</section>
+</main>
+<script>
+const fruits = [
+ ["Яблуко","🍎"],["Груша","🍐"],["Слива","🫐"],["Вишня","🍒"],["Черешня","🍒"],
+ ["Абрикос","🍑"],["Персик","🍑"],["Нектарин","🍑"],["Полуниця","🍓"],["Малина","🍇"],
+ ["Смородина","🫐"],["Ожина","🫐"],["Чорниця","🫐"],["Обліпиха","🟠"],["Виноград","🍇"],
+ ["Диня","🍈"],["Кавун","🍉"],["Хурма","🟠"]
+];
+const shuffle = a => [...a].sort(()=>Math.random()-.5);
+const norm = s => s.trim().toLocaleLowerCase("uk").replace(/[’']/g,"'");
+
+// Task 1
+const matchItems = shuffle(fruits);
+document.getElementById("matching").innerHTML = matchItems.map((f,i)=>`
+ <div class="fruit-card">
+  <div class="picture" role="img" aria-label="Picture of ${f[0]}">${f[1]}</div>
+  <select data-answer="${f[0]}" aria-label="Choose the name for picture ${i+1}">
+   <option value="">Choose a word…</option>${shuffle(fruits).map(x=>`<option value="${x[0]}">${x[0]}</option>`).join("")}
+  </select>
+ </div>`).join("");
+function checkMatching(){
+ let fields=[...document.querySelectorAll("#matching select")], score=0;
+ fields.forEach(x=>{x.classList.remove("correct","incorrect"); let ok=x.value===x.dataset.answer; x.classList.add(ok?"correct":"incorrect"); if(ok)score++;});
+ document.getElementById("matchFeedback").textContent=`You got ${score} out of ${fields.length} correct.`;
+}
+function resetMatching(){
+ document.querySelectorAll("#matching select").forEach(x=>{x.value="";x.classList.remove("correct","incorrect");});
+ document.getElementById("matchFeedback").textContent="";
+}
+
+// Task 2
+const gapWords = ["яблуко","грушу","сливи","вишні","полуницю","кавун","диню","виноград","персик","малину"];
+const sentenceData = [
+ ["Я їм соковите _____.","яблуко"],
+ ["Мама купила стиглу _____.","грушу"],
+ ["Восени ми збираємо _____.","сливи"],
+ ["На дереві дозріли червоні _____.","вишні"],
+ ["Діти люблять солодку _____.","полуницю"],
+ ["У спекотний день ми їмо холодний _____.","кавун"],
+ ["Жовта _____ пахне дуже смачно.","диня"],
+ ["На лозі росте солодкий _____.","виноград"],
+ ["Стиглий _____ має ніжний аромат.","персик"],
+ ["У саду росте _____ .","малину"]
+];
+let selectedWord=null;
+function buildGaps(){
+ document.getElementById("wordBank").innerHTML=shuffle(gapWords).map(w=>`<button type="button" class="word" draggable="true" data-word="${w}" onclick="selectWord(this)">${w}</button>`).join("");
+ document.getElementById("sentences").innerHTML=sentenceData.map((s,i)=>`<div class="sentence">${i+1}. ${s[0].replace("_____",`<span class="gap" tabindex="0" role="button" data-answer="${s[1]}" data-value="" onclick="placeSelected(this)" ondragover="event.preventDefault()" ondrop="dropWord(event,this)">Tap or drop here</span>`)}</div>`).join("");
+ document.querySelectorAll(".word").forEach(el=>{
+  el.addEventListener("dragstart",e=>e.dataTransfer.setData("text/plain",el.dataset.word));
+ });
+}
+function selectWord(el){
+ document.querySelectorAll(".word").forEach(w=>w.classList.remove("selected"));
+ selectedWord=el.dataset.word; el.classList.add("selected");
+}
+function placeSelected(gap){
+ if(!selectedWord)return;
+ gap.textContent=selectedWord; gap.dataset.value=selectedWord; gap.classList.add("filled");
+ let bank=[...document.querySelectorAll(".word")].find(w=>w.dataset.word===selectedWord);
+ if(bank)bank.hidden=true;
+ selectedWord=null; document.querySelectorAll(".word").forEach(w=>w.classList.remove("selected"));
+}
+function dropWord(e,gap){
+ e.preventDefault(); let w=e.dataTransfer.getData("text/plain"); if(!w)return;
+ gap.textContent=w; gap.dataset.value=w; gap.classList.add("filled");
+ let bank=[...document.querySelectorAll(".word")].find(x=>x.dataset.word===w); if(bank)bank.hidden=true;
+}
+function checkGaps(){
+ let gaps=[...document.querySelectorAll(".gap")],score=0;
+ gaps.forEach(g=>{g.classList.remove("correct","incorrect");let ok=g.dataset.value===g.dataset.answer;g.classList.add(ok?"correct":"incorrect");if(ok)score++;});
+ document.getElementById("gapFeedback").textContent=`You got ${score} out of ${gaps.length} correct.`;
+}
+function resetGaps(){buildGaps();selectedWord=null;document.getElementById("gapFeedback").textContent="";}
+buildGaps();
+
+// Task 3: 15 distinct items
+const typingItems = shuffle(fruits).slice(0,15);
+document.getElementById("typing").innerHTML=typingItems.map((f,i)=>`
+ <div class="fruit-card type-card">
+  <div class="picture" role="img" aria-label="Picture ${i+1}">${f[1]}</div>
+  <label class="small-note" for="answer${i}">Picture ${i+1}</label>
+  <input id="answer${i}" type="text" data-answer="${f[0]}" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type the word">
+ </div>`).join("");
+function checkTyping(){
+ let fields=[...document.querySelectorAll("#typing input")],score=0;
+ fields.forEach(x=>{x.classList.remove("correct","incorrect");let ok=norm(x.value)===norm(x.dataset.answer);x.classList.add(ok?"correct":"incorrect");if(ok)score++;});
+ document.getElementById("typeFeedback").textContent=`You got ${score} out of ${fields.length} correct.`;
+}
+function resetTyping(){
+ document.querySelectorAll("#typing input").forEach(x=>{x.value="";x.classList.remove("correct","incorrect");});
+ document.getElementById("typeFeedback").textContent="";
+}
+</script>
+</body>
+</html>
