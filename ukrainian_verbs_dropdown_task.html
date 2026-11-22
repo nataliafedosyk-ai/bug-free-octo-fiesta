@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Українська мова — дієслова</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #eef6ff, #f8f4ff);
+    color: #243447;
+    padding: 24px;
+  }
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  header {
+    background: white;
+    border-radius: 20px;
+    padding: 28px;
+    box-shadow: 0 8px 25px rgba(50, 70, 100, .12);
+    margin-bottom: 22px;
+    text-align: center;
+  }
+  h1 { margin: 0 0 10px; color: #315b8a; }
+  .instructions { margin: 0; font-size: 17px; line-height: 1.5; }
+  .task {
+    background: white;
+    border-radius: 18px;
+    padding: 22px 24px;
+    margin: 16px 0;
+    box-shadow: 0 5px 18px rgba(50, 70, 100, .10);
+    font-size: 18px;
+    line-height: 2.15;
+  }
+  .number {
+    font-weight: bold;
+    color: #315b8a;
+    margin-right: 5px;
+  }
+  select {
+    font-size: 17px;
+    padding: 7px 30px 7px 9px;
+    margin: 0 3px;
+    border: 2px solid #b9cbe0;
+    border-radius: 9px;
+    background: #fff;
+    color: #243447;
+    cursor: pointer;
+    min-width: 130px;
+  }
+  select:focus {
+    outline: none;
+    border-color: #5b8fc9;
+    box-shadow: 0 0 0 3px rgba(91,143,201,.15);
+  }
+  select.correct { border-color: #3ca66b; background: #eefaf3; }
+  select.incorrect { border-color: #d95c5c; background: #fff0f0; }
+  .controls {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 25px 0;
+  }
+  button {
+    border: 0;
+    border-radius: 10px;
+    padding: 12px 22px;
+    font-size: 17px;
+    cursor: pointer;
+    background: #315b8a;
+    color: white;
+  }
+  button:hover { background: #24496f; }
+  button.secondary { background: #718096; }
+  button.secondary:hover { background: #596678; }
+  #result {
+    display: none;
+    background: white;
+    border-radius: 16px;
+    padding: 18px;
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 18px rgba(50, 70, 100, .10);
+  }
+  .hint {
+    font-size: 14px;
+    color: #667788;
+    margin-top: 6px;
+  }
+  @media (max-width: 600px) {
+    body { padding: 12px; }
+    .task { padding: 16px; font-size: 17px; }
+    select { font-size: 16px; min-width: 115px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Вибери правильну форму дієслова</h1>
+  <p class="instructions">
+    Обери правильний варіант із випадаючого меню для кожного пропуску.
+    Усі варіанти залишено в тому самому порядку, як у завданні.
+  </p>
+</header>
+
+<div id="tasks">
+
+<div class="task">
+<span class="number">1.</span>
+Коли ми
+<select data-answer="подорожуємо">
+  <option value="">— обери —</option>
+  <option>подорожуєш</option><option>подорожувати</option><option>подорожуємо</option><option>подорожує</option>
+</select>
+всією сім’єю, ми багато
+<select data-answer="розмовляємо">
+  <option value="">— обери —</option>
+  <option>розмовимо</option><option>розмовляємо</option><option>розмовляєш</option><option>розмовляють</option>
+</select>,
+<select data-answer="робимо">
+  <option value="">— обери —</option>
+  <option>робити</option><option>робемо</option><option>робимо</option><option>роблю</option>
+</select>
+фотографії та
+<select data-answer="граємо">
+  <option value="">— обери —</option>
+  <option>граємо</option><option>граю</option><option>грамо</option><option>граєш</option>
+</select>
+в ігри.
+</div>
+
+<div class="task">
+<span class="number">2.</span>
+Як довго ти
+<select data-answer="спиш">
+  <option value="">— обери —</option>
+  <option>спите</option><option>спати</option><option>сплиш</option><option>спиш</option>
+</select>
+на вихідних? — Я
+<select data-answer="прокидаюсь">
+  <option value="">— обери —</option>
+  <option>прокидаюсь</option><option>прокидатись</option><option>прокидусь</option><option>прокидуююсь</option>
+</select>
+десь біля 11 та ще довго
+<select data-answer="лежу">
+  <option value="">— обери —</option>
+  <option>лежимо</option><option>лежу</option><option>лежати</option><option>лежим</option>
+</select>
+у ліжку.
+</div>
+
+<div class="task">
+<span class="number">3.</span>
+Наш дім
+<select data-answer="стоїть">
+  <option value="">— обери —</option>
+  <option>стояв</option><option>стоїмо</option><option>стоїть</option><option>стоіть</option>
+</select>
+у центрі міста на холмі, тож я
+<select data-answer="бачу">
+  <option value="">— обери —</option>
+  <option>бачу</option><option>бачити</option><option>бачиш</option><option>бачив</option>
+</select>
+річку та площу з мого вікна.
+</div>
+
+<div class="task">
+<span class="number">4.</span>
+У музичній школі діти
+<select data-answer="грають">
+  <option value="">— обери —</option>
+  <option>гравають</option><option>грають</option><option>гратимемо</option><option>граю</option>
+</select>
+на музичних інструментах та
+<select data-answer="вчать">
+  <option value="">— обери —</option>
+  <option>вчать</option><option>вчить</option><option>вивчати</option><option>вчу</option>
+</select>
+ноти.
+</div>
+
+<div class="task">
+<span class="number">5.</span>
+Мій молодший брат завжди
+<select data-answer="каже">
+  <option value="">— обери —</option>
+  <option>кажу</option><option>кажемо</option><option>кажи</option><option>каже</option>
+</select>
+правду.
+</div>
+
+<div class="task">
+<span class="number">6.</span>
+На уроках ми іноді
+<select data-answer="говоримо">
+  <option value="">— обери —</option>
+  <option>говоре</option><option>говорити</option><option>говоримо</option><option>говорять</option>
+</select>
+про події у світі.
+</div>
+
+<div class="task">
+<span class="number">7.</span>
+Я
+<select data-answer="прокидаюсь">
+  <option value="">— обери —</option>
+  <option>прокинувся</option><option>прокидаюсь</option><option>прокидаєшся</option><option>прокинувсь</option>
+</select>
+рано бо
+<select data-answer="боюсь">
+  <option value="">— обери —</option>
+  <option>боюсь</option><option>боятися</option><option>бояться</option><option>боїмося</option>
+</select>
+пропустити свій автобус.
+</div>
+
+<div class="task">
+<span class="number">8.</span>
+Коли я
+<select data-answer="йду">
+  <option value="">— обери —</option>
+  <option>ходю</option><option>хожу</option><option>йду</option><option>йдуть</option>
+</select>
+в магазин, я
+<select data-answer="пишу">
+  <option value="">— обери —</option>
+  <option>пишу</option><option>писав</option><option>пишемо</option><option>пише</option>
+</select>
+список продуктів.
+</div>
+
+<div class="task">
+<span class="number">9.</span>
+Вона
+<select data-answer="говорить">
+  <option value="">— обери —</option>
+  <option>говоримо</option><option>говоре</option><option>говорить</option><option>говорити</option>
+</select>
+по телефону вже годину.
+</div>
+
+<div class="task">
+<span class="number">10.</span>
+Як часто ви
+<select data-answer="пишете">
+  <option value="">— обери —</option>
+  <option>писати</option><option>пишете</option><option>пишуте</option><option>пишеш</option>
+</select>
+листи додому?
+</div>
+
+<div class="task">
+<span class="number">11.</span>
+Коти — цікаві тварини: вони
+<select data-answer="сплять">
+  <option value="">— обери —</option>
+  <option>спати</option><option>спиш</option><option>сплять</option><option>сплють</option>
+</select>
+20 годин на добу та
+<select data-answer="бачать">
+  <option value="">— обери —</option>
+  <option>бачать</option><option>бачите</option><option>бачимо</option><option>бачити</option>
+</select>
+у темряві.
+</div>
+
+<div class="task">
+<span class="number">12.</span>
+Навіть коли вони
+<select data-answer="роблять">
+  <option value="">— обери —</option>
+  <option>роблять</option><option>робять</option><option>робить</option><option>робимо</option>
+</select>
+помилки, вони не
+<select data-answer="бояться">
+  <option value="">— обери —</option>
+  <option>боюсь</option><option>бояться</option><option>боїмось</option><option>боятися</option>
+</select>
+це визнавати.
+</div>
+
+</div>
+
+<div class="controls">
+  <button onclick="checkAnswers()">Перевірити відповіді</button>
+  <button class="secondary" onclick="resetTask()">Почати спочатку</button>
+</div>
+
+<div id="result"></div>
+
+<script>
+function checkAnswers() {
+  const selects = document.querySelectorAll("select");
+  let correct = 0;
+  let answered = 0;
+
+  selects.forEach(select => {
+    select.classList.remove("correct", "incorrect");
+    if (select.value !== "") {
+      answered++;
+      if (select.value === select.dataset.answer) {
+        correct++;
+        select.classList.add("correct");
+      } else {
+        select.classList.add("incorrect");
+      }
+    }
+  });
+
+  const total = selects.length;
+  const result = document.getElementById("result");
+  result.style.display = "block";
+
+  if (correct === total) {
+    result.innerHTML = "🎉 <strong>Чудово!</strong> Усі відповіді правильні!";
+  } else {
+    result.innerHTML =
+      `Результат: <strong>${correct} / ${total}</strong> правильних відповідей.
+       <br><span style="font-size:16px;">Заповнено: ${answered} / ${total}. Червоні поля містять помилки.</span>`;
+  }
+
+  window.scrollTo({top: document.body.scrollHeight, behavior: "smooth"});
+}
+
+function resetTask() {
+  document.querySelectorAll("select").forEach(select => {
+    select.value = "";
+    select.classList.remove("correct", "incorrect");
+  });
+  const result = document.getElementById("result");
+  result.style.display = "none";
+}
+</script>
+</div>
+</body>
+</html>
