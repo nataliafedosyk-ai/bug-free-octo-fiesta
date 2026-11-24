@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Шкільне приладдя — інтерактивні вправи</title>
+<style>
+  * { box-sizing: border-box; }
+  :root{
+    --ink:#263238;
+    --muted:#607d8b;
+    --paper:#f7f9fc;
+    --card:#ffffff;
+    --accent:#4f7cff;
+    --accent2:#7c5cff;
+    --good:#2e9d68;
+    --bad:#d9534f;
+    --line:#dce5ef;
+  }
+  body{
+    margin:0;
+    font-family: system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+    color:var(--ink);
+    background:linear-gradient(135deg,#eef5ff 0%,#faf7ff 55%,#f0fbf7 100%);
+    min-height:100vh;
+  }
+  .wrap{max-width:1100px;margin:0 auto;padding:22px 18px 42px;}
+  header{
+    background:rgba(255,255,255,.92);
+    border:1px solid #e5eaf2;
+    border-radius:24px;
+    padding:20px 22px;
+    box-shadow:0 10px 30px rgba(43,63,93,.08);
+    margin-bottom:20px;
+  }
+  h1{margin:0 0 6px;font-size:clamp(26px,5vw,40px);line-height:1.1;}
+  .subtitle{margin:0;color:var(--muted);font-size:clamp(15px,2.4vw,18px);}
+  .task{
+    background:rgba(255,255,255,.95);
+    border:1px solid #e5eaf2;
+    border-radius:24px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(43,63,93,.07);
+    margin-bottom:20px;
+  }
+  .task-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px;}
+  .badge{
+    flex:0 0 auto;width:42px;height:42px;border-radius:14px;
+    display:grid;place-items:center;background:#eef2ff;color:#4d5edb;
+    font-weight:800;font-size:19px;
+  }
+  h2{margin:0 0 5px;font-size:clamp(20px,4vw,28px);}
+  .instruction{margin:0;color:var(--muted);}
+  .matching{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    align-items:start;
+  }
+  .panel{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:14px;
+  }
+  .panel-title{
+    font-weight:800;
+    margin:0 0 12px;
+    color:#455a64;
+  }
+  .picture-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:12px;
+  }
+  .picture-card{
+    background:#fff;border:2px solid var(--line);border-radius:18px;
+    padding:10px;min-height:175px;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    touch-action:none;user-select:none;
+    transition:transform .15s,border-color .15s,box-shadow .15s;
+  }
+  .picture-card:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(35,55,80,.10);}
+  .picture-card.selected{border-color:var(--accent);box-shadow:0 0 0 4px rgba(79,124,255,.14);}
+  .picture-card.correct{border-color:var(--good);background:#f0fbf5;}
+  .picture-card.wrong{border-color:var(--bad);background:#fff3f2;}
+  .art{width:100%;height:115px;display:grid;place-items:center;}
+  .art svg{width:100%;height:100%;max-width:150px;}
+  .word-bank{display:grid;gap:10px;}
+  .word{
+    background:#fff;border:2px dashed #c9d5e2;border-radius:15px;
+    padding:13px 14px;font-size:clamp(16px,3vw,19px);font-weight:750;
+    cursor:pointer;min-height:52px;display:flex;align-items:center;
+    justify-content:center;text-align:center;touch-action:none;user-select:none;
+  }
+  .word.selected{border-style:solid;border-color:var(--accent);background:#eef3ff;}
+  .word.used{opacity:.45;cursor:default;}
+  .word.correct{border-color:var(--good);border-style:solid;background:#effaf4;}
+  .word.wrong{border-color:var(--bad);border-style:solid;background:#fff2f1;}
+  .hint{font-size:13px;color:var(--muted);margin-top:10px;text-align:center;}
+  .feedback{
+    min-height:30px;margin-top:14px;font-weight:800;text-align:center;
+  }
+  .success{color:var(--good)} .error{color:var(--bad)}
+  button{
+    border:0;border-radius:14px;padding:12px 17px;font:inherit;font-weight:800;
+    cursor:pointer;background:#263238;color:white;
+  }
+  button.secondary{background:#edf2f7;color:#37474f;}
+  .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px;}
+  .score{
+    text-align:center;margin-top:14px;font-weight:800;color:#455a64;
+  }
+
+  /* spelling */
+  .spell-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;}
+  .spell-card{
+    border:1px solid var(--line);background:var(--paper);border-radius:18px;
+    padding:14px;
+  }
+  .spell-card label{display:block;font-weight:800;margin-bottom:8px;}
+  .letters{
+    display:flex;flex-wrap:wrap;gap:7px;min-height:52px;
+    margin-bottom:10px;
+  }
+  .letter{
+    width:43px;height:43px;border:2px solid #ccd8e4;border-radius:12px;
+    background:white;font-size:20px;font-weight:900;display:grid;place-items:center;
+    cursor:pointer;user-select:none;touch-action:manipulation;
+  }
+  .letter.selected{background:#eaf0ff;border-color:var(--accent);color:#3349a8;}
+  .answer{
+    min-height:50px;border:2px dashed #c6d2df;border-radius:14px;background:#fff;
+    padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;
+    font-size:18px;font-weight:800;
+  }
+  .answer .chip{
+    background:#eef3ff;border-radius:9px;padding:7px 9px;cursor:pointer;
+  }
+  .answer.placeholder{color:#90a4ae;font-weight:600;font-size:14px;}
+  .small{font-size:13px;color:var(--muted);margin-top:7px;}
+  @media (max-width:760px){
+    .wrap{padding:12px 10px 28px;}
+    header,.task{border-radius:18px;padding:15px;}
+    .matching{grid-template-columns:1fr;}
+    .picture-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .spell-grid{grid-template-columns:1fr;}
+    .picture-card{min-height:155px;}
+    .art{height:100px;}
+  }
+  @media (max-width:430px){
+    .picture-grid{grid-template-columns:1fr 1fr;gap:8px;}
+    .picture-card{padding:7px;min-height:145px;}
+    .art{height:88px;}
+    .word{font-size:16px;padding:10px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>🎒 Шкільне приладдя</h1>
+  <p class="subtitle">Виконай дві інтерактивні вправи. Працює на планшеті, телефоні та комп’ютері.</p>
+</header>
+
+<section class="task">
+  <div class="task-head">
+    <div class="badge">1</div>
+    <div>
+      <h2>З’єднай картинку зі словом</h2>
+      <p class="instruction">Натисни на картинку, а потім на відповідне українське слово.</p>
+    </div>
+  </div>
+
+  <div class="matching">
+    <div class="panel">
+      <p class="panel-title">🖼️ Картинки</p>
+      <div id="pictureGrid" class="picture-grid"></div>
+    </div>
+    <div class="panel">
+      <p class="panel-title">🔤 Слова</p>
+      <div id="wordBank" class="word-bank"></div>
+      <div class="hint">Можна також перетягувати слова на картинки.</div>
+    </div>
+  </div>
+  <div id="matchFeedback" class="feedback"></div>
+  <div class="score" id="matchScore">Правильно: 0 / 8</div>
+  <div class="actions"><button class="secondary" onclick="resetMatch()">Почати знову</button></div>
+</section>
+
+<section class="task">
+  <div class="task-head">
+    <div class="badge">2</div>
+    <div>
+      <h2>Склади слово</h2>
+      <p class="instruction">Натискай на літери в правильному порядку, щоб утворити слово.</p>
+    </div>
+  </div>
+  <div id="spellGrid" class="spell-grid"></div>
+  <div id="spellFeedback" class="feedback"></div>
+  <div class="score" id="spellScore">Правильно: 0 / 8</div>
+  <div class="actions"><button class="secondary" onclick="resetSpell()">Перемішати ще раз</button></div>
+</section>
+</div>
+
+<script>
+const items = [
+  {word:"рюкзак", icon:"bag"},
+  {word:"олівець", icon:"pencil"},
+  {word:"гумка", icon:"eraser"},
+  {word:"ножиці", icon:"scissors"},
+  {word:"стругачка", icon:"sharpener"},
+  {word:"книга", icon:"book"},
+  {word:"кольорові олівці", icon:"colors"},
+  {word:"ланч-бокс", icon:"lunch"}
+];
+
+const esc = s => s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function svgFor(type){
+  const common=`stroke="#263238" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"`;
+  if(type==="bag") return `<svg viewBox="0 0 180 130" aria-label="рюкзак">
+    <path d="M48 45 Q52 20 90 20 Q128 20 132 45" fill="none" ${common}/>
+    <rect x="35" y="40" width="110" height="75" rx="17" fill="#8fc7ff" ${common}/>
+    <path d="M50 44 Q90 65 130 44" fill="none" ${common}/>
+    <rect x="62" y="69" width="56" height="27" rx="8" fill="#fff" ${common}/>
+    <circle cx="90" cy="82" r="5" fill="#263238"/>
+  </svg>`;
+  if(type==="pencil") return `<svg viewBox="0 0 180 130" aria-label="олівець">
+    <g transform="rotate(-18 90 65)">
+      <rect x="35" y="48" width="100" height="30" rx="5" fill="#ffd35a" ${common}/>
+      <path d="M135 48 L157 63 L135 78 Z" fill="#f2c9a5" ${common}/>
+      <path d="M151 60 L160 63 L151 67 Z" fill="#263238"/>
+      <rect x="35" y="48" width="16" height="30" fill="#f28c8c" ${common}/>
+    </g>
+  </svg>`;
+  if(type==="eraser") return `<svg viewBox="0 0 180 130" aria-label="гумка">
+    <g transform="rotate(-12 90 65)">
+      <rect x="42" y="43" width="96" height="47" rx="12" fill="#ff9fbd" ${common}/>
+      <path d="M98 43 L120 90" fill="none" ${common}/>
+      <path d="M111 48 L133 48" fill="none" stroke="#fff" stroke-width="7"/>
+    </g>
+  </svg>`;
+  if(type==="scissors") return `<svg viewBox="0 0 180 130" aria-label="ножиці">
+    <circle cx="58" cy="88" r="20" fill="#ffb2b2" ${common}/>
+    <circle cx="58" cy="43" r="20" fill="#ffb2b2" ${common}/>
+    <path d="M70 78 L137 28" fill="none" ${common}/>
+    <path d="M70 53 L137 103" fill="none" ${common}/>
+    <path d="M137 28 L151 20" fill="none" ${common}/>
+    <path d="M137 103 L151 111" fill="none" ${common}/>
+    <circle cx="72" cy="65" r="5" fill="#263238"/>
+  </svg>`;
+  if(type==="sharpener") return `<svg viewBox="0 0 180 130" aria-label="стругачка">
+    <path d="M47 38 L132 38 Q143 38 143 50 L143 92 Q143 103 132 103 L47 103 Q36 103 36 92 L36 50 Q36 38 47 38Z" fill="#77d6c2" ${common}/>
+    <circle cx="106" cy="70" r="17" fill="#f6f7fb" ${common}/>
+    <path d="M95 70 L106 59 L117 70 L106 81 Z" fill="#ffd35a" ${common}/>
+    <path d="M53 54 L78 54" fill="none" ${common}/>
+  </svg>`;
+  if(type==="book") return `<svg viewBox="0 0 180 130" aria-label="книга">
+    <path d="M28 38 Q57 25 88 43 L88 105 Q58 88 28 100 Z" fill="#9bd2a7" ${common}/>
+    <path d="M152 38 Q123 25 92 43 L92 105 Q122 88 152 100 Z" fill="#82b7ff" ${common}/>
+    <path d="M90 43 L90 105" fill="none" ${common}/>
+    <path d="M43 51 Q60 47 75 55" fill="none" stroke="#fff" stroke-width="5"/>
+    <path d="M105 51 Q120 47 137 55" fill="none" stroke="#fff" stroke-width="5"/>
+  </svg>`;
+  if(type==="colors") return `<svg viewBox="0 0 180 130" aria-label="кольорові олівці">
+    <g transform="rotate(-25 90 65)">
+      <rect x="45" y="30" width="18" height="75" rx="4" fill="#ff7d7d" ${common}/>
+      <rect x="66" y="30" width="18" height="75" rx="4" fill="#ffd35a" ${common}/>
+      <rect x="87" y="30" width="18" height="75" rx="4" fill="#73b7ff" ${common}/>
+      <rect x="108" y="30" width="18" height="75" rx="4" fill="#77d6c2" ${common}/>
+      <path d="M45 30 L54 14 L63 30" fill="#f2c9a5" ${common}/>
+      <path d="M66 30 L75 14 L84 30" fill="#f2c9a5" ${common}/>
+      <path d="M87 30 L96 14 L105 30" fill="#f2c9a5" ${common}/>
+      <path d="M108 30 L117 14 L126 30" fill="#f2c9a5" ${common}/>
+    </g>
+  </svg>`;
+  return `<svg viewBox="0 0 180 130" aria-label="ланч-бокс">
+    <rect x="32" y="45" width="116" height="65" rx="18" fill="#ffca78" ${common}/>
+    <path d="M48 45 Q90 22 132 45" fill="#fff0b8" ${common}/>
+    <path d="M55 61 L125 61" fill="none" ${common}/>
+    <circle cx="90" cy="48" r="7" fill="#77a6ff" ${common}/>
+    <path d="M58 83 Q70 70 82 83 Q94 96 106 83 Q118 70 130 83" fill="none" stroke="#7bbf8b" stroke-width="7"/>
+  </svg>`;
+}
+
+let selectedPic = null;
+let matchCorrect = 0;
+let matchSolved = new Set();
+
+function shuffle(a){ return [...a].sort(()=>Math.random()-0.5); }
+
+function renderMatch(){
+  const pg=document.getElementById("pictureGrid");
+  const wb=document.getElementById("wordBank");
+  pg.innerHTML=shuffle(items).map((it,i)=>`
+    <div class="picture-card" draggable="true" data-word="${esc(it.word)}" onclick="selectPicture(this)">
+      <div class="art">${svgFor(it.icon)}</div>
+      <div style="font-size:13px;color:#78909c">картинка ${i+1}</div>
+    </div>`).join("");
+  wb.innerHTML=shuffle(items).map(it=>`
+    <div class="word" draggable="true" data-word="${esc(it.word)}" onclick="selectWord(this)">${esc(it.word)}</div>`).join("");
+
+  document.querySelectorAll(".word").forEach(w=>{
+    w.addEventListener("dragstart",e=>e.dataTransfer.setData("text/plain",w.dataset.word));
+  });
+  document.querySelectorAll(".picture-card").forEach(p=>{
+    p.addEventListener("dragover",e=>e.preventDefault());
+    p.addEventListener("drop",e=>{
+      e.preventDefault();
+      if(!matchSolved.has(p.dataset.word)) checkMatch(p,e.dataTransfer.getData("text/plain"));
+    });
+  });
+}
+function selectPicture(el){
+  if(matchSolved.has(el.dataset.word)) return;
+  document.querySelectorAll(".picture-card").forEach(x=>x.classList.remove("selected"));
+  selectedPic=el; el.classList.add("selected");
+}
+function selectWord(el){
+  if(el.classList.contains("used")) return;
+  if(!selectedPic){
+    document.getElementById("matchFeedback").textContent="Спочатку вибери картинку.";
+    document.getElementById("matchFeedback").className="feedback error";
+    return;
+  }
+  checkMatch(selectedPic,el.dataset.word);
+}
+function checkMatch(pic,word){
+  const feedback=document.getElementById("matchFeedback");
+  if(pic.dataset.word===word){
+    matchSolved.add(word); matchCorrect++;
+    pic.classList.remove("selected"); pic.classList.add("correct");
+    const w=[...document.querySelectorAll(".word")].find(x=>x.dataset.word===word);
+    if(w){w.classList.remove("selected");w.classList.add("used","correct");}
+    selectedPic=null;
+    feedback.textContent="Чудово! Правильно! 🌟";
+    feedback.className="feedback success";
+  }else{
+    pic.classList.add("wrong");
+    setTimeout(()=>pic.classList.remove("wrong"),500);
+    feedback.textContent="Спробуй ще раз.";
+    feedback.className="feedback error";
+  }
+  document.getElementById("matchScore").textContent=`Правильно: ${matchCorrect} / 8`;
+  if(matchCorrect===8){feedback.textContent="Усі слова знайдено! Молодець! 🎉";}
+}
+function resetMatch(){
+  matchCorrect=0;matchSolved.clear();selectedPic=null;
+  document.getElementById("matchFeedback").textContent="";
+  renderMatch();
+  document.getElementById("matchScore").textContent="Правильно: 0 / 8";
+}
+
+let spellData=[];
+let spellCorrect=0;
+
+function lettersFor(word){
+  return word.replaceAll(" ","").split("");
+}
+function renderSpell(){
+  const sg=document.getElementById("spellGrid");
+  spellData=shuffle(items).map(it=>({word:it.word, letters:shuffle(lettersFor(it.word)), chosen:[]}));
+  sg.innerHTML=spellData.map((it,idx)=>`
+    <div class="spell-card" data-idx="${idx}">
+      <label>${idx+1}. Склади слово</label>
+      <div class="letters">
+        ${it.letters.map((l,j)=>`<button class="letter" type="button" onclick="chooseLetter(${idx},${j})">${esc(l)}</button>`).join("")}
+      </div>
+      <div class="answer placeholder" id="answer-${idx}">Натискай на літери...</div>
+      <div class="small">Натисни на складену літеру, щоб прибрати її.</div>
+    </div>`).join("");
+}
+function chooseLetter(cardIdx,letterIdx){
+  const data=spellData[cardIdx];
+  const btn=document.querySelector(`[data-idx="${cardIdx}"] .letters .letter:nth-child(${letterIdx+1})`);
+  if(!btn || btn.disabled) return;
+  data.chosen.push(data.letters[letterIdx]);
+  btn.disabled=true;btn.classList.add("selected");
+  updateAnswer(cardIdx);
+  if(data.chosen.join("")===data.word.replaceAll(" ","")){
+    spellCorrect++;
+    document.querySelector(`[data-idx="${cardIdx}"] .answer`).classList.remove("placeholder");
+    document.querySelector(`[data-idx="${cardIdx}"] .answer`).style.borderColor="var(--good)";
+    document.querySelector(`[data-idx="${cardIdx}"] .answer`).style.background="#effaf4";
+    document.getElementById("spellScore").textContent=`Правильно: ${spellCorrect} / 8`;
+    document.getElementById("spellFeedback").textContent="Правильно! 🌟";
+    document.getElementById("spellFeedback").className="feedback success";
+  } else if(data.chosen.length===data.letters.length){
+    document.getElementById("spellFeedback").textContent="Не зовсім. Спробуй скласти слово ще раз.";
+    document.getElementById("spellFeedback").className="feedback error";
+  }
+}
+function updateAnswer(idx){
+  const a=document.getElementById(`answer-${idx}`);
+  const data=spellData[idx];
+  a.classList.toggle("placeholder",data.chosen.length===0);
+  a.innerHTML=data.chosen.length?data.chosen.map((l,j)=>`<span class="chip" onclick="removeLetter(${idx},${j})">${esc(l)}</span>`).join(""):"Натискай на літери...";
+}
+function removeLetter(idx,j){
+  const data=spellData[idx];
+  const removed=data.chosen.splice(j,1)[0];
+  let found=-1;
+  for(let i=0;i<data.letters.length;i++){
+    const btn=document.querySelector(`[data-idx="${idx}"] .letters .letter:nth-child(${i+1})`);
+    if(btn && btn.disabled && btn.textContent===removed){
+      const usedBefore=data.chosen.filter(x=>x===removed).length;
+      const usedTotal=data.letters.slice(0,i+1).filter(x=>x===removed).length;
+      if(usedTotal>usedBefore){found=i;break;}
+    }
+  }
+  if(found>=0){
+    const btn=document.querySelector(`[data-idx="${idx}"] .letters .letter:nth-child(${found+1})`);
+    btn.disabled=false;btn.classList.remove("selected");
+  }
+  if(spellCorrect>0 && data.chosen.join("")!==data.word.replaceAll(" ","")){
+    // Correct count is recomputed below to keep the score accurate.
+    spellCorrect=spellData.filter(x=>x.chosen.join("")===x.word.replaceAll(" ","")).length;
+  }
+  updateAnswer(idx);
+  document.getElementById("spellScore").textContent=`Правильно: ${spellCorrect} / 8`;
+}
+function resetSpell(){
+  spellCorrect=0;
+  document.getElementById("spellFeedback").textContent="";
+  renderSpell();
+  document.getElementById("spellScore").textContent="Правильно: 0 / 8";
+}
+
+renderMatch();
+renderSpell();
+</script>
+</body>
+</html>
