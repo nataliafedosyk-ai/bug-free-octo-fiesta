@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Віднови структуру абзацу</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f3f7fb;color:#26364a;font:16px/1.55 system-ui,sans-serif}
+header{background:linear-gradient(120deg,#203e5a,#34749a);color:white;text-align:center;padding:28px 16px}h1{margin:0 0 5px;font-size:clamp(23px,4vw,32px)}header p{margin:0;color:#e6eff6}
+main{max-width:1000px;margin:22px auto;padding:0 14px 40px}.intro,.paragraph{background:white;border:1px solid #d9e3ec;border-radius:14px;padding:17px;margin-bottom:16px}
+.structure{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.structure span{background:#eaf2f8;color:#244d6c;border-radius:20px;padding:5px 11px;font-weight:650;font-size:14px}
+.paragraph h2{font-size:19px;margin:0 0 4px}.hint{font-size:14px;color:#64748b;margin:0 0 13px}
+.items{display:flex;flex-direction:column;gap:9px}.item{display:flex;align-items:center;gap:10px;border:1px solid #cbd8e4;background:#fbfdff;border-radius:10px;padding:11px 12px;cursor:grab;touch-action:pan-y}
+.item.dragging{opacity:.45}.item.over{border:2px dashed #285f85;background:#edf6fc}.num{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:50%;background:#e7eff6;color:#285577;font-weight:700}
+.sentence{flex:1}.arrows{display:flex;gap:5px}.arrows button{width:34px;height:34px;padding:0;border:1px solid #cbd8e4;background:white;border-radius:7px;color:#34536d;font-size:18px}
+.arrows button:disabled{opacity:.3}.item.correct{border-color:#55a77c;background:#f0faf4}.item.incorrect{border-color:#d97770;background:#fff5f3}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}button.action{border:0;border-radius:9px;padding:10px 17px;font:600 15px system-ui;cursor:pointer}
+.check{background:#285f85;color:white}.reset{background:#e8eef4;color:#29445c}.feedback{min-height:25px;margin:10px 2px 0;font-weight:650}
+footer{text-align:center;color:#64748b;font-size:13px;margin-top:24px}
+@media(max-width:600px){.paragraph{padding:14px}.item{align-items:flex-start;padding:10px}.arrows{flex-direction:column}.arrows button{width:32px;height:30px}.sentence{font-size:15px}}
+</style></head><body>
+<header><h1>Віднови структуру абзацу</h1><p>Розташуй речення в правильному порядку</p></header>
+<main><section class="intro"><strong>Завдання:</strong> у кожному абзаці переплутано 4 речення. Перестав їх так, щоб текст мав логічну структуру.
+<div class="structure"><span>1. Головна думка</span><span>2. Текстовий доказ</span><span>3. Пояснення</span><span>4. Висновок</span></div>
+<p class="hint" style="margin-top:12px">Перетягуй речення мишкою або користуйся стрілками ↑ та ↓, щоб змінити їхнє місце. Перевіряй кожен абзац окремо.</p></section>
+<div id="activities"></div><footer>Успіхів у роботі!</footer></main>
+<script>
+const paragraphs=[["На початку оповідання ми бачимо Мишка як хлопця, який готовий на все заради популярності і ніщо інше його не цікавить.", "Він кидає петарди та знімає на відео переляканих людей. Остапу він не довіряє знімати і все робить сам.", "Але коли зникають друзі, він все кидає і відправляється на пошуки замість зйомки відео.", "Наприкінці ми бачимо зміни - безпека та компанія друзів для Мишка стають важливішіми за популярність та вподобайки."], ["Яна дуже любить свого песика й хвилюється за близьких.", "Коли Зайчик утік, Яна кликала його й шукала сліди на снігу.Також вона розповідає Остапові, що не послухала маму й збрехала їй, коли та телефонувала.", "Те, що вона не припинила пошуки навіть коли було темно і страшно, показує нам, що безпека та спокій тих, кого вона любить важливіші за все інше.", "Ці вчинки доводить, що Яна турботлива та небайдужа дівчинка."], ["Остап поступово усвідомлює, що хлопці вчинили неправильно.", "Остап сказав, що треба допомогти Яні знайти собаку, і вибачився перед нею за їхній жарт.", "Він не лише шкодує про це, а й намагається допомогти виправити ситуацію.", "Тож, ми бачимо, як змінюється його думка та вчинки у хороший бік."], ["Остап - допитливий хлопець, небайдужий до оточуючого світу та людей навколо.", "Він був першим, хто після заметілі скуштував сніг і сказав, що він на смак як мандаринка. Потім він побачив руду білку на гілці, хоча Яна побачила там синичку.", "Тобто, коли він бачить щось незвичне, він намагається зрозуміти це на власному досвіді.", "Це говорить про те, що Остап цікавиться оточуючим світом і помічає незвичайне навколо себе."], ["Мишко любить робити свої історії драматичними, щоб вони здавалися захопливішими.", "Знімаючи відео про пошуки собаки, Мишко говорить трагічним голосом про «непролазні хащі» й собаку-героя.", "Подібні слова не  відповідають дійсності - вони знаходиться в парку а не в джунглях, а собака зовсім не герой, а просто переликана тваринка яка втекла.", "Так він перебільшує події, щоб відео здавалося цікавішим."], ["Яна вміє помічати сміливість інших, вона розуміє, коли хтось виявив відвагу.", "В якийсь момент в оповідання дідусь звертається до неї. “Чого ж це він Зайчик, Яно? — здивувався дідусь. — Хіба він боягуз?”", "Зазвичай ми вважаємо зайців не дуже сміливими тваринами, бо коли вони бачать загрозу, вони тікають.", "Але Зайчик загарчав на вовка й змусив його відступити, тому Яна сказала, що старе ім’я песику вже не підходить, бо він виявився сміливішим за зайця."]];
+const container=document.getElementById('activities');
+paragraphs.forEach((sentences,pIndex)=>{
+ const section=document.createElement('section');section.className='paragraph';
+ section.innerHTML=`<h2>Абзац ${pIndex+1}</h2><p class="hint">Розташуй 4 речення у правильному порядку.</p><div class="items"></div><div class="actions"><button class="action check" type="button">Перевірити абзац</button><button class="action reset" type="button">Перемішати / скинути</button></div><div class="feedback" role="status" aria-live="polite"></div>`;
+ container.appendChild(section);const items=section.querySelector('.items');let order=[0,1,2,3].sort(()=>Math.random()-.5),dragged=null;
+ function render(){items.innerHTML='';order.forEach((original,pos)=>{
+  const card=document.createElement('div');card.className='item';card.draggable=true;card.dataset.index=original;
+  const n=document.createElement('span');n.className='num';n.textContent=pos+1;
+  const sentence=document.createElement('span');sentence.className='sentence';sentence.textContent=sentences[original];
+  const arrows=document.createElement('span');arrows.className='arrows';
+  const up=document.createElement('button');up.type='button';up.textContent='↑';up.setAttribute('aria-label','Перемістити вгору');up.disabled=pos===0;up.onclick=()=>move(pos,pos-1);
+  const down=document.createElement('button');down.type='button';down.textContent='↓';down.setAttribute('aria-label','Перемістити вниз');down.disabled=pos===3;down.onclick=()=>move(pos,pos+1);
+  arrows.append(up,down);card.append(n,sentence,arrows);
+  card.ondragstart=e=>{dragged=pos;card.classList.add('dragging');e.dataTransfer.effectAllowed='move'};
+  card.ondragend=()=>{dragged=null;card.classList.remove('dragging');items.querySelectorAll('.over').forEach(x=>x.classList.remove('over'))};
+  card.ondragover=e=>{e.preventDefault();card.classList.add('over')};card.ondragleave=()=>card.classList.remove('over');
+  card.ondrop=e=>{e.preventDefault();card.classList.remove('over');if(dragged!==null)move(dragged,pos)};
+  items.append(card);
+ })}
+ function move(from,to){if(to<0||to>=4||from===to)return;const [v]=order.splice(from,1);order.splice(to,0,v);section.querySelector('.feedback').textContent='';render()}
+ section.querySelector('.check').onclick=()=>{let score=0;[...items.children].forEach((card,pos)=>{const ok=Number(card.dataset.index)===pos;card.classList.toggle('correct',ok);card.classList.toggle('incorrect',!ok);if(ok)score++});
+ const f=section.querySelector('.feedback');f.textContent=score===4?'Чудово! Абзац відновлено правильно.':`Правильно розташовано ${score} із 4 речень. Спробуй ще раз.`;f.style.color=score===4?'#18794e':'#a33a32'};
+ section.querySelector('.reset').onclick=()=>{order=[0,1,2,3].sort(()=>Math.random()-.5);section.querySelector('.feedback').textContent='';render()};
+ render();
+});
+</script></body></html>
